@@ -1,6 +1,6 @@
 import {
     formatServerError, formatGraphQLError, parseData, pageInfo,
-    dispatchMutationReq, dispatchMutationErr
+    dispatchMutationReq, dispatchMutationErr, dispatchMutationResp
 } from "@openimis/fe-core";
 
 function reducer(
@@ -45,6 +45,8 @@ function reducer(
             return dispatchMutationReq(state, action);
         case "CONTRACT_MUTATION_ERR":
             return dispatchMutationErr(state, action);
+        case "CONTRACT_CREATE_CONTRACT_RESP":
+            return dispatchMutationResp(state, "createContract", action);
         default:
             return state;
     }

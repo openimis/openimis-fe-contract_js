@@ -68,7 +68,7 @@ class ContractFilter extends Component {
                         pubRef="policyHolder.PolicyHolderPicker"
                         module="contract"
                         withNull
-                        nullLabel={formatMessage(intl, "contract", "policyHolder.null")}
+                        nullLabel={formatMessage(intl, "contract", "any")}
                         value={this._filterValue('policyHolder_Id')}
                         onChange={v => onChangeFilters([{
                             id: 'policyHolder_Id',
@@ -120,6 +120,8 @@ class ContractFilter extends Component {
                         label="state"
                         value={this._filterValue('state')}
                         onChange={v => this._onChangeFilter('state', v)}
+                        withNull
+                        nullLabel={formatMessage(intl, "contract", "any")}
                     />
                 </Grid>
                 <Grid item xs={2} className={classes.item}>

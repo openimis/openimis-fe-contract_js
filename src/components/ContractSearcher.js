@@ -47,6 +47,8 @@ class ContractSearcher extends Component {
             contract => !!contract.code ? contract.code : "",
             contract => !!contract.state
                 ? <ContractStatePicker
+                    module="contract"
+                    label="state"
                     value={contract.state}
                     readOnly />
                 : "",
