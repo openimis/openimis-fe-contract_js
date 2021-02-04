@@ -23,7 +23,7 @@ const DEFAULT_CONFIG = {
     ],
     "core.Router": [
         { path: ROUTE_CONTRACTS, component: ContractsPage },
-        { path: ROUTE_CONTRACT, component: ContractPage }
+        { path: ROUTE_CONTRACT  + "/:contract_id?", component: ContractPage }
     ],
     "insuree.MainMenu": [
         {
