@@ -15,21 +15,9 @@ import { UPDATABLE_STATES, APPROVABLE_STATES, TERMINATED_STATE } from "../consta
 
 const styles = theme => ({
     fab: theme.fab,
-    approveFab: {
-        position: 'fixed',
-        bottom: theme.spacing(11),
-        right: theme.spacing(2),
-        zIndex: 1200
-    },
     counterFab: {
         position: 'fixed',
-        bottom: theme.spacing(17),
-        right: theme.spacing(2),
-        zIndex: 1200
-    },
-    amendFab: {
-        position: 'fixed',
-        bottom: theme.spacing(23),
+        bottom: theme.spacing(11),
         right: theme.spacing(2),
         zIndex: 1200
     }
@@ -78,8 +66,6 @@ class ContractForm extends Component {
         return true;
     }
 
-    isDirty = () => this.props.contract !== this.state.contract;
-
     canSave = () => !this.isMandatoryFieldsEmpty();
 
     save = contract => this.props.save(contract, this.state.readOnlyFields);
@@ -88,18 +74,38 @@ class ContractForm extends Component {
 
     titleParams = () => this.props.titleParams(this.state.contract);
 
-    isContractStateNotNull = () => !!this.props.contractId && !!this.props.contract && !!this.props.contract.state;
+    isContractStateNotNull = () => !!this.state.contract && !!this.state.contract.state;
 
-    isUpdatable = () =>  this.isContractStateNotNull() && this.updatableStates.includes(this.props.contract.state);
+    isUpdatable = () =>  this.isContractStateNotNull() && this.updatableStates.includes(this.state.contract.state);
 
-    isApprovable = () => this.isContractStateNotNull() && this.approvableStates.includes(this.props.contract.state);
+    isApprovable = () => this.isContractStateNotNull() && this.approvableStates.includes(this.state.contract.state);
 
-    isTerminated = () => this.isContractStateNotNull() && this.props.contract.state === TERMINATED_STATE;
+    isTerminated = () => this.isContractStateNotNull() && this.state.contract.state === TERMINATED_STATE;
 
     setReadOnlyFields = readOnlyFields => this.setState({ readOnlyFields });
 
+    fab = () => {
+        if (this.isUpdatable()) {
+            return <OpenInBrowserIcon/>;
+        } else if (this.isApprovable()) {
+            return <CheckIcon/>;
+        } else if (!this.isUpdatable() && !this.isApprovable() && !this.isTerminated()) {
+            return <NoteAddIcon/>;
+        } else return null;
+    }
+
+    fabTooltip = () => {
+        if (this.isUpdatable()) {
+            return formatMessage(this.props.intl, "contract", "submitButton.tooltip");
+        } else if (this.isApprovable()) {
+            return formatMessage(this.props.intl, "contract", "approveButton.tooltip");
+        } else if (!this.isUpdatable() && !this.isApprovable() && !this.isTerminated()) {
+            return formatMessage(this.props.intl, "contract", "amendButton.tooltip");
+        } else return null;
+    }
+
     render() {
-        const { intl, rights, classes, contract, contractId, back } = this.props;
+        const { intl, rights, classes, contract, back } = this.props;
         return (
             <Fragment>
                 <Form
@@ -120,56 +126,19 @@ class ContractForm extends Component {
                     isApprovable={this.isApprovable()}
                     setReadOnlyFields={this.setReadOnlyFields}
                     readOnlyFields={this.state.readOnlyFields}
-                    fab={this.isUpdatable() && <OpenInBrowserIcon/>}
-                    fabTooltip={formatMessage(intl, "contract", "submitButton.tooltip")}
+                    fab={!!this.state.contract.id && this.fab()}
+                    fabTooltip={this.fabTooltip()}
+                    fabAction={() => null}
                     reset={this.state.reset}
                 />
-                {!!contractId && (
-                    <Fragment>
-                        {/**
-                         * Disabled 'submit' @see Fab is displayed, because @see Form does not support
-                         * disabling the icon passed in @see fab parameter
-                         */}
-                        {!this.isUpdatable() && !this.isDirty() && (
-                            <Tooltip title={formatMessage(intl, "contract", "submitButton.tooltip")} placement="left">
-                                <div className={classes.fab}>
-                                    <Fab color="primary" disabled>
-                                        <OpenInBrowserIcon/>
-                                    </Fab>
-                                </div>
-                            </Tooltip>
-                        )}
-                        <Tooltip title={formatMessage(intl, "contract", "approveButton.tooltip")} placement="left">
-                            <div className={classes.approveFab}>
-                                <Fab
-                                    color="primary"
-                                    size="small"
-                                    disabled={!this.isApprovable() || this.isDirty()}>
-                                    <CheckIcon/>
-                                </Fab>
-                            </div>
-                        </Tooltip>
-                        <Tooltip title={formatMessage(intl, "contract", "counterButton.tooltip")} placement="left">
-                            <div className={classes.counterFab}>
-                                <Fab
-                                    color="primary"
-                                    size="small"
-                                    disabled={!this.isApprovable() || this.isDirty()}>
-                                    <CloseIcon/>
-                                </Fab>
-                            </div>
-                        </Tooltip>
-                        <Tooltip title={formatMessage(intl, "contract", "amendButton.tooltip")} placement="left">
-                            <div className={classes.amendFab}>
-                                <Fab
-                                    color="primary"
-                                    size="small"
-                                    disabled={this.isUpdatable() || this.isApprovable() || this.isTerminated() || this.isDirty()}>
-                                    <NoteAddIcon/>
-                                </Fab>
-                            </div>
-                        </Tooltip>
-                    </Fragment>
+                {this.isApprovable() && !!this.fab() && (
+                    <Tooltip title={formatMessage(intl, "contract", "counterButton.tooltip")} placement="left">
+                        <div className={classes.counterFab}>
+                            <Fab color="primary" size="small">
+                                <CloseIcon/>
+                            </Fab>
+                        </div>
+                    </Tooltip>
                 )}
             </Fragment>
         )
