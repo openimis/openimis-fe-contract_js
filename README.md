@@ -8,7 +8,7 @@ It is dedicated to be deployed as a module of [openimis-fe_js](https://github.co
 None
 
 ## Other Contributions
-* `core.Router`: registering `contracts` route in openIMIS client-side router
+* `core.Router`: registering `contracts`, `contracts/contract` route in openIMIS client-side router
 * `insuree.MainMenu`:
     
     **Contracts** (`menu.contracts` translation key)
@@ -21,7 +21,11 @@ None
 
 ## Dispatched Redux Actions
 * `CONTRACT_CONTRACTS_{REQ|RESP|ERR}`, fetching Contracts (as triggered by the searcher)
+* `CONTRACT_CONTRACT_{REQ|RESP|ERR}`, fetching Contract
 * `CONTRACT_MUTATION_{REQ|ERR}`, sending a mutation
+* `CONTRACT_CREATE_CONTRACT_RESP`, receiving a result of create Contract mutation
+* `CONTRACT_UPDATE_CONTRACT_RESP`, receiving a result of update Contract mutation
+* `CONTRACT_DELETE_CONTRACT_RESP`, receiving a result of delete Contract mutation
 
 ## Other Modules Listened Redux Actions
 None
