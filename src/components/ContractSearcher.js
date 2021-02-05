@@ -1,16 +1,36 @@
 import React, { Component, Fragment } from "react"
 import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessage, formatMessageWithValues, Searcher, formatDateFromISO, withTooltip } from "@openimis/fe-core";
+import { withModulesManager, formatMessage, formatMessageWithValues, Searcher, formatDateFromISO,
+    withTooltip, coreConfirm, journalize } from "@openimis/fe-core";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { fetchContracts } from "../actions"
+import { fetchContracts, deleteContract } from "../actions"
 import { IconButton } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
-import { DEFAULT_PAGE_SIZE, RIGHT_POLICYHOLDERCONTRACT_APPROVE, RIGHT_POLICYHOLDERCONTRACT_UPDATE, ROWS_PER_PAGE_OPTIONS } from "../constants"
+import DeleteIcon from '@material-ui/icons/Delete';
+import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS, RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+    RIGHT_POLICYHOLDERCONTRACT_UPDATE, RIGHT_POLICYHOLDERCONTRACT_DELETE } from "../constants"
 import ContractFilter from "./ContractFilter";
 import ContractStatePicker from "../pickers/ContractStatePicker";
 
 class ContractSearcher extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            toDelete: null,
+            deleted: []
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.submittingMutation && !this.props.submittingMutation) {
+            this.props.journalize(this.props.mutation);
+            this.setState(state => ({ deleted: state.deleted.concat(state.toDelete) }));
+        } else if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
+            this.state.confirmedAction();
+        }
+    }
+
     fetch = params => this.props.fetchContracts(this.props.modulesManager, params);
 
     filtersToQueryParams = state => {
@@ -45,6 +65,9 @@ class ContractSearcher extends Component {
             "contract.amendment"
         ];
         if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE) || rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) {
+            result.push("contract.emptyLabel");
+        }
+        if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_DELETE)) {
             result.push("contract.emptyLabel");
         }
         return result;
@@ -85,20 +108,61 @@ class ContractSearcher extends Component {
                     <div>
                         <IconButton
                             href={contractPageLink(contract)}
-                            onClick={e => e.stopPropagation() && onDoubleClick(contract)}>
-                            <EditIcon />
+                            onClick={e => e.stopPropagation() && onDoubleClick(contract)}
+                            disabled={this.state.deleted.includes(contract.id)}>
+                            <EditIcon/>
                         </IconButton>
                     </div>,
                     formatMessage(intl, "contract", "editButton.tooltip")
                 )
             );
         }
+        if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_DELETE)) {
+            result.push(
+                contract => !this.isDeletedFilterEnabled(contract) && withTooltip(
+                    <div>
+                        <IconButton
+                            onClick={() => this.onDelete(contract)}
+                            disabled={this.state.deleted.includes(contract.id)}>
+                            <DeleteIcon/>
+                        </IconButton>
+                    </div>,
+                    formatMessage(intl, "contract", "deleteButton.tooltip")
+                )
+            );
+        }
         return result;
+    }
+
+    onDelete = contract => {
+        const { intl, coreConfirm, deleteContract } = this.props;
+        let confirm = () => coreConfirm(
+            formatMessageWithValues(intl, "contract", "deleteContract.confirm.title", { label: contract.code }),
+            formatMessageWithValues(intl, "contract", "deleteContract.confirm.message", { label: contract.code })
+        );
+        let confirmedAction = () => {
+            deleteContract(
+                contract,
+                formatMessageWithValues(
+                    intl,
+                    "contract",
+                    "DeleteContract.mutationLabel",
+                    { label: contract.code }
+                )
+            );
+            this.setState({ toDelete: contract.id });
+        }
+        this.setState(
+            { confirmedAction },
+            confirm
+        )
     }
 
     isDeletedFilterEnabled = contract => contract.isDeleted;
 
-    isOnDoubleClickEnabled = contract => !this.isDeletedFilterEnabled(contract);
+    isRowDisabled = (_, contract) => this.state.deleted.includes(contract.id) && !this.isDeletedFilterEnabled(contract);
+
+    isOnDoubleClickEnabled = contract => !this.state.deleted.includes(contract.id) && !this.isDeletedFilterEnabled(contract);
 
     sorts = () => [
         ['code', true],
@@ -133,6 +197,8 @@ class ContractSearcher extends Component {
                     defaultPageSize={DEFAULT_PAGE_SIZE}
                     defaultOrderBy="code"
                     onDoubleClick={contract => this.isOnDoubleClickEnabled(contract) && onDoubleClick(contract)}
+                    rowDisabled={this.isRowDisabled}
+                    rowLocked={this.isRowDisabled}
                 />
             </Fragment>
         )
@@ -145,11 +211,14 @@ const mapStateToProps = state => ({
     errorContracts: state.contract.errorContracts,
     contracts: state.contract.contracts,
     contractsPageInfo: state.contract.contractsPageInfo,
-    contractsTotalCount: state.contract.contractsTotalCount
+    contractsTotalCount: state.contract.contractsTotalCount,
+    confirmed: state.core.confirmed,
+    submittingMutation: state.contract.submittingMutation,
+    mutation: state.contract.mutation
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchContracts }, dispatch);
+    return bindActionCreators({ fetchContracts, deleteContract, coreConfirm, journalize }, dispatch);
 };
 
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContractSearcher)));

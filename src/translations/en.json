@@ -36,11 +36,15 @@
     "contract.mandatoryFieldsEmptyError": "* These fields are required",
     "contract.saveButton.tooltip.disabled": "Please fill General Information fields first",
     "contract.saveButton.tooltip.enabled": "Save changes",
-    "contract.CreateContract.mutationLabel": "Create Contract - {label}",
+    "contract.CreateContract.mutationLabel": "Create Contract {label}",
     "contract.editButton.tooltip": "Edit",
-    "contract.UpdateContract.mutationLabel": "Update Contract - {label}",
+    "contract.UpdateContract.mutationLabel": "Update Contract {label}",
     "contract.submitButton.tooltip": "Submit",
     "contract.approveButton.tooltip": "Approve",
     "contract.counterButton.tooltip": "Counter",
-    "contract.amendButton.tooltip": "Amend"
+    "contract.amendButton.tooltip": "Amend",
+    "contract.deleteButton.tooltip": "Delete",
+    "contract.DeleteContract.mutationLabel": "Delete Contract {label}",
+    "contract.deleteContract.confirm.title": "Are you sure you want to delete {label}?",
+    "contract.deleteContract.confirm.message": "Deleting data does not mean erasing it from OpenIMIS database. The data will only be deactivated from the viewed list."
 }

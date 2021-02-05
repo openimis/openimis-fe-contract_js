@@ -70,3 +70,18 @@ export function updateContract(contract, clientMutationLabel, readOnlyFields = [
         }
     );
 }
+
+export function deleteContract(contract, clientMutationLabel, clientMutationDetails = null) {
+    let contractUuids = `uuids: ["${decodeId(contract.id)}"]`;
+    let mutation = formatMutation("deleteContract", contractUuids, clientMutationLabel, clientMutationDetails);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRACT_MUTATION_REQ", "CONTRACT_DELETE_CONTRACT_RESP", "CONTRACT_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
