@@ -12,6 +12,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import ContractHeadPanel from "./ContractHeadPanel";
 import { UPDATABLE_STATES, APPROVABLE_STATES, TERMINATED_STATE } from "../constants"
+import ContractTabPanel from "./ContractTabPanel";
 
 const styles = theme => ({
     fab: theme.fab,
@@ -118,6 +119,7 @@ class ContractForm extends Component {
                     save={this.save}
                     onEditedChanged={this.onEditedChanged}
                     HeadPanel={ContractHeadPanel}
+                    Panels={[ContractTabPanel]}
                     mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
                     saveTooltip={formatMessage(intl, "contract", `saveButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
                     rights={rights}

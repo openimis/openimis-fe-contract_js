@@ -14,7 +14,8 @@ None
     **Contracts** (`menu.contracts` translation key)
 
 ## Available Contribution Points
-None
+* `contract.TabPanel.label` ability to extend Contract tab panel with a label
+* `contract.TabPanel.panel` ability to extend Contract tab panel with a panel displayed on click on an appropriate label
 
 ## Published Components
 None
@@ -22,17 +23,19 @@ None
 ## Dispatched Redux Actions
 * `CONTRACT_CONTRACTS_{REQ|RESP|ERR}`, fetching Contracts (as triggered by the searcher)
 * `CONTRACT_CONTRACT_{REQ|RESP|ERR}`, fetching Contract
+* `CONTRACT_CONTRACTDETAILS_{REQ|RESP|ERR}`, fetching Contract Details (as triggered by the searcher)
 * `CONTRACT_MUTATION_{REQ|ERR}`, sending a mutation
 * `CONTRACT_CREATE_CONTRACT_RESP`, receiving a result of create Contract mutation
 * `CONTRACT_UPDATE_CONTRACT_RESP`, receiving a result of update Contract mutation
 * `CONTRACT_DELETE_CONTRACT_RESP`, receiving a result of delete Contract mutation
+* `CONTRACT_CREATE_CONTRACTDETAILS_RESP`, receiving a result of create Contract Details mutation
 
 ## Other Modules Listened Redux Actions
 None
 
 ## Other Modules Redux State Bindings
 * `state.core.user`, to access user info (rights,...)
-* `state.policyHolder`, retrieving Policy Holders for Policy Holder picker used for filtering Contracts
+* `state.policyHolder`, retrieving Policy Holder Insurees to auto complete Contribution Plan Bundle when creating Contract Details
 
 ## Configurations Options
 * `contractFilter.contractStateOptions`: options for ContractStatePicker component (Default:

@@ -15,6 +15,12 @@ function reducer(
         fetchedContract: false,
         contract: {},
         errorContract: null,
+        fetchingContractDetails: false,
+        errorContractDetails: null,
+        fetchedContractDetails: false,
+        contractDetails: [],
+        contractDetailsPageInfo: {},
+        contractDetailsTotalCount: 0
     },
     action
 ) {
@@ -67,6 +73,32 @@ function reducer(
                 fetchingContract: false,
                 errorContract: formatServerError(action.payload)
             };
+        case "CONTRACT_CONTRACTDETAILS_REQ":
+            return {
+                ...state,
+                fetchingContractDetails: true,
+                fetchedContractDetails: false,
+                contractDetails: [],
+                contractDetailsPageInfo: {},
+                contractDetailsTotalCount: 0,
+                errorContractDetails: null
+            };
+        case "CONTRACT_CONTRACTDETAILS_RESP":
+            return {
+                ...state,
+                fetchingContractDetails: false,
+                fetchedContractDetails: true,
+                contractDetails: parseData(action.payload.data.contractDetails),
+                contractDetailsPageInfo: pageInfo(action.payload.data.contractDetails),
+                contractDetailsTotalCount: !!action.payload.data.contractDetails ? action.payload.data.contractDetails.totalCount : null,
+                errorContractDetails: formatGraphQLError(action.payload)
+            };
+        case "CONTRACT_CONTRACTDETAILS_ERR":
+            return {
+                ...state,
+                fetchingContracts: false,
+                errorContracts: formatServerError(action.payload)
+            };
         case "CONTRACT_MUTATION_REQ":
             return dispatchMutationReq(state, action);
         case "CONTRACT_MUTATION_ERR":
@@ -77,6 +109,8 @@ function reducer(
             return dispatchMutationResp(state, "updateContract", action);
         case "CONTRACT_DELETE_CONTRACT_RESP":
             return dispatchMutationResp(state, "deleteContract", action);
+        case "CONTRACT_CREATE_CONTRACTDETAILS_RESP":
+            return dispatchMutationResp(state, "createContractDetails", action);
         default:
             return state;
     }
