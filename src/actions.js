@@ -8,6 +8,12 @@ const CONTRACT_FULL_PROJECTION = modulesManager =>  [
     "policyHolder" + modulesManager.getProjection("policyHolder.PolicyHolderPicker.projection")
 ];
 
+const CONTRACTDETAILS_FULL_PROJECTION = modulesManager =>  [
+    "id", "jsonParam",
+    "insuree" + modulesManager.getProjection("insuree.InsureePicker.projection"),
+    "contributionPlanBundle" + modulesManager.getProjection("contributionPlan.ContributionPlanBundlePicker.projection")
+];
+
 function dateTimeToDate(date) {
     return date.split('T')[0];
 }
@@ -30,6 +36,15 @@ export function fetchContract(modulesManager, params) {
     return graphql(payload, "CONTRACT_CONTRACT");
 }
 
+export function fetchContractDetails(modulesManager, params) {
+    const payload = formatPageQueryWithCount(
+        "contractDetails",
+        params,
+        CONTRACTDETAILS_FULL_PROJECTION(modulesManager)
+    );
+    return graphql(payload, "CONTRACT_CONTRACTDETAILS");
+}
+
 function formatContractGQL(contract, readOnlyFields = []) {
     return `
         ${!!contract.id ? `id: "${decodeId(contract.id)}"` : ''}
@@ -40,6 +55,16 @@ function formatContractGQL(contract, readOnlyFields = []) {
         ${!!contract.paymentReference && !readOnlyFields.includes('paymentReference') ? `paymentReference: "${formatGQLString(contract.paymentReference)}"` : ""}
         ${!!contract.dateValidFrom && !readOnlyFields.includes('dateValidFrom') ? `dateValidFrom: "${dateTimeToDate(contract.dateValidFrom)}"` : ""}
         ${!!contract.dateValidTo && !readOnlyFields.includes('dateValidTo') ? `dateValidTo: "${dateTimeToDate(contract.dateValidTo)}"` : ""}
+    `;
+}
+
+function formatContractDetailsGQL(contractDetails) {
+    return `
+        ${!!contractDetails.id ? `id: "${decodeId(contractDetails.id)}"` : ''}
+        ${!!contractDetails.contract ? `contractId: "${decodeId(contractDetails.contract.id)}"` : ''}
+        ${!!contractDetails.insuree ? `insureeId: ${decodeId(contractDetails.insuree.id)}` : ''}
+        ${!!contractDetails.contributionPlanBundle ? `contributionPlanBundleId: "${decodeId(contractDetails.contributionPlanBundle.id)}"` : ''}
+        ${!!contractDetails.jsonParam ? `jsonParam: ${JSON.stringify(contractDetails.jsonParam)}` : ''}
     `;
 }
 
@@ -78,6 +103,20 @@ export function deleteContract(contract, clientMutationLabel, clientMutationDeta
     return graphql(
         mutation.payload,
         ["CONTRACT_MUTATION_REQ", "CONTRACT_DELETE_CONTRACT_RESP", "CONTRACT_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
+export function createContractDetails(contractDetails, clientMutationLabel) {
+    let mutation = formatMutation("createContractDetails", formatContractDetailsGQL(contractDetails), clientMutationLabel);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRACT_MUTATION_REQ", "CONTRACT_CREATE_CONTRACTDETAILS_RESP", "CONTRACT_MUTATION_ERR"],
         {
             clientMutationId: mutation.clientMutationId,
             clientMutationLabel,
