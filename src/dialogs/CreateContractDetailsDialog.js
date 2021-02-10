@@ -112,7 +112,7 @@ class CreateContractDetailsDialog extends Component {
                                     pubRef="policyHolder.PolicyHolderInsureePicker"
                                     required
                                     withNull
-                                    policyHolderId={!!contract.policyHolder && contract.policyHolder.id && decodeId(contract.policyHolder.id)}
+                                    policyHolderId={!!contract.policyHolder && decodeId(contract.policyHolder.id)}
                                     value={!!contractDetails.insuree && contractDetails.insuree}
                                     onChange={v => this.updateAttribute('insuree', v)}
                                 />
@@ -122,7 +122,7 @@ class CreateContractDetailsDialog extends Component {
                                     pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
                                     withNull
                                     nullLabel={formatMessage(intl, "contract", "emptyLabel")}
-                                    policyHolderId={!!contract.policyHolder && contract.policyHolder.id && decodeId(contract.policyHolder.id)}
+                                    policyHolderId={!!contract.policyHolder && decodeId(contract.policyHolder.id)}
                                     value={!!contractDetails.contributionPlanBundle && contractDetails.contributionPlanBundle}
                                     onChange={v => this.updateAttribute('contributionPlanBundle', v)}
                                     readOnly

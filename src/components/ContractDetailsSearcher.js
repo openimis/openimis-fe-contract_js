@@ -83,20 +83,12 @@ class ContractDetailsSearcher extends Component {
     }
 
     defaultFilters = () => {
-        const { contract } = this.props;
-        let filters = {
+        return {
             contract_Id: {
-                value: decodeId(contract.id),
-                filter: `contract_Id: "${decodeId(contract.id)}"`
+                value: decodeId(this.props.contract.id),
+                filter: `contract_Id: "${decodeId(this.props.contract.id)}"`
             }
         };
-        if (!!contract.policyHolder) {
-            filters.policyHolder_Id = {
-                value: decodeId(contract.policyHolder.id),
-                filter: `contract_PolicyHolder_Id: "${decodeId(contract.policyHolder.id)}"`
-            };
-        }
-        return filters;
     }
 
     render() {

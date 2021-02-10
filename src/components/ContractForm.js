@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Form, withModulesManager, formatMessage, formatMessageWithValues, journalize } from "@openimis/fe-core";
+import { Form, withModulesManager, formatMessage, formatMessageWithValues, journalize, decodeId } from "@openimis/fe-core";
 import { Fab, Tooltip } from "@material-ui/core";
 import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
@@ -54,7 +54,7 @@ class ContractForm extends Component {
             this.props.journalize(this.props.mutation);
             this.props.fetchContract(
                 this.props.modulesManager,
-                !!this.props.contractId ? [`id: "${this.props.contractId}"`] : [`clientMutationId: "${this.props.mutation.clientMutationId}"`]
+                !!this.state.contract.id ? [`id: "${decodeId(this.state.contract.id)}"`] : [`clientMutationId: "${this.props.mutation.clientMutationId}"`]
             );
         }
     }
