@@ -2,9 +2,6 @@ import React from "react";
 import { Paper, Grid } from "@material-ui/core";
 import { withModulesManager, FormPanel, Contributions } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import {  } from "../actions"
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { RIGHT_POLICYHOLDERCONTRACT_UPDATE, RIGHT_POLICYHOLDERCONTRACT_APPROVE, CONTRACTDETAILS_TAB_VALUE } from "../constants"
 
@@ -71,8 +68,4 @@ class ContractTabPanel extends FormPanel {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return bindActionCreators({  }, dispatch);
-};
-
-export default withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(null, mapDispatchToProps)(ContractTabPanel)))));
+export default withModulesManager(injectIntl(withTheme(withStyles(styles)(ContractTabPanel))));

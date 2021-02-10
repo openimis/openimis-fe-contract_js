@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { injectIntl } from 'react-intl';
+import { connect } from "react-redux";
 import { withModulesManager, formatMessage, TextInput, PublishedComponent, decodeId } from "@openimis/fe-core";
 import { Grid } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
@@ -21,7 +22,7 @@ class ContractDetailsFilter extends Component {
     }
 
     render() {
-        const { intl, classes, filters, onChangeFilters } = this.props;
+        const { intl, classes, onChangeFilters, policyHolder } = this.props;
         return (
             <Grid container className={classes.form}>
                 <Grid item xs={3} className={classes.item}>
@@ -41,7 +42,7 @@ class ContractDetailsFilter extends Component {
                         pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
                         withNull
                         nullLabel={formatMessage(intl, "contract", "any")}
-                        policyHolderId={!!filters['policyHolder_Id'] && filters['policyHolder_Id'].value}
+                        policyHolderId={!!policyHolder && decodeId(policyHolder.id)}
                         value={this._filterValue('contributionPlanBundle_Id')}
                         onChange={v => onChangeFilters([{
                             id: 'contributionPlanBundle_Id',
@@ -55,4 +56,8 @@ class ContractDetailsFilter extends Component {
     }
 }
 
-export default withModulesManager(injectIntl(withTheme(withStyles(styles)(ContractDetailsFilter))));
+const mapStateToProps = state => ({
+    policyHolder: !!state.contract.contract ? state.contract.contract.policyHolder : null
+});
+
+export default withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, null)((ContractDetailsFilter))))));

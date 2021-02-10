@@ -35,7 +35,7 @@ None
 
 ## Other Modules Redux State Bindings
 * `state.core.user`, to access user info (rights,...)
-* `state.policyHolder`, retrieving Policy Holder Insurees to auto complete Contribution Plan Bundle when creating Contract Details
+* `state.policyHolder`, retrieving Policy Holder to fetch corresponding Policy Holder Contribution Plan Bundles and Policy Holder Insurees
 
 ## Configurations Options
 * `contractFilter.contractStateOptions`: options for ContractStatePicker component (Default:
