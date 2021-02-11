@@ -29,6 +29,7 @@ None
 * `CONTRACT_UPDATE_CONTRACT_RESP`, receiving a result of update Contract mutation
 * `CONTRACT_DELETE_CONTRACT_RESP`, receiving a result of delete Contract mutation
 * `CONTRACT_CREATE_CONTRACTDETAILS_RESP`, receiving a result of create Contract Details mutation
+* `CONTRACT_UPDATE_CONTRACTDETAILS_RESP`, receiving a result of update Contract Details mutation
 
 ## Other Modules Listened Redux Actions
 None

@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
 import ContractDetailsFilter from "../components/ContractDetailsFilter";
+import UpdateContractDetailsDialog from "../dialogs/UpdateContractDetailsDialog";
 
 const DEFAULT_ORDER_BY = "insuree";
 
@@ -51,7 +52,8 @@ class ContractDetailsSearcher extends Component {
     headers = () => [
         "contract.insuree",
         "contract.contributionPlanBundle",
-        "contract.calculation"
+        "contract.calculation",
+        "contract.emptyLabel"
     ];
 
     itemFormatters = () => [
@@ -71,7 +73,14 @@ class ContractDetailsSearcher extends Component {
                 policyHolderId={!!this.props.contract.policyHolder && decodeId(this.props.contract.policyHolder.id)}
                 readOnly/>
             : "",
-        contractDetails => !!contractDetails.jsonParam ? contractDetails.jsonParam : ""
+        contractDetails => !!contractDetails.jsonExt ? contractDetails.jsonExt : "",
+        contractDetails => (
+            <UpdateContractDetailsDialog
+                contract={this.props.contract}
+                contractDetails={contractDetails}
+                onSave={this.props.onSave}
+            />
+        )
     ];
 
     sorts = () => {

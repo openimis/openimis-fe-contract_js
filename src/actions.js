@@ -9,7 +9,7 @@ const CONTRACT_FULL_PROJECTION = modulesManager =>  [
 ];
 
 const CONTRACTDETAILS_FULL_PROJECTION = modulesManager =>  [
-    "id", "jsonParam",
+    "id", "jsonExt",
     "insuree" + modulesManager.getProjection("insuree.InsureePicker.projection"),
     "contributionPlanBundle" + modulesManager.getProjection("contributionPlan.ContributionPlanBundlePicker.projection")
 ];
@@ -64,7 +64,7 @@ function formatContractDetailsGQL(contractDetails) {
         ${!!contractDetails.contract ? `contractId: "${decodeId(contractDetails.contract.id)}"` : ''}
         ${!!contractDetails.insuree ? `insureeId: ${decodeId(contractDetails.insuree.id)}` : ''}
         ${!!contractDetails.contributionPlanBundle ? `contributionPlanBundleId: "${decodeId(contractDetails.contributionPlanBundle.id)}"` : ''}
-        ${!!contractDetails.jsonParam ? `jsonParam: ${JSON.stringify(contractDetails.jsonParam)}` : ''}
+        ${!!contractDetails.jsonExt ? `jsonExt: ${JSON.stringify(contractDetails.jsonExt)}` : ''}
     `;
 }
 
@@ -117,6 +117,20 @@ export function createContractDetails(contractDetails, clientMutationLabel) {
     return graphql(
         mutation.payload,
         ["CONTRACT_MUTATION_REQ", "CONTRACT_CREATE_CONTRACTDETAILS_RESP", "CONTRACT_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
+export function updateContractDetails(contractDetails, clientMutationLabel) {
+    let mutation = formatMutation("updateContractDetails", formatContractDetailsGQL(contractDetails), clientMutationLabel);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRACT_MUTATION_REQ", "CONTRACT_UPDATE_CONTRACTDETAILS_RESP", "CONTRACT_MUTATION_ERR"],
         {
             clientMutationId: mutation.clientMutationId,
             clientMutationLabel,
