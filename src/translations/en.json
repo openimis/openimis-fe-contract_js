@@ -57,5 +57,10 @@
     "contract.contractDetails.createContractDetails": "Create new Contract Details",
     "contract.dialog.cancel": "Cancel",
     "contract.dialog.create": "Create",
-    "contract.CreateContractDetails.mutationLabel": "Create Contract Detail {insuree} - {contributionPlanBundle} for {contract}"
+    "contract.dialog.update": "Save",
+    "contract.CreateContractDetails.mutationLabel": "Create Contract Detail {insuree} - {contributionPlanBundle} for {contract}",
+    "contract.UpdateContractDetails.mutationLabel": "Update Contract Detail {insuree} - {contributionPlanBundle} for {contract}",
+    "contract.contractDetails.editContractDetails": "Edit Contract Details",
+    "contract.contractDetails.editContractDetails.confirm.title": "Save changes in Contract Details?",
+    "contract.contractDetails.editContractDetails.confirm.message": "Are you sure you want to save changes for {insuree} - {contributionPlanBundle}?"
 }
