@@ -5,7 +5,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import AddIcon from '@material-ui/icons/Add';
-import { FormattedMessage, formatMessage, formatMessageWithValues, PublishedComponent, TextInput, decodeId } from "@openimis/fe-core";
+import { FormattedMessage, formatMessage, formatMessageWithValues, PublishedComponent,
+    TextInput, decodeId, coreConfirm } from "@openimis/fe-core";
 import { Fab, Grid } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { createContractDetails } from "../actions";
@@ -29,6 +30,8 @@ class CreateContractDetailsDialog extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevState.contractDetails !== this.state.contractDetails && prevState.contractDetails.insuree !== this.state.contractDetails.insuree) {
             this.setPolicyHolderContributionPlanBundle();
+        } else if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
+            this.state.confirmedAction();
         }
     }
 
@@ -46,21 +49,33 @@ class CreateContractDetailsDialog extends Component {
     };
 
     handleSave = () => {
-        this.props.createContractDetails(
-            this.state.contractDetails,
-            formatMessageWithValues(
-                this.props.intl,
-                "contract",
-                "CreateContractDetails.mutationLabel",
-                {
-                    insuree: decodeId(this.state.contractDetails.insuree.id),
-                    contributionPlanBundle: this.state.contractDetails.contributionPlanBundle.code,
-                    contract: this.props.contract.code
-                }
-            )
+        const { intl, contract, coreConfirm, onSave, createContractDetails } = this.props;
+        const { contractDetails } = this.state;
+        let confirm = () => coreConfirm(
+            formatMessage(intl, "contract", "contractDetails.createContractDetails.confirm.title"),
+            formatMessage(intl, "contract", "contractDetails.createContractDetails.confirm.message")
         );
-        this.props.onSave();
-        this.handleClose();
+        let confirmedAction = () => {
+            createContractDetails(
+                contractDetails,
+                formatMessageWithValues(
+                    intl,
+                    "contract",
+                    "CreateContractDetails.mutationLabel",
+                    {
+                        insuree: decodeId(contractDetails.insuree.id),
+                        contributionPlanBundle: contractDetails.contributionPlanBundle.code,
+                        contract: contract.code
+                    }
+                )
+            );
+            this.handleClose();
+            onSave();
+        }
+        this.setState(
+            { confirmedAction },
+            confirm
+        )
     };
 
     updateAttribute = (attribute, value) => {
@@ -152,11 +167,12 @@ class CreateContractDetailsDialog extends Component {
 }
 
 const mapStateToProps = state => ({
-    pickerPolicyHolderInsurees: state.policyHolder.pickerPolicyHolderInsurees
+    pickerPolicyHolderInsurees: state.policyHolder.pickerPolicyHolderInsurees,
+    confirmed: state.core.confirmed
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ createContractDetails }, dispatch);
+    return bindActionCreators({ createContractDetails, coreConfirm }, dispatch);
 };
 
 export default injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(CreateContractDetailsDialog))));

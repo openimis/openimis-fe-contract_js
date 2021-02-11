@@ -55,6 +55,8 @@
     "contract.contractDetails.searcher.title": "{contractDetailsTotalCount} Contract Details Found",
     "contract.contractDetails.tabDisabledError": "To start creating new Contract Details, you need to fill in General Information fields and click Save.",
     "contract.contractDetails.createContractDetails": "Create new Contract Details",
+    "contract.contractDetails.createContractDetails.confirm.title": "Create new Contract Details?",
+    "contract.contractDetails.createContractDetails.confirm.message": "Are you sure you want to create new Contract Details?",
     "contract.dialog.cancel": "Cancel",
     "contract.dialog.create": "Create",
     "contract.dialog.update": "Save",
