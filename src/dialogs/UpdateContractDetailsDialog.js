@@ -114,14 +114,15 @@ class CreateContractDetailsDialog extends Component {
     }
 
     render() {
-        const { intl, classes, contract } = this.props;
+        const { intl, classes, contract, disabled } = this.props;
         const { open, contractDetails } = this.state;
         return (
             <Fragment>
                 <Tooltip title={formatMessage(intl, "contract", "editButton.tooltip")}>
                     <div>
                         <IconButton
-                            onClick={this.handleOpen}>
+                            onClick={this.handleOpen}
+                            disabled={disabled}>
                             <EditIcon/>
                         </IconButton>
                     </div>

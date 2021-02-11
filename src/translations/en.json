@@ -59,8 +59,10 @@
     "contract.dialog.create": "Create",
     "contract.dialog.update": "Save",
     "contract.CreateContractDetails.mutationLabel": "Create Contract Detail {insuree} - {contributionPlanBundle} for {contract}",
-    "contract.UpdateContractDetails.mutationLabel": "Update Contract Detail {insuree} - {contributionPlanBundle} for {contract}",
     "contract.contractDetails.editContractDetails": "Edit Contract Details",
     "contract.contractDetails.editContractDetails.confirm.title": "Save changes in Contract Details?",
-    "contract.contractDetails.editContractDetails.confirm.message": "Are you sure you want to save changes for {insuree} - {contributionPlanBundle}?"
+    "contract.contractDetails.editContractDetails.confirm.message": "Are you sure you want to save changes for {insuree} - {contributionPlanBundle}?",
+    "contract.UpdateContractDetails.mutationLabel": "Update Contract Detail {insuree} - {contributionPlanBundle} for {contract}",
+    "contract.contractDetails.deleteContractDetails.confirm.message": "Are you sure you want to delete {insuree} - {contributionPlanBundle}?",
+    "contract.DeleteContractDetails.mutationLabel": "Delete Contract Detail {insuree} - {contributionPlanBundle} for {contract}"
 }

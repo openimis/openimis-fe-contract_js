@@ -1,9 +1,12 @@
 import React, { Component, Fragment } from "react"
 import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessageWithValues, Searcher, PublishedComponent, decodeId } from "@openimis/fe-core";
-import { fetchContractDetails } from "../actions"
+import { withModulesManager, formatMessage, formatMessageWithValues, Searcher, PublishedComponent,
+    decodeId, withTooltip, coreConfirm } from "@openimis/fe-core";
+import { fetchContractDetails, deleteContractDetails } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { IconButton } from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
 import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
 import ContractDetailsFilter from "../components/ContractDetailsFilter";
 import UpdateContractDetailsDialog from "../dialogs/UpdateContractDetailsDialog";
@@ -14,12 +17,18 @@ class ContractDetailsSearcher extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            toDelete: null,
+            deleted: [],
             queryParams: null
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.reset !== this.props.reset) {
+        if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
+            this.state.confirmedAction();
+        } else if (prevState.toDelete !== this.state.toDelete) {
+            this.setState(state => ({ deleted: state.deleted.concat(state.toDelete) }));
+        } else if (prevState.deleted !== this.state.deleted || prevProps.reset !== this.props.reset) {
             this.refetch();
         }
     }
@@ -53,6 +62,7 @@ class ContractDetailsSearcher extends Component {
         "contract.insuree",
         "contract.contributionPlanBundle",
         "contract.calculation",
+        "contract.emptyLabel",
         "contract.emptyLabel"
     ];
 
@@ -79,9 +89,57 @@ class ContractDetailsSearcher extends Component {
                 contract={this.props.contract}
                 contractDetails={contractDetails}
                 onSave={this.props.onSave}
+                disabled={this.state.deleted.includes(contractDetails.id)}
             />
+        ),
+        contractDetails => withTooltip(
+            <div>
+                <IconButton
+                    onClick={() => this.onDelete(contractDetails)}
+                    disabled={this.state.deleted.includes(contractDetails.id)}>
+                    <DeleteIcon/>
+                </IconButton>
+            </div>,
+            formatMessage(this.props.intl, "contract", "deleteButton.tooltip")
         )
     ];
+
+    onDelete = contractDetails => {
+        const { intl, contract, coreConfirm, deleteContractDetails } = this.props;
+        let confirm = () => coreConfirm(
+            formatMessageWithValues(
+                intl,
+                "contract",
+                "contractDetails.deleteContractDetails.confirm.message",
+                {
+                    insuree: decodeId(contractDetails.insuree.id),
+                    contributionPlanBundle: contractDetails.contributionPlanBundle.code
+                }),
+            formatMessage(intl, "contract", "deleteContract.confirm.message")
+        );
+        let confirmedAction = () => {
+            deleteContractDetails(
+                contractDetails,
+                formatMessageWithValues(
+                    intl,
+                    "contract",
+                    "DeleteContractDetails.mutationLabel",
+                    {
+                        insuree: decodeId(contractDetails.insuree.id),
+                        contributionPlanBundle: contractDetails.contributionPlanBundle.code,
+                        contract: contract.code
+                    }
+                )
+            );
+            this.setState({ toDelete: contractDetails.id });
+        }
+        this.setState(
+            { confirmedAction },
+            confirm
+        )
+    }
+
+    isRowDisabled = (_, contractDetails) => this.state.deleted.includes(contractDetails.id);
 
     sorts = () => {
         return [
@@ -137,11 +195,12 @@ const mapStateToProps = state => ({
     errorContractDetails: state.contract.errorContractDetails,
     contractDetails: state.contract.contractDetails,
     contractDetailsPageInfo: state.contract.contractDetailsPageInfo,
-    contractDetailsTotalCount: state.contract.contractDetailsTotalCount
+    contractDetailsTotalCount: state.contract.contractDetailsTotalCount,
+    confirmed: state.core.confirmed
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchContractDetails }, dispatch);
+    return bindActionCreators({ fetchContractDetails, deleteContractDetails, coreConfirm }, dispatch);
 };
 
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContractDetailsSearcher)));
