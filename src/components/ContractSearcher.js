@@ -138,7 +138,7 @@ class ContractSearcher extends Component {
         const { intl, coreConfirm, deleteContract } = this.props;
         let confirm = () => coreConfirm(
             formatMessageWithValues(intl, "contract", "deleteContract.confirm.title", { label: contract.code }),
-            formatMessageWithValues(intl, "contract", "deleteContract.confirm.message", { label: contract.code })
+            formatMessage(intl, "contract", "deleteContract.confirm.message")
         );
         let confirmedAction = () => {
             deleteContract(

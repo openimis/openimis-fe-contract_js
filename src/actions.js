@@ -138,3 +138,18 @@ export function updateContractDetails(contractDetails, clientMutationLabel) {
         }
     );
 }
+
+export function deleteContractDetails(contractDetails, clientMutationLabel, clientMutationDetails = null) {
+    let contractDetailsUuids = `uuids: ["${decodeId(contractDetails.id)}"]`;
+    let mutation = formatMutation("deleteContractDetails", contractDetailsUuids, clientMutationLabel, clientMutationDetails);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRACT_MUTATION_REQ", "CONTRACT_DELETE_CONTRACTDETAILS_RESP", "CONTRACT_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
