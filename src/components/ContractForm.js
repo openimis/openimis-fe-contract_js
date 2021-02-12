@@ -105,8 +105,14 @@ class ContractForm extends Component {
         } else return null;
     }
 
+    fabAction = () => {
+        if (this.isUpdatable()) {
+            return this.props.submit;
+        } else return () => null;
+    }
+
     render() {
-        const { intl, rights, classes, contract, back } = this.props;
+        const { intl, rights, classes, contract, back, setConfirmedAction } = this.props;
         return (
             <Fragment>
                 <Form
@@ -130,8 +136,9 @@ class ContractForm extends Component {
                     readOnlyFields={this.state.readOnlyFields}
                     fab={!!this.state.contract.id && this.fab()}
                     fabTooltip={this.fabTooltip()}
-                    fabAction={() => null}
+                    fabAction={this.fabAction()}
                     reset={this.state.reset}
+                    setConfirmedAction={setConfirmedAction}
                 />
                 {this.isApprovable() && !!this.fab() && (
                     <Tooltip title={formatMessage(intl, "contract", "counterButton.tooltip")} placement="left">

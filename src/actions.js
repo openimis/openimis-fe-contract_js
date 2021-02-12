@@ -111,6 +111,21 @@ export function deleteContract(contract, clientMutationLabel, clientMutationDeta
     );
 }
 
+export function submitContract(contract, clientMutationLabel) {
+    let contractId = `id: "${decodeId(contract.id)}"`; 
+    let mutation = formatMutation("submitContract", contractId, clientMutationLabel);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRACT_MUTATION_REQ", "CONTRACT_SUBMIT_CONTRACT_RESP", "CONTRACT_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
 export function createContractDetails(contractDetails, clientMutationLabel) {
     let mutation = formatMutation("createContractDetails", formatContractDetailsGQL(contractDetails), clientMutationLabel);
     var requestedDateTime = new Date();
