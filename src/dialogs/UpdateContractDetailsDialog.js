@@ -30,8 +30,6 @@ class CreateContractDetailsDialog extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevState.contractDetails !== this.state.contractDetails && prevState.contractDetails.insuree !== this.state.contractDetails.insuree) {
             this.setPolicyHolderContributionPlanBundle();
-        } else if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
-            this.state.confirmedAction();
         }
     }
 
@@ -50,7 +48,7 @@ class CreateContractDetailsDialog extends Component {
     };
 
     handleSave = () => {
-        const { intl, contract, coreConfirm, onSave, updateContractDetails } = this.props;
+        const { intl, contract, coreConfirm, onSave, updateContractDetails, setConfirmedAction } = this.props;
         const { contractDetails } = this.state;
         let confirm = () => coreConfirm(
             formatMessage(intl, "contract", "contractDetails.editContractDetails.confirm.title"),
@@ -80,10 +78,7 @@ class CreateContractDetailsDialog extends Component {
             this.handleClose();
             onSave();
         }
-        this.setState(
-            { confirmedAction },
-            confirm
-        )
+        setConfirmedAction(confirm, confirmedAction);
     };
 
     updateAttribute = (attribute, value) => {
@@ -178,8 +173,7 @@ class CreateContractDetailsDialog extends Component {
 }
 
 const mapStateToProps = state => ({
-    pickerPolicyHolderInsurees: state.policyHolder.pickerPolicyHolderInsurees,
-    confirmed: state.core.confirmed
+    pickerPolicyHolderInsurees: state.policyHolder.pickerPolicyHolderInsurees
 });
 
 const mapDispatchToProps = dispatch => {

@@ -24,9 +24,7 @@ class ContractDetailsSearcher extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
-            this.state.confirmedAction();
-        } else if (prevState.toDelete !== this.state.toDelete) {
+        if (prevState.toDelete !== this.state.toDelete) {
             this.setState(state => ({ deleted: state.deleted.concat(state.toDelete) }));
         } else if (prevState.deleted !== this.state.deleted || prevProps.reset !== this.props.reset) {
             this.refetch();
@@ -90,6 +88,7 @@ class ContractDetailsSearcher extends Component {
                 contractDetails={contractDetails}
                 onSave={this.props.onSave}
                 disabled={this.state.deleted.includes(contractDetails.id)}
+                setConfirmedAction={this.props.setConfirmedAction}
             />
         ),
         contractDetails => withTooltip(
@@ -105,7 +104,7 @@ class ContractDetailsSearcher extends Component {
     ];
 
     onDelete = contractDetails => {
-        const { intl, contract, coreConfirm, deleteContractDetails } = this.props;
+        const { intl, contract, coreConfirm, deleteContractDetails, setConfirmedAction } = this.props;
         let confirm = () => coreConfirm(
             formatMessageWithValues(
                 intl,
@@ -133,10 +132,7 @@ class ContractDetailsSearcher extends Component {
             );
             this.setState({ toDelete: contractDetails.id });
         }
-        this.setState(
-            { confirmedAction },
-            confirm
-        )
+        setConfirmedAction(confirm, confirmedAction);
     }
 
     isRowDisabled = (_, contractDetails) => this.state.deleted.includes(contractDetails.id);
@@ -195,8 +191,7 @@ const mapStateToProps = state => ({
     errorContractDetails: state.contract.errorContractDetails,
     contractDetails: state.contract.contractDetails,
     contractDetailsPageInfo: state.contract.contractDetailsPageInfo,
-    contractDetailsTotalCount: state.contract.contractDetailsTotalCount,
-    confirmed: state.core.confirmed
+    contractDetailsTotalCount: state.contract.contractDetailsTotalCount
 });
 
 const mapDispatchToProps = dispatch => {
