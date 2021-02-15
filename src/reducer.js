@@ -111,6 +111,8 @@ function reducer(
             return dispatchMutationResp(state, "deleteContract", action);
         case "CONTRACT_SUBMIT_CONTRACT_RESP":
             return dispatchMutationResp(state, "submitContract", action);
+        case "CONTRACT_APPROVE_CONTRACT_RESP":
+            return dispatchMutationResp(state, "approveContract", action);
         case "CONTRACT_CREATE_CONTRACTDETAILS_RESP":
             return dispatchMutationResp(state, "createContractDetails", action);
         case "CONTRACT_UPDATE_CONTRACTDETAILS_RESP":
