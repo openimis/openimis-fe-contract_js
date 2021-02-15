@@ -37,7 +37,7 @@ class ContractDetailsTabPanel extends Component {
     }
 
     render() {
-        const { rights, value, isTabsEnabled, contract, setConfirmedAction } = this.props;
+        const { rights, value, isTabsEnabled, contract, setConfirmedAction, isUpdatable, isApprovable } = this.props;
         return (
             (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE) || rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) &&
                 <PublishedComponent
@@ -68,6 +68,8 @@ class ContractDetailsTabPanel extends Component {
                                 reset={this.state.reset}
                                 onSave={this.onSave}
                                 setConfirmedAction={setConfirmedAction}
+                                isUpdatable={isUpdatable}
+                                isApprovable={isApprovable}
                             />
                         </Fragment>
                     ) : (
