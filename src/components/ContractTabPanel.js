@@ -39,7 +39,7 @@ class ContractTabPanel extends FormPanel {
     handleChange = (_, value) => this.setState({ value });
 
     render() {
-        const { intl, rights, classes, edited, mandatoryFieldsEmpty, setConfirmedAction } = this.props;
+        const { intl, rights, classes, edited, mandatoryFieldsEmpty, setConfirmedAction, isUpdatable, isApprovable } = this.props;
         const { value } = this.state;
         const isTabsEnabled = !!edited && !!edited.id && !mandatoryFieldsEmpty;
         return (
@@ -63,6 +63,8 @@ class ContractTabPanel extends FormPanel {
                     isTabsEnabled={isTabsEnabled}
                     contract={edited}
                     setConfirmedAction={setConfirmedAction}
+                    isUpdatable={isUpdatable}
+                    isApprovable={isApprovable}
                 />
             </Paper>
         )
