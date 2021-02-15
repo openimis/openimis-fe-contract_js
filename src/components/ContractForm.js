@@ -11,7 +11,8 @@ import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import ContractHeadPanel from "./ContractHeadPanel";
-import { UPDATABLE_STATES, APPROVABLE_STATES, TERMINATED_STATE } from "../constants"
+import { UPDATABLE_STATES, APPROVABLE_STATES, TERMINATED_STATE, RIGHT_POLICYHOLDERCONTRACT_SUBMIT,
+    RIGHT_POLICYHOLDERCONTRACT_APPROVE, RIGHT_POLICYHOLDERCONTRACT_AMEND } from "../constants"
 import ContractTabPanel from "./ContractTabPanel";
 
 const styles = theme => ({
@@ -30,7 +31,8 @@ class ContractForm extends Component {
         this.state = {
             contract: {},
             reset: 0,
-            readOnlyFields: ['amountNotified', 'amountRectified', 'amountDue', 'state', 'amendment']
+            readOnlyFields: ['amountNotified', 'amountRectified', 'amountDue', 'state', 'amendment'],
+            isDirty: false
         };
         this.updatableStates = props.modulesManager.getConf("fe-contract", "contractForm.updatable", UPDATABLE_STATES);
         this.approvableStates = props.modulesManager.getConf("fe-contract", "contractForm.approvable", APPROVABLE_STATES);
@@ -71,7 +73,7 @@ class ContractForm extends Component {
 
     save = contract => this.props.save(contract, this.state.readOnlyFields);
 
-    onEditedChanged = contract => this.setState({ contract })
+    onEditedChanged = contract => this.setState({ contract, isDirty: true })
 
     titleParams = () => this.props.titleParams(this.state.contract);
 
@@ -86,21 +88,23 @@ class ContractForm extends Component {
     setReadOnlyFields = readOnlyFields => this.setState({ readOnlyFields });
 
     fab = () => {
-        if (this.isUpdatable()) {
+        const { rights } = this.props;
+        if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_SUBMIT) && this.isUpdatable()) {
             return <OpenInBrowserIcon/>;
-        } else if (this.isApprovable()) {
+        } else if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable()) {
             return <CheckIcon/>;
-        } else if (!this.isUpdatable() && !this.isApprovable() && !this.isTerminated()) {
+        } else if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_AMEND) && !this.isUpdatable() && !this.isApprovable() && !this.isTerminated()) {
             return <NoteAddIcon/>;
         } else return null;
     }
 
     fabTooltip = () => {
-        if (this.isUpdatable()) {
+        const { rights } = this.props;
+        if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_SUBMIT) && this.isUpdatable()) {
             return formatMessage(this.props.intl, "contract", "submitButton.tooltip");
-        } else if (this.isApprovable()) {
+        } else if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable()) {
             return formatMessage(this.props.intl, "contract", "approveButton.tooltip");
-        } else if (!this.isUpdatable() && !this.isApprovable() && !this.isTerminated()) {
+        } else if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_AMEND) && !this.isUpdatable() && !this.isApprovable() && !this.isTerminated()) {
             return formatMessage(this.props.intl, "contract", "amendButton.tooltip");
         } else return null;
     }
@@ -114,7 +118,7 @@ class ContractForm extends Component {
     }
 
     render() {
-        const { intl, rights, classes, contract, back, setConfirmedAction } = this.props;
+        const { intl, rights, classes, contract, back, setConfirmedAction, counter } = this.props;
         return (
             <Fragment>
                 <Form
@@ -142,10 +146,10 @@ class ContractForm extends Component {
                     reset={this.state.reset}
                     setConfirmedAction={setConfirmedAction}
                 />
-                {this.isApprovable() && !!this.fab() && (
+                {rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable() && !this.state.isDirty && (
                     <Tooltip title={formatMessage(intl, "contract", "counterButton.tooltip")} placement="left">
                         <div className={classes.counterFab}>
-                            <Fab color="primary" size="small">
+                            <Fab color="primary" size="small" onClick={() => counter(this.state.contract)}>
                                 <CloseIcon/>
                             </Fab>
                         </div>

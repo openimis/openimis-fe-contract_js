@@ -4,7 +4,7 @@ import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { createContract, updateContract, submitContract, approveContract } from "../actions"
+import { createContract, updateContract, submitContract, approveContract, counterContract } from "../actions"
 import { RIGHT_POLICYHOLDERCONTRACT_CREATE, RIGHT_POLICYHOLDERCONTRACT_UPDATE, RIGHT_POLICYHOLDERCONTRACT_APPROVE } from "../constants"
 import ContractForm from "../components/ContractForm";
 
@@ -54,14 +54,10 @@ class ContractPage extends Component {
         this.setConfirmedAction(confirm, confirmedAction);
     }
 
-    submit = contract => this.action(contract, this.props.submitContract, "submitContract");
-
-    approve = contract => this.action(contract, this.props.approveContract, "approveContract");
-
     titleParams = contract => ({ label: !!contract.code ? contract.code : null });
 
     render() {
-        const { classes, rights, contractId } = this.props;
+        const { classes, rights, contractId, submitContract, approveContract, counterContract } = this.props;
         return (
             rights.includes(RIGHT_POLICYHOLDERCONTRACT_CREATE) && (
                 rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE)  || rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) && (
@@ -70,8 +66,9 @@ class ContractPage extends Component {
                         contractId={contractId}
                         back={this.back}
                         save={this.save}
-                        submit={this.submit}
-                        approve={this.approve}
+                        submit={contract => this.action(contract, submitContract, "submitContract")}
+                        approve={contract => this.action(contract, approveContract, "approveContract")}
+                        counter={contract => this.action(contract, counterContract, "counterContract")}
                         titleParams={this.titleParams}
                         rights={rights}
                         setConfirmedAction={this.setConfirmedAction}
@@ -89,7 +86,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ createContract, updateContract, submitContract, approveContract, coreConfirm }, dispatch);
+    return bindActionCreators({ createContract, updateContract, submitContract, approveContract, counterContract, coreConfirm }, dispatch);
 };
 
 export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ContractPage))))));
