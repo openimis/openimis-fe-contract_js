@@ -108,6 +108,8 @@ class ContractForm extends Component {
     fabAction = () => {
         if (this.isUpdatable()) {
             return this.props.submit;
+        } else if (this.isApprovable()) {
+            return this.props.approve;
         } else return () => null;
     }
 

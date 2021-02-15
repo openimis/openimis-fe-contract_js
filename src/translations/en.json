@@ -69,5 +69,8 @@
     "contract.DeleteContractDetails.mutationLabel": "Delete Contract Detail {insuree} - {contributionPlanBundle} for {contract}",
     "contract.submitContract.confirm.title": "Submit Contract?",
     "contract.submitContract.confirm.message": "Are you sure you want to submit Contract {label}?",
-    "contract.SubmitContract.mutationLabel": "Submit Contract {label}"
+    "contract.submitContract.mutationLabel": "Submit Contract {label}",
+    "contract.approveContract.confirm.title": "Approve Contract?",
+    "contract.approveContract.confirm.message": "Are you sure you want to approve Contract {label}?",
+    "contract.approveContract.mutationLabel": "Approve Contract {label}"
 }
