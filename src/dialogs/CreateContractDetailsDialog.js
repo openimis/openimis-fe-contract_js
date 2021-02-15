@@ -101,14 +101,15 @@ class CreateContractDetailsDialog extends Component {
     }
 
     render() {
-        const { intl, classes, contract } = this.props;
+        const { intl, classes, contract, disabled } = this.props;
         const { open, contractDetails } = this.state;
         return (
             <Fragment>
                 <Fab
                     size="small"
                     color="primary"
-                    onClick={this.handleOpen}>
+                    onClick={this.handleOpen}
+                    disabled={disabled}>
                     <AddIcon/>
                 </Fab>
                 <Dialog open={open} onClose={this.handleClose}>

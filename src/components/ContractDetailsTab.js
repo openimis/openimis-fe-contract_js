@@ -36,8 +36,18 @@ class ContractDetailsTabPanel extends Component {
         }));
     }
 
+    isActionEnabled = () => {
+        const { rights, isUpdatable, isApprovable } = this.props;
+        if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) {
+            return isUpdatable || isApprovable;
+        } else if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE)) {
+            return isUpdatable;
+        }
+        return false;
+    }
+
     render() {
-        const { rights, value, isTabsEnabled, contract, setConfirmedAction, isUpdatable, isApprovable } = this.props;
+        const { rights, value, isTabsEnabled, contract, setConfirmedAction } = this.props;
         return (
             (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE) || rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) &&
                 <PublishedComponent
@@ -59,6 +69,7 @@ class ContractDetailsTabPanel extends Component {
                                         contract={contract}
                                         onSave={this.onSave}
                                         setConfirmedAction={setConfirmedAction}
+                                        disabled={!this.isActionEnabled()}
                                     />
                                 </Grid>
                             </Grid>
@@ -68,8 +79,7 @@ class ContractDetailsTabPanel extends Component {
                                 reset={this.state.reset}
                                 onSave={this.onSave}
                                 setConfirmedAction={setConfirmedAction}
-                                isUpdatable={isUpdatable}
-                                isApprovable={isApprovable}
+                                isActionEnabled={this.isActionEnabled()}
                             />
                         </Fragment>
                     ) : (

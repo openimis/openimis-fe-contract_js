@@ -7,7 +7,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
-import { DEFAULT_PAGE_SIZE, RIGHT_POLICYHOLDERCONTRACT_APPROVE, RIGHT_POLICYHOLDERCONTRACT_UPDATE, ROWS_PER_PAGE_OPTIONS } from "../constants"
+import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
 import ContractDetailsFilter from "../components/ContractDetailsFilter";
 import UpdateContractDetailsDialog from "../dialogs/UpdateContractDetailsDialog";
 
@@ -87,7 +87,7 @@ class ContractDetailsSearcher extends Component {
                 contract={this.props.contract}
                 contractDetails={contractDetails}
                 onSave={this.props.onSave}
-                disabled={this.state.deleted.includes(contractDetails.id) || !this.isActionEnabled()}
+                disabled={this.state.deleted.includes(contractDetails.id) || !this.props.isActionEnabled}
                 setConfirmedAction={this.props.setConfirmedAction}
             />
         ),
@@ -95,7 +95,7 @@ class ContractDetailsSearcher extends Component {
             <div>
                 <IconButton
                     onClick={() => this.onDelete(contractDetails)}
-                    disabled={this.state.deleted.includes(contractDetails.id) || !this.isActionEnabled()}>
+                    disabled={this.state.deleted.includes(contractDetails.id) || !this.props.isActionEnabled}>
                     <DeleteIcon/>
                 </IconButton>
             </div>,
@@ -133,16 +133,6 @@ class ContractDetailsSearcher extends Component {
             this.setState({ toDelete: contractDetails.id });
         }
         setConfirmedAction(confirm, confirmedAction);
-    }
-
-    isActionEnabled = () => {
-        const { rights, isUpdatable, isApprovable } = this.props;
-        if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) {
-            return isUpdatable || isApprovable;
-        } else if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE)) {
-            return isUpdatable;
-        }
-        return false;
     }
 
     isRowDisabled = (_, contractDetails) => this.state.deleted.includes(contractDetails.id);
