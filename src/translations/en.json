@@ -75,5 +75,8 @@
     "contract.approveContract.mutationLabel": "Approve Contract {label}",
     "contract.counterContract.confirm.title": "Counter Contract?",
     "contract.counterContract.confirm.message": "Are you sure you want to counter Contract {label}?",
-    "contract.counterContract.mutationLabel": "Counter Contract {label}"
+    "contract.counterContract.mutationLabel": "Counter Contract {label}",
+    "contract.amendContract.confirm.title": "Amend Contract?",
+    "contract.amendContract.confirm.message": "Are you sure you want to amend Contract {label}?",
+    "contract.amendContract.mutationLabel": "Amendment n°{amendment} of {contract}"
 }

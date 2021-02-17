@@ -115,6 +115,8 @@ function reducer(
             return dispatchMutationResp(state, "approveContract", action);
         case "CONTRACT_COUNTER_CONTRACT_RESP":
             return dispatchMutationResp(state, "counterContract", action);
+        case "CONTRACT_AMEND_CONTRACT_RESP":
+            return dispatchMutationResp(state, "amendContract", action);
         case "CONTRACT_CREATE_CONTRACTDETAILS_RESP":
             return dispatchMutationResp(state, "createContractDetails", action);
         case "CONTRACT_UPDATE_CONTRACTDETAILS_RESP":

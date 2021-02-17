@@ -4,15 +4,24 @@ import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { createContract, updateContract, submitContract, approveContract, counterContract } from "../actions"
+import { createContract, updateContract, submitContract, approveContract, counterContract, amendContract } from "../actions"
 import { RIGHT_POLICYHOLDERCONTRACT_CREATE, RIGHT_POLICYHOLDERCONTRACT_UPDATE, RIGHT_POLICYHOLDERCONTRACT_APPROVE } from "../constants"
 import ContractForm from "../components/ContractForm";
+
+const AMENDMENT_INCREMENT = 1;
 
 const styles = theme => ({
     page: theme.page
 });
 
 class ContractPage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            amendConfirmed: false
+        }
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
             this.state.confirmedAction();
@@ -54,6 +63,27 @@ class ContractPage extends Component {
         this.setConfirmedAction(confirm, confirmedAction);
     }
 
+    amend = contract => {
+        const { intl, coreConfirm, amendContract } = this.props;
+        let confirm = () => coreConfirm(
+            formatMessage(intl, "contract", "amendContract.confirm.title"),
+            formatMessageWithValues(intl, "contract", "amendContract.confirm.message", this.titleParams(contract))
+        );
+        let confirmedAction = () => {
+            amendContract(
+                contract,
+                formatMessageWithValues(intl, "contract", "amendContract.mutationLabel", { 
+                    amendment: contract.amendment + AMENDMENT_INCREMENT,
+                    contract: contract.code
+                })
+            );
+            this.toggleAmendConfirmed();
+        }
+        this.setConfirmedAction(confirm, confirmedAction);
+    }
+
+    toggleAmendConfirmed = () => this.setState(state => ({ amendConfirmed: !state.amendConfirmed }));
+
     titleParams = contract => ({ label: !!contract.code ? contract.code : null });
 
     render() {
@@ -69,9 +99,12 @@ class ContractPage extends Component {
                         submit={contract => this.action(contract, submitContract, "submitContract")}
                         approve={contract => this.action(contract, approveContract, "approveContract")}
                         counter={contract => this.action(contract, counterContract, "counterContract")}
+                        amend={contract => this.amend(contract)}
                         titleParams={this.titleParams}
                         rights={rights}
                         setConfirmedAction={this.setConfirmedAction}
+                        amendConfirmed={this.state.amendConfirmed}
+                        toggleAmendConfirmed={this.toggleAmendConfirmed}
                     />
                 </div>
             )
@@ -86,7 +119,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ createContract, updateContract, submitContract, approveContract, counterContract, coreConfirm }, dispatch);
+    return bindActionCreators({ createContract, updateContract, submitContract, approveContract, counterContract, amendContract, coreConfirm }, dispatch);
 };
 
 export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ContractPage))))));
