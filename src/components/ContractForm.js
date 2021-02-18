@@ -12,7 +12,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import ContractHeadPanel from "./ContractHeadPanel";
 import { UPDATABLE_STATES, APPROVABLE_STATES, TERMINATED_STATE, RIGHT_POLICYHOLDERCONTRACT_SUBMIT,
-    RIGHT_POLICYHOLDERCONTRACT_APPROVE, RIGHT_POLICYHOLDERCONTRACT_AMEND } from "../constants"
+    RIGHT_POLICYHOLDERCONTRACT_APPROVE, RIGHT_POLICYHOLDERCONTRACT_AMEND, MIN_AMENDMENT_VALUE } from "../constants"
 import ContractTabPanel from "./ContractTabPanel";
 
 const styles = theme => ({
@@ -51,13 +51,14 @@ class ContractForm extends Component {
                 (state, props) => ({ contract: props.contract, reset: state.reset + 1 }),
                 () => document.title = formatMessageWithValues(this.props.intl, "contract", "page.title", this.titleParams())
             );
-        }
-        if (prevProps.submittingMutation && !this.props.submittingMutation) {
+        } else if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);
-            this.props.fetchContract(
-                this.props.modulesManager,
-                !!this.state.contract.id ? [`id: "${decodeId(this.state.contract.id)}"`] : [`clientMutationId: "${this.props.mutation.clientMutationId}"`]
-            );
+            if (!!this.state.contract.id && !this.props.amendConfirmed) {
+                this.props.fetchContract(this.props.modulesManager, [`id: "${decodeId(this.state.contract.id)}"`]);
+            } else {
+                this.props.fetchContract(this.props.modulesManager, [`clientMutationId: "${this.props.mutation.clientMutationId}"`]);
+                this.props.toggleAmendConfirmed();
+            }
         }
     }
 
@@ -87,6 +88,8 @@ class ContractForm extends Component {
 
     setReadOnlyFields = readOnlyFields => this.setState({ readOnlyFields });
 
+    isAmendment = () => !!this.state.contract.amendment && this.state.contract.amendment > MIN_AMENDMENT_VALUE;
+
     fab = () => {
         const { rights } = this.props;
         if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_SUBMIT) && this.isUpdatable()) {
@@ -99,12 +102,11 @@ class ContractForm extends Component {
     }
 
     fabTooltip = () => {
-        const { rights } = this.props;
-        if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_SUBMIT) && this.isUpdatable()) {
+        if (this.isUpdatable()) {
             return formatMessage(this.props.intl, "contract", "submitButton.tooltip");
-        } else if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable()) {
+        } else if (this.isApprovable()) {
             return formatMessage(this.props.intl, "contract", "approveButton.tooltip");
-        } else if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_AMEND) && !this.isUpdatable() && !this.isApprovable() && !this.isTerminated()) {
+        } else if (!this.isUpdatable() && !this.isApprovable() && !this.isTerminated()) {
             return formatMessage(this.props.intl, "contract", "amendButton.tooltip");
         } else return null;
     }
@@ -114,6 +116,8 @@ class ContractForm extends Component {
             return this.props.submit;
         } else if (this.isApprovable()) {
             return this.props.approve;
+        } else if (!this.isUpdatable() && !this.isApprovable() && !this.isTerminated()) {
+            return this.props.amend;
         } else return () => null;
     }
 
@@ -145,6 +149,7 @@ class ContractForm extends Component {
                     fabAction={this.fabAction()}
                     reset={this.state.reset}
                     setConfirmedAction={setConfirmedAction}
+                    isAmendment={this.isAmendment()}
                 />
                 {rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable() && !this.state.isDirty && (
                     <Tooltip title={formatMessage(intl, "contract", "counterButton.tooltip")} placement="left">

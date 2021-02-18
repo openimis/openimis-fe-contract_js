@@ -57,7 +57,7 @@ class ContractHeadPanel extends FormPanel {
     }
 
     render() {
-        const { intl, classes, edited, mandatoryFieldsEmpty, readOnlyFields } = this.props;
+        const { intl, classes, edited, mandatoryFieldsEmpty, readOnlyFields, isAmendment } = this.props;
         return (
             <Fragment>
                 <Grid container className={classes.tableTitle}>
@@ -89,7 +89,7 @@ class ContractHeadPanel extends FormPanel {
                             inputProps={{ maxLength: MAX_CODE_LENGTH }}
                             value={!!edited && !!edited.code ? edited.code : ""}
                             onChange={v => this.updateAttribute('code', v)}
-                            readOnly={readOnlyFields.includes('code')}
+                            readOnly={readOnlyFields.includes('code') || isAmendment}
                         />
                     </Grid>
                     <Grid item xs={2} className={classes.item}>
@@ -100,7 +100,7 @@ class ContractHeadPanel extends FormPanel {
                             nullLabel={formatMessage(intl, "contract", "emptyLabel")}
                             value={!!edited && !!edited.policyHolder && edited.policyHolder}
                             onChange={v => this.updateAttribute('policyHolder', v)}
-                            readOnly={readOnlyFields.includes('policyHolder')}
+                            readOnly={readOnlyFields.includes('policyHolder') || isAmendment}
                         />
                     </Grid>
                     <Grid item xs={2} className={classes.item}>
@@ -189,7 +189,7 @@ class ContractHeadPanel extends FormPanel {
                             required
                             value={!!edited && !!edited.dateValidFrom && edited.dateValidFrom}
                             onChange={v => this.updateAttribute('dateValidFrom', v)}
-                            readOnly={readOnlyFields.includes('dateValidFrom')}
+                            readOnly={readOnlyFields.includes('dateValidFrom') || isAmendment}
                         />
                     </Grid>
                     <Grid item xs={2} className={classes.item}>
