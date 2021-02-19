@@ -78,5 +78,12 @@
     "contract.counterContract.mutationLabel": "Counter Contract {label}",
     "contract.amendContract.confirm.title": "Amend Contract?",
     "contract.amendContract.confirm.message": "Are you sure you want to amend Contract {label}?",
-    "contract.amendContract.mutationLabel": "Amendment n°{amendment} of {contract}"
+    "contract.amendContract.mutationLabel": "Amendment n°{amendment} of {contract}",
+    "contract.contracts.selection.count": "{count} Contract(s) Selected",
+    "contract.approveSelected": "Approve selected",
+    "contract.approveAll": "Approve all",
+    "contract.approveContractBulk.mutationLabel": "Approve {count} Contract(s)",
+    "contract.approveContractBulk.confirm.title": "Approve Contracts?",
+    "contract.approveContractBulk.confirm.message.unapprovableEmpty": "Are you sure you want to approve {contracts} Contract(s)?",
+    "contract.approveContractBulk.confirm.message.unapprovableNotEmpty": "Only {approvableContracts} out of {contracts} Contracts can be approved. Are you sure you want to continue?"
 }
