@@ -11,6 +11,10 @@ function reducer(
         contracts: [],
         contractsPageInfo: {},
         contractsTotalCount: 0,
+        fetchingContractsBulk: false,
+        fetchedContractsBulk: false,
+        contractsBulk: [],
+        errorContractsBulk: null,
         fetchingContract: false,
         fetchedContract: false,
         contract: {},
@@ -50,6 +54,28 @@ function reducer(
                 ...state,
                 fetchingContracts: false,
                 errorContracts: formatServerError(action.payload)
+            };
+        case "CONTRACT_CONTRACTS_BULK_REQ":
+            return {
+                ...state,
+                fetchingContractsBulk: true,
+                fetchedContractsBulk: false,
+                contractsBulk: [],
+                errorContractsBulk: null
+            };
+        case "CONTRACT_CONTRACTS_BULK_RESP":
+            return {
+                ...state,
+                fetchingContractsBulk: false,
+                fetchedContractsBulk: true,
+                contractsBulk: parseData(action.payload.data.contract),
+                errorContractsBulk: formatGraphQLError(action.payload)
+            };
+        case "CONTRACT_CONTRACTS_BULK_ERR":
+            return {
+                ...state,
+                fetchingContractsBulk: false,
+                errorContractsBulk: formatServerError(action.payload)
             };
         case "CONTRACT_CONTRACT_REQ":
             return {
@@ -113,6 +139,8 @@ function reducer(
             return dispatchMutationResp(state, "submitContract", action);
         case "CONTRACT_APPROVE_CONTRACT_RESP":
             return dispatchMutationResp(state, "approveContract", action);
+        case "CONTRACT_APPROVE_CONTRACT_BULK_RESP":
+            return dispatchMutationResp(state, "approveBulkContract", action);
         case "CONTRACT_COUNTER_CONTRACT_RESP":
             return dispatchMutationResp(state, "counterContract", action);
         case "CONTRACT_AMEND_CONTRACT_RESP":

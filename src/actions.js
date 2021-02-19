@@ -2,13 +2,15 @@ import {
     graphql, formatPageQuery, formatPageQueryWithCount, decodeId, formatMutation, formatGQLString
 } from "@openimis/fe-core";
 
-const CONTRACT_FULL_PROJECTION = modulesManager =>  [
+const CONTRACT_FULL_PROJECTION = modulesManager => [
     "id", "code", "amountNotified", "amountRectified", "amountDue", "dateApproved", "datePaymentDue",
     "state", "paymentReference", "amendment", "dateValidFrom", "dateValidTo", "isDeleted",
     "policyHolder" + modulesManager.getProjection("policyHolder.PolicyHolderPicker.projection")
 ];
 
-const CONTRACTDETAILS_FULL_PROJECTION = modulesManager =>  [
+const CONTRACT_BULK_PROJECTION = () => ["id", "code", "state"];
+
+const CONTRACTDETAILS_FULL_PROJECTION = modulesManager => [
     "id", "jsonExt",
     "insuree" + modulesManager.getProjection("insuree.InsureePicker.projection"),
     "contributionPlanBundle" + modulesManager.getProjection("contributionPlan.ContributionPlanBundlePicker.projection")
@@ -25,6 +27,15 @@ export function fetchContracts(modulesManager, params) {
         CONTRACT_FULL_PROJECTION(modulesManager)
     );
     return graphql(payload, "CONTRACT_CONTRACTS");
+}
+
+export function fetchContractsForBulkActions(params) {
+    const payload = formatPageQuery(
+        "contract",
+        params,
+        CONTRACT_BULK_PROJECTION()
+    );
+    return graphql(payload, "CONTRACT_CONTRACTS_BULK");
 }
 
 export function fetchContract(modulesManager, params) {
@@ -136,6 +147,23 @@ export function approveContract(contract, clientMutationLabel) {
         {
             clientMutationId: mutation.clientMutationId,
             clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
+export function approveContractBulk(contracts, clientMutationLabel, clientMutationDetails = null) {
+    let contractUuids = `contractUuids: ["${contracts.map(contract => decodeId(contract.id)).join("\",\"")}"]`; 
+    let mutation = formatMutation("approveBulkContract", contractUuids, clientMutationLabel, clientMutationDetails);
+    var requestedDateTime = new Date();
+    contracts.forEach(contract => contract.clientMutationId = mutation.clientMutationId);
+    return graphql(
+        mutation.payload,
+        ["CONTRACT_MUTATION_REQ", "CONTRACT_APPROVE_CONTRACT_BULK_RESP", "CONTRACT_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            clientMutationDetails: !!clientMutationDetails ? JSON.stringify(clientMutationDetails) : null,
             requestedDateTime
         }
     );
