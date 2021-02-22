@@ -4,7 +4,8 @@ import { withModulesManager, formatMessage, formatMessageWithValues, Searcher, f
     withTooltip, coreConfirm, journalize } from "@openimis/fe-core";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { fetchContracts, fetchContractsForBulkActions, deleteContract, approveContractBulk } from "../actions"
+import { fetchContracts, fetchContractsForBulkActions, deleteContract, approveContractBulk,
+    counterContractBulk } from "../actions"
 import { IconButton } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -171,48 +172,51 @@ class ContractSearcher extends Component {
 
     rowIdentifier = contract => contract.id;
 
-    isApproveSelectedEnabled = selection => !!selection && selection.length > 0
+    isBulkActionOnSelectedEnabled = selection => !!selection && selection.length > 0
         && !!selection.filter(contract => this.approvableStates.includes(contract.state)).length;
 
-    isApproveAllEnabled = selection => !!selection && selection.length === 0
+    isBulkActionOnAllEnabled = selection => !!selection && selection.length === 0
         && !!this.props.contractsBulk.filter(contract => this.approvableStates.includes(contract.state)).length;
 
-    approve = selection => {
-        const { intl, contractsBulk, coreConfirm, approveContractBulk } = this.props;
+    approveBulk = selection => this.bulkAction(selection, this.props.approveContractBulk, "approveContractBulk");
+
+    counterBulk = selection => this.bulkAction(selection, this.props.counterContractBulk, "counterContractBulk");
+
+    bulkAction = (selection, action, label) => {
+        const { intl, contractsBulk, coreConfirm } = this.props;
         const contracts = selection.length > 0 ? selection : contractsBulk;
         const approvableContracts = contracts.filter(contract => this.approvableStates.includes(contract.state));
         if (approvableContracts.length > 0) {
             const confirm = () => coreConfirm(
-                formatMessage(intl, "contract", "approveContractBulk.confirm.title"),
+                formatMessage(intl, "contract", `${label}.confirm.title`),
                 contracts.length !== approvableContracts.length
                     ? formatMessageWithValues(
                         intl,
                         "contract",
-                        "approveContractBulk.confirm.message.unapprovableNotEmpty",
+                        `${label}.confirm.message.unapprovableNotEmpty`,
                         { approvableContracts: approvableContracts.length, contracts: contracts.length }
                     ) : formatMessageWithValues(
                         intl,
                         "contract",
-                        "approveContractBulk.confirm.message.unapprovableEmpty", { contracts: approvableContracts.length }
+                        `${label}.confirm.message.unapprovableEmpty`, { contracts: approvableContracts.length }
                     )
             );
-            const confirmedAction = () => approveContractBulk(
+            const confirmedAction = () => action(
                 approvableContracts,
-                formatMessageWithValues(intl, "contract", "approveContractBulk.mutationLabel", { count: approvableContracts.length }),
+                formatMessageWithValues(intl, "contract", `${label}.mutationLabel`, { count: approvableContracts.length }),
                 approvableContracts.map(contract => contract.code)
             );
             this.setState({ confirmedAction }, confirm);
         }
     }
 
-    actions = () => {
-        const actions = [];
-        if (this.props.rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) {
-            actions.push({ label: "contract.approveSelected", enabled: this.isApproveSelectedEnabled, action: this.approve });
-            actions.push({ label: "contract.approveAll", enabled: this.isApproveAllEnabled, action: this.approve });
-        }
-        return actions;
-    }
+    actions = () => this.props.rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)
+        ? [
+            { label: "contract.approveSelected", enabled: this.isBulkActionOnSelectedEnabled, action: this.approveBulk },
+            { label: "contract.approveAll", enabled: this.isBulkActionOnAllEnabled, action: this.approveBulk },
+            { label: "contract.counterSelected", enabled: this.isBulkActionOnSelectedEnabled, action: this.counterBulk },
+            { label: "contract.counterAll", enabled: this.isBulkActionOnAllEnabled, action: this.counterBulk }
+        ] : [];
 
     sorts = () => [
         ['code', true],
@@ -274,7 +278,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchContracts, fetchContractsForBulkActions, deleteContract, approveContractBulk,
-        coreConfirm, journalize }, dispatch);
+        counterContractBulk, coreConfirm, journalize }, dispatch);
 };
 
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContractSearcher)));
