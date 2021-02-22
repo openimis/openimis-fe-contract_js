@@ -184,6 +184,23 @@ export function counterContract(contract, clientMutationLabel) {
     );
 }
 
+export function counterContractBulk(contracts, clientMutationLabel, clientMutationDetails = null) {
+    let contractUuids = `contractUuids: ["${contracts.map(contract => decodeId(contract.id)).join("\",\"")}"]`; 
+    let mutation = formatMutation("counterBulkContract", contractUuids, clientMutationLabel, clientMutationDetails);
+    var requestedDateTime = new Date();
+    contracts.forEach(contract => contract.clientMutationId = mutation.clientMutationId);
+    return graphql(
+        mutation.payload,
+        ["CONTRACT_MUTATION_REQ", "CONTRACT_COUNTER_CONTRACT_BULK_RESP", "CONTRACT_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            clientMutationDetails: !!clientMutationDetails ? JSON.stringify(clientMutationDetails) : null,
+            requestedDateTime
+        }
+    );
+}
+
 export function amendContract(contract, clientMutationLabel) {
     let contractId = `id: "${decodeId(contract.id)}"`; 
     let mutation = formatMutation("amendContract", contractId, clientMutationLabel);

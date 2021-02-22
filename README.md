@@ -22,12 +22,19 @@ None
 
 ## Dispatched Redux Actions
 * `CONTRACT_CONTRACTS_{REQ|RESP|ERR}`, fetching Contracts (as triggered by the searcher)
+* `CONTRACT_CONTRACTS_BULK_{REQ|RESP|ERR}`, fetching Contracts for bulk actions (approve, counter)
 * `CONTRACT_CONTRACT_{REQ|RESP|ERR}`, fetching Contract
 * `CONTRACT_CONTRACTDETAILS_{REQ|RESP|ERR}`, fetching Contract Details (as triggered by the searcher)
 * `CONTRACT_MUTATION_{REQ|ERR}`, sending a mutation
 * `CONTRACT_CREATE_CONTRACT_RESP`, receiving a result of create Contract mutation
 * `CONTRACT_UPDATE_CONTRACT_RESP`, receiving a result of update Contract mutation
 * `CONTRACT_DELETE_CONTRACT_RESP`, receiving a result of delete Contract mutation
+* `CONTRACT_SUBMIT_CONTRACT_RESP`, receiving a result of submit Contract mutation
+* `CONTRACT_APPROVE_CONTRACT_RESP`, receiving a result of approve Contract mutation
+* `CONTRACT_APPROVE_CONTRACT_BULK_RESP`, receiving a result of approve Contract bulk mutation
+* `CONTRACT_COUNTER_CONTRACT_RESP`, receiving a result of counter Contract mutation
+* `CONTRACT_COUNTER_CONTRACT_BULK_RESP`, receiving a result of counter Contract bulk mutation
+* `CONTRACT_AMEND_CONTRACT_RESP`, receiving a result of amend Contract mutation
 * `CONTRACT_CREATE_CONTRACTDETAILS_RESP`, receiving a result of create Contract Details mutation
 * `CONTRACT_UPDATE_CONTRACTDETAILS_RESP`, receiving a result of update Contract Details mutation
 * `CONTRACT_DELETE_CONTRACTDETAILS_RESP`, receiving a result of delete Contract Details mutation
@@ -40,6 +47,8 @@ None
 * `state.policyHolder`, retrieving Policy Holder to fetch corresponding Policy Holder Contribution Plan Bundles and Policy Holder Insurees
 
 ## Configurations Options
+* `contractForm.updatable`: list of states of an updatable Contract (Default: [1,2,11])
+* `contractForm.approvable`: list of states of an approvable Contract (Default: [4])
 * `contractFilter.contractStateOptions`: options for ContractStatePicker component (Default:
     ```json
     [{

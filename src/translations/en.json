@@ -85,5 +85,11 @@
     "contract.approveContractBulk.mutationLabel": "Approve {count} Contract(s)",
     "contract.approveContractBulk.confirm.title": "Approve Contracts?",
     "contract.approveContractBulk.confirm.message.unapprovableEmpty": "Are you sure you want to approve {contracts} Contract(s)?",
-    "contract.approveContractBulk.confirm.message.unapprovableNotEmpty": "Only {approvableContracts} out of {contracts} Contracts can be approved. Are you sure you want to continue?"
+    "contract.approveContractBulk.confirm.message.unapprovableNotEmpty": "Only {approvableContracts} out of {contracts} Contracts can be approved. Are you sure you want to continue?",
+    "contract.counterSelected": "Counter selected",
+    "contract.counterAll": "Counter all",
+    "contract.counterContractBulk.mutationLabel": "Counter {count} Contract(s)",
+    "contract.counterContractBulk.confirm.title": "Counter Contracts?",
+    "contract.counterContractBulk.confirm.message.unapprovableEmpty": "Are you sure you want to counter {contracts} Contract(s)?",
+    "contract.counterContractBulk.confirm.message.unapprovableNotEmpty": "Only {approvableContracts} out of {contracts} Contracts can be countered. Are you sure you want to continue?"
 }
