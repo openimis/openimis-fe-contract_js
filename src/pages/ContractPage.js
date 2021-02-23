@@ -30,9 +30,7 @@ class ContractPage extends Component {
 
     setConfirmedAction = (confirm, confirmedAction) => this.setState({ confirmedAction }, confirm);
 
-    back = () => {
-        historyPush(this.props.modulesManager, this.props.history, "contract.route.contracts")
-    }
+    back = () => this.props.history.goBack();
 
     save = (contract, readOnlyFields) => {
         const { intl, createContract, updateContract } = this.props;

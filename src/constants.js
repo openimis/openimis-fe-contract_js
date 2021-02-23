@@ -23,3 +23,4 @@ export const UPDATABLE_STATES = [1,2,11]
 export const APPROVABLE_STATES = [4]
 export const TERMINATED_STATE = 10
 export const CONTRACTDETAILS_TAB_VALUE = "contractDetailsTab"
+export const CONTRACTS_TAB_VALUE = "contractsTab"

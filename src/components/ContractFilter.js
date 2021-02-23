@@ -16,6 +16,15 @@ const styles = theme => ({
 });
 
 class ContractFilter extends Component {
+    componentDidMount() {
+        /**
+         * @see FilterExt prop can pass @see PolicyHolder entity
+         * to disable filtering by @see PolicyHolder if only @see Contract entities
+         * with a specific @see PolicyHolder assigned are to be displayed
+         */
+        this.isFilteredByDefaultPolicyHolder = !!this.props.FilterExt && !!this.props.FilterExt.id;
+    }
+
     _filterValue = k => {
         const { filters } = this.props;
         return !!filters[k] ? filters[k].value : null
@@ -63,20 +72,22 @@ class ContractFilter extends Component {
                         onChange={v => this._onChangeStringFilter('code', v, CONTAINS_LOOKUP)}
                     />
                 </Grid>
-                <Grid item xs={2} className={classes.item}>
-                    <PublishedComponent
-                        pubRef="policyHolder.PolicyHolderPicker"
-                        module="contract"
-                        withNull
-                        nullLabel={formatMessage(intl, "contract", "any")}
-                        value={this._filterValue('policyHolder_Id')}
-                        onChange={v => onChangeFilters([{
-                            id: 'policyHolder_Id',
-                            value: v,
-                            filter: `policyHolder_Id: "${!!v && decodeId(v.id)}"`
-                        }])}
-                    />
-                </Grid>
+                {!this.isFilteredByDefaultPolicyHolder && (
+                    <Grid item xs={2} className={classes.item}>
+                        <PublishedComponent
+                            pubRef="policyHolder.PolicyHolderPicker"
+                            module="contract"
+                            withNull
+                            nullLabel={formatMessage(intl, "contract", "any")}
+                            value={this._filterValue('policyHolder_Id')}
+                            onChange={v => onChangeFilters([{
+                                id: 'policyHolder_Id',
+                                value: v,
+                                filter: `policyHolder_Id: "${!!v && decodeId(v.id)}"`
+                            }])}
+                        />
+                    </Grid>
+                )}
                 <Grid item xs={2} className={classes.item}>
                     <NumberInput
                         module="contract"

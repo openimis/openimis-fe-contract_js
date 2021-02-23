@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react"
 import { injectIntl } from 'react-intl';
 import { withModulesManager, formatMessage, formatMessageWithValues, Searcher, formatDateFromISO,
-    withTooltip, coreConfirm, journalize } from "@openimis/fe-core";
+    withTooltip, coreConfirm, journalize, decodeId } from "@openimis/fe-core";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { fetchContracts, fetchContractsForBulkActions, deleteContract, approveContractBulk,
@@ -122,7 +122,6 @@ class ContractSearcher extends Component {
                     <div>
                         <IconButton
                             href={contractPageLink(contract)}
-                            onClick={e => e.stopPropagation() && onDoubleClick(contract)}
                             disabled={this.state.deleted.includes(contract.id)}>
                             <EditIcon/>
                         </IconButton>
@@ -228,6 +227,13 @@ class ContractSearcher extends Component {
         ['amendment', true]
     ];
 
+    defaultFilters = () => !!this.props.policyHolder && {
+        policyHolder_Id: {
+            value: decodeId(this.props.policyHolder.id),
+            filter: `policyHolder_Id: "${decodeId(this.props.policyHolder.id)}"`
+        }
+    };
+
     render() {
         const { intl, fetchingContracts, fetchedContracts, errorContracts, contracts,
             contractsPageInfo, contractsTotalCount, onDoubleClick } = this.props;
@@ -257,6 +263,8 @@ class ContractSearcher extends Component {
                     rowIdentifier={this.rowIdentifier}
                     selectionMessage="contract.contracts.selection.count"
                     actions={this.actions()}
+                    defaultFilters={this.defaultFilters()}
+                    FilterExt={this.props.policyHolder}
                 />
             </Fragment>
         )

@@ -8,6 +8,7 @@ import { FormattedMessage } from "@openimis/fe-core";
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import { RIGHT_POLICYHOLDERCONTRACT_SEARCH } from "./constants"
 import { ContractDetailsTabLabel, ContractDetailsTabPanel } from "./components/ContractDetailsTab";
+import { ContractsTabLabel, ContractsTabPanel } from "./components/ContractsTab";
 
 const ROUTE_CONTRACTS = "contracts";
 const ROUTE_CONTRACT = "contracts/contract";
@@ -35,7 +36,9 @@ const DEFAULT_CONFIG = {
         }
     ],
     "contract.TabPanel.label": [ContractDetailsTabLabel],
-    "contract.TabPanel.panel": [ContractDetailsTabPanel]
+    "contract.TabPanel.panel": [ContractDetailsTabPanel],
+    "policyHolder.TabPanel.label": [ContractsTabLabel],
+    "policyHolder.TabPanel.panel": [ContractsTabPanel]
 }
 
 export const ContractModule = (cfg) => {
