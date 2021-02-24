@@ -29,10 +29,13 @@ class ContractForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            contract: {},
+            contract: {
+                policyHolder: !!props.predefinedPolicyHolder ? props.predefinedPolicyHolder : null
+            },
             reset: 0,
             readOnlyFields: ['amountNotified', 'amountRectified', 'amountDue', 'state', 'amendment'],
-            isDirty: false
+            isDirty: false,
+            createMutationId: null
         };
         this.updatableStates = props.modulesManager.getConf("fe-contract", "contractForm.updatable", UPDATABLE_STATES);
         this.approvableStates = props.modulesManager.getConf("fe-contract", "contractForm.approvable", APPROVABLE_STATES);
@@ -48,16 +51,19 @@ class ContractForm extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.fetchedContract !== this.props.fetchedContract && !!this.props.fetchedContract) {
             this.setState(
-                (state, props) => ({ contract: props.contract, reset: state.reset + 1 }),
+                (state, props) => ({ contract: props.contract, reset: state.reset + 1, isDirty: false }),
                 () => document.title = formatMessageWithValues(this.props.intl, "contract", "page.title", this.titleParams())
             );
         } else if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);
             if (!!this.state.contract.id && !this.props.amendConfirmed) {
                 this.props.fetchContract(this.props.modulesManager, [`id: "${decodeId(this.state.contract.id)}"`]);
+            } else if (!!this.state.createMutationId) {
+                this.props.fetchContract(this.props.modulesManager, [`clientMutationId: "${this.state.createMutationId}"`]);
+                this.props.toggleAmendConfirmed();
             } else {
                 this.props.fetchContract(this.props.modulesManager, [`clientMutationId: "${this.props.mutation.clientMutationId}"`]);
-                this.props.toggleAmendConfirmed();
+                this.setState((_, props) => ({ createMutationId: props.mutation.clientMutationId }));
             }
         }
     }
@@ -122,7 +128,7 @@ class ContractForm extends Component {
     }
 
     render() {
-        const { intl, rights, classes, contract, back, setConfirmedAction, counter } = this.props;
+        const { intl, rights, classes, contract, back, setConfirmedAction, counter, predefinedPolicyHolder } = this.props;
         return (
             <Fragment>
                 <Form
@@ -150,6 +156,7 @@ class ContractForm extends Component {
                     reset={this.state.reset}
                     setConfirmedAction={setConfirmedAction}
                     isAmendment={this.isAmendment()}
+                    isPolicyHolderPredefined={!!predefinedPolicyHolder}
                 />
                 {rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable() && !this.state.isDirty && (
                     <Tooltip title={formatMessage(intl, "contract", "counterButton.tooltip")} placement="left">

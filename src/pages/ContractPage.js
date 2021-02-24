@@ -20,12 +20,26 @@ class ContractPage extends Component {
         this.state = {
             amendConfirmed: false
         }
+        this.predefinedPolicyHolder = !!this.props.location.state
+            ? this.getPolicyHolderPickerValue(this.props.location.state.policyHolder)
+            : null;
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
             this.state.confirmedAction();
         }
+    }
+
+    getPolicyHolderPickerValue = policyHolder => {
+        const policyHolderPickerValue = {};
+        const policyHolderPickerProjection = this.props.modulesManager.getRef("policyHolder.PolicyHolderPicker.projection");
+        if (!!policyHolderPickerProjection) {
+            policyHolderPickerProjection.forEach(key => {
+                policyHolderPickerValue[key] = policyHolder[key]
+            });
+        }
+        return policyHolderPickerValue;
     }
 
     setConfirmedAction = (confirm, confirmedAction) => this.setState({ confirmedAction }, confirm);
@@ -103,6 +117,7 @@ class ContractPage extends Component {
                         setConfirmedAction={this.setConfirmedAction}
                         amendConfirmed={this.state.amendConfirmed}
                         toggleAmendConfirmed={this.toggleAmendConfirmed}
+                        predefinedPolicyHolder={this.predefinedPolicyHolder}
                     />
                 </div>
             )

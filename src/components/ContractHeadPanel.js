@@ -57,7 +57,7 @@ class ContractHeadPanel extends FormPanel {
     }
 
     render() {
-        const { intl, classes, edited, mandatoryFieldsEmpty, readOnlyFields, isAmendment } = this.props;
+        const { intl, classes, edited, mandatoryFieldsEmpty, readOnlyFields, isAmendment, isPolicyHolderPredefined } = this.props;
         return (
             <Fragment>
                 <Grid container className={classes.tableTitle}>
@@ -100,7 +100,7 @@ class ContractHeadPanel extends FormPanel {
                             nullLabel={formatMessage(intl, "contract", "emptyLabel")}
                             value={!!edited && !!edited.policyHolder && edited.policyHolder}
                             onChange={v => this.updateAttribute('policyHolder', v)}
-                            readOnly={readOnlyFields.includes('policyHolder') || isAmendment}
+                            readOnly={readOnlyFields.includes('policyHolder') || isAmendment || isPolicyHolderPredefined}
                         />
                     </Grid>
                     <Grid item xs={2} className={classes.item}>
@@ -187,6 +187,7 @@ class ContractHeadPanel extends FormPanel {
                             module="contract"
                             label="dateValidFrom"
                             required
+                            maxDate={!!edited && !!edited.dateValidTo && edited.dateValidTo}
                             value={!!edited && !!edited.dateValidFrom && edited.dateValidFrom}
                             onChange={v => this.updateAttribute('dateValidFrom', v)}
                             readOnly={readOnlyFields.includes('dateValidFrom') || isAmendment}
@@ -198,6 +199,7 @@ class ContractHeadPanel extends FormPanel {
                             module="contract"
                             label="dateValidTo"
                             required
+                            minDate={!!edited && !!edited.dateValidFrom && edited.dateValidFrom}
                             value={!!edited && !!edited.dateValidTo && edited.dateValidTo}
                             onChange={v => this.updateAttribute('dateValidTo', v)}
                             readOnly={readOnlyFields.includes('dateValidTo')}

@@ -5,6 +5,7 @@ import { PublishedComponent, FormattedMessage, withModulesManager, formatMessage
 import AddIcon from '@material-ui/icons/Add';
 import { RIGHT_POLICYHOLDERCONTRACT_UPDATE, RIGHT_POLICYHOLDERCONTRACT_APPROVE, CONTRACTS_TAB_VALUE } from "../constants"
 import ContractSearcher from "./ContractSearcher";
+import { Link } from 'react-router-dom';
 
 class ContractsTabLabel extends Component {
     render() {
@@ -24,8 +25,6 @@ class ContractsTabLabel extends Component {
 }
 
 class RawContractsTabPanel extends Component {
-    onAdd = () => historyPush(this.props.modulesManager, this.props.history, "contract.route.contract");
-
     contractPageLink = contract =>
         `${process.env.PUBLIC_URL || ""}${"/" + this.props.modulesManager.getRef("contract.route.contract")}${"/" + decodeId(contract.id)}`;
 
@@ -50,9 +49,16 @@ class RawContractsTabPanel extends Component {
                                     </Typography>
                                 </Grid>
                                 <Grid item>
-                                    <Fab size="small" color="primary" onClick={this.onAdd}>
-                                        <AddIcon />
-                                    </Fab>
+                                    <Link to={{
+                                        pathname: `${process.env.PUBLIC_URL || ""}${"/" + this.props.modulesManager.getRef("contract.route.contract")}`,
+                                        state: {
+                                            policyHolder: policyHolder
+                                        }
+                                    }}>
+                                        <Fab size="small" color="primary">
+                                            <AddIcon/>
+                                        </Fab>
+                                    </Link>
                                 </Grid>
                             </Grid>
                             <ContractSearcher
