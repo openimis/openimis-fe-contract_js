@@ -9,6 +9,7 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import { RIGHT_POLICYHOLDERCONTRACT_SEARCH } from "./constants"
 import { ContractDetailsTabLabel, ContractDetailsTabPanel } from "./components/ContractDetailsTab";
 import { ContractsTabLabel, ContractsTabPanel } from "./components/ContractsTab";
+import { ContractContributionDetailsTabLabel, ContractContributionDetailsTabPanel } from "./components/ContractContributionDetailsTab";
 
 const ROUTE_CONTRACTS = "contracts";
 const ROUTE_CONTRACT = "contracts/contract";
@@ -35,8 +36,8 @@ const DEFAULT_CONFIG = {
             filter: rights => rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH)
         }
     ],
-    "contract.TabPanel.label": [ContractDetailsTabLabel],
-    "contract.TabPanel.panel": [ContractDetailsTabPanel],
+    "contract.TabPanel.label": [ContractDetailsTabLabel, ContractContributionDetailsTabLabel],
+    "contract.TabPanel.panel": [ContractDetailsTabPanel, ContractContributionDetailsTabPanel],
     "policyHolder.TabPanel.label": [ContractsTabLabel],
     "policyHolder.TabPanel.panel": [ContractsTabPanel]
 }

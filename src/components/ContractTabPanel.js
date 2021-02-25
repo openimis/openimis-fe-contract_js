@@ -54,6 +54,8 @@ class ContractTabPanel extends FormPanel {
                         isSelected={this.isSelected}
                         tabStyle={this.tabStyle}
                         disabled={!isTabsEnabled}
+                        isUpdatable={isUpdatable}
+                        isApprovable={isApprovable}
                     />
                 </Grid>
                 <Contributions

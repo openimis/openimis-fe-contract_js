@@ -24,3 +24,4 @@ export const APPROVABLE_STATES = [4]
 export const TERMINATED_STATE = 10
 export const CONTRACTDETAILS_TAB_VALUE = "contractDetailsTab"
 export const CONTRACTS_TAB_VALUE = "contractsTab"
+export const CONTRACTCONTRIBUTIONDETAILS_TAB_VALUE = "contractContributionDetailsTab"
