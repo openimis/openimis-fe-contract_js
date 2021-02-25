@@ -16,6 +16,12 @@ const CONTRACTDETAILS_FULL_PROJECTION = modulesManager => [
     "contributionPlanBundle" + modulesManager.getProjection("contributionPlan.ContributionPlanBundlePicker.projection")
 ];
 
+const CONTRACTCONTRIBUTIONDETAILS_FULL_PROJECTION = modulesManager => [
+    "jsonExt",
+    "contractDetails" + `{${CONTRACTDETAILS_FULL_PROJECTION(modulesManager)}}`,
+    "contributionPlan" + modulesManager.getProjection("contributionPlan.ContributionPlanPicker.projection")
+];
+
 function dateTimeToDate(date) {
     return date.split('T')[0];
 }
@@ -54,6 +60,15 @@ export function fetchContractDetails(modulesManager, params) {
         CONTRACTDETAILS_FULL_PROJECTION(modulesManager)
     );
     return graphql(payload, "CONTRACT_CONTRACTDETAILS");
+}
+
+export function fetchContractContributionDetails(modulesManager, params) {
+    const payload = formatPageQueryWithCount(
+        "contractContributionPlanDetails",
+        params,
+        CONTRACTCONTRIBUTIONDETAILS_FULL_PROJECTION(modulesManager)
+    );
+    return graphql(payload, "CONTRACT_CONTRACTCONTRIBUTIONDETAILS");
 }
 
 function formatContractGQL(contract, readOnlyFields = []) {

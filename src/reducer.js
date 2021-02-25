@@ -24,7 +24,13 @@ function reducer(
         fetchedContractDetails: false,
         contractDetails: [],
         contractDetailsPageInfo: {},
-        contractDetailsTotalCount: 0
+        contractDetailsTotalCount: 0,
+        fetchingContractContributionDetails: false,
+        errorContractContributionDetails: null,
+        fetchedContractContributionDetails: false,
+        contractContributionDetails: [],
+        contractContributionDetailsPageInfo: {},
+        contractContributionDetailsTotalCount: 0
     },
     action
 ) {
@@ -122,8 +128,34 @@ function reducer(
         case "CONTRACT_CONTRACTDETAILS_ERR":
             return {
                 ...state,
-                fetchingContracts: false,
-                errorContracts: formatServerError(action.payload)
+                fetchingContractDetails: false,
+                errorContractDetails: formatServerError(action.payload)
+            };
+        case "CONTRACT_CONTRACTCONTRIBUTIONDETAILS_REQ":
+            return {
+                ...state,
+                fetchingContractContributionDetails: true,
+                fetchedContractContributionDetails: false,
+                contractContributionDetails: [],
+                contractContributionDetailsPageInfo: {},
+                contractContributionDetailsTotalCount: 0,
+                errorContractContributionDetails: null
+            };
+        case "CONTRACT_CONTRACTCONTRIBUTIONDETAILS_RESP":
+            return {
+                ...state,
+                fetchingContractContributionDetails: false,
+                fetchedContractContributionDetails: true,
+                contractContributionDetails: parseData(action.payload.data.contractContributionPlanDetails),
+                contractContributionDetailsPageInfo: pageInfo(action.payload.data.contractContributionPlanDetails),
+                contractContributionDetailsTotalCount: !!action.payload.data.contractContributionPlanDetails ? action.payload.data.contractContributionPlanDetails.totalCount : null,
+                errorContractContributionDetails: formatGraphQLError(action.payload)
+            };
+        case "CONTRACT_CONTRACTCONTRIBUTIONDETAILS_ERR":
+            return {
+                ...state,
+                fetchingContractContributionDetails: false,
+                errorContractContributionDetails: formatServerError(action.payload)
             };
         case "CONTRACT_MUTATION_REQ":
             return dispatchMutationReq(state, action);
