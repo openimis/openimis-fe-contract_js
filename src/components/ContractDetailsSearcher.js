@@ -1,13 +1,27 @@
-import React, { Component, Fragment } from "react"
-import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessage, formatMessageWithValues, Searcher, PublishedComponent,
-    decodeId, withTooltip, coreConfirm } from "@openimis/fe-core";
-import { fetchContractDetails, deleteContractDetails } from "../actions"
+import React, { Component, Fragment } from "react";
+import { injectIntl } from "react-intl";
+import {
+    withModulesManager,
+    formatMessage,
+    formatMessageWithValues,
+    Searcher,
+    PublishedComponent,
+    decodeId,
+    withTooltip,
+    coreConfirm,
+    Contributions
+} from "@openimis/fe-core";
+import { fetchContractDetails, deleteContractDetails } from "../actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { IconButton } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
-import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
+import DeleteIcon from "@material-ui/icons/Delete";
+import {
+    DEFAULT_PAGE_SIZE,
+    ROWS_PER_PAGE_OPTIONS,
+    CONTRACTDETAILS_CALCULATION_CONTRIBUTION_KEY,
+    CONTRACTDETAILS_CLASSNAME
+} from "../constants";
 import ContractDetailsFilter from "../components/ContractDetailsFilter";
 import UpdateContractDetailsDialog from "../dialogs/UpdateContractDetailsDialog";
 
@@ -81,7 +95,15 @@ class ContractDetailsSearcher extends Component {
                 policyHolderId={!!this.props.contract.policyHolder && decodeId(this.props.contract.policyHolder.id)}
                 readOnly/>
             : "",
-        contractDetails => !!contractDetails.jsonExt ? contractDetails.jsonExt : "",
+        contractDetails => !!contractDetails.jsonExt
+            ? <Contributions
+                contributionKey={CONTRACTDETAILS_CALCULATION_CONTRIBUTION_KEY}
+                intl={this.props.intl}
+                className={CONTRACTDETAILS_CLASSNAME}
+                entity={contractDetails}
+                value={contractDetails.jsonExt}
+                readOnly/>
+            : "",
         contractDetails => (
             <UpdateContractDetailsDialog
                 contract={this.props.contract}
