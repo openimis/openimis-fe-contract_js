@@ -25,3 +25,7 @@ export const TERMINATED_STATE = 10
 export const CONTRACTDETAILS_TAB_VALUE = "contractDetailsTab"
 export const CONTRACTS_TAB_VALUE = "contractsTab"
 export const CONTRACTCONTRIBUTIONDETAILS_TAB_VALUE = "contractContributionDetailsTab"
+export const CONTRACTDETAILS_CALCULATION_CONTRIBUTION_KEY = "contract.ContractDetails.calculation"
+export const CONTRACTDETAILS_CLASSNAME = "ContractDetails"
+export const RIGHT_CALCULATION_WRITE = "write"
+export const RIGHT_CALCULATION_UPDATE = "update"

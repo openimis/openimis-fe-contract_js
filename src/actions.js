@@ -11,7 +11,7 @@ const CONTRACT_FULL_PROJECTION = modulesManager => [
 const CONTRACT_BULK_PROJECTION = () => ["id", "code", "state"];
 
 const CONTRACTDETAILS_FULL_PROJECTION = modulesManager => [
-    "id", "jsonExt",
+    "id", "jsonExt", "contract{id}", 
     "insuree" + modulesManager.getProjection("insuree.InsureePicker.projection"),
     "contributionPlanBundle" + modulesManager.getProjection("contributionPlan.ContributionPlanBundlePicker.projection")
 ];

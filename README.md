@@ -16,6 +16,7 @@ None
 ## Available Contribution Points
 * `contract.TabPanel.label` ability to extend Contract tab panel with a label
 * `contract.TabPanel.panel` ability to extend Contract tab panel with a panel displayed on click on an appropriate label
+* `contract.ContractDetails.calculation` placeholder for `Calculation` module contributions
 
 ## Published Components
 None

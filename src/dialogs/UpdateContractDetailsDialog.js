@@ -1,18 +1,30 @@
-import React, { Component, Fragment } from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import EditIcon from '@material-ui/icons/Edit';
-import { FormattedMessage, formatMessage, formatMessageWithValues, PublishedComponent,
-    TextInput, decodeId, coreConfirm } from "@openimis/fe-core";
+import React, { Component, Fragment } from "react";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import EditIcon from "@material-ui/icons/Edit";
+import {
+    FormattedMessage,
+    formatMessage,
+    formatMessageWithValues,
+    PublishedComponent,
+    decodeId,
+    coreConfirm,
+    Contributions
+} from "@openimis/fe-core";
 import { Grid, IconButton, Tooltip } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { updateContractDetails } from "../actions";
-import { injectIntl } from 'react-intl';
+import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import {
+    CONTRACTDETAILS_CALCULATION_CONTRIBUTION_KEY,
+    CONTRACTDETAILS_CLASSNAME,
+    RIGHT_CALCULATION_UPDATE
+} from "../constants";
 
 const styles = theme => ({
     item: theme.paper.item
@@ -148,14 +160,16 @@ class CreateContractDetailsDialog extends Component {
                                     readOnly
                                 />
                             </Grid>
-                            <Grid item className={classes.item}>
-                                <TextInput
-                                    module="contract"
-                                    label="calculation"
-                                    value={!!contractDetails.jsonExt && contractDetails.jsonExt}
-                                    onChange={v => this.updateAttribute('jsonExt', v)}
-                                />
-                            </Grid>
+                            <Contributions
+                                contributionKey={CONTRACTDETAILS_CALCULATION_CONTRIBUTION_KEY}
+                                intl={intl}
+                                className={CONTRACTDETAILS_CLASSNAME}
+                                entity={contractDetails}
+                                requiredRights={[RIGHT_CALCULATION_UPDATE]}
+                                value={!!contractDetails.jsonExt && contractDetails.jsonExt}
+                                onChange={this.updateAttribute}
+                                gridItemStyle={classes.item}
+                            />
                         </Grid>
                     </DialogContent>
                     <DialogActions>
