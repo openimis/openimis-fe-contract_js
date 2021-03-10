@@ -29,3 +29,4 @@ export const CONTRACTDETAILS_CALCULATION_CONTRIBUTION_KEY = "contract.ContractDe
 export const CONTRACTDETAILS_CLASSNAME = "ContractDetails"
 export const RIGHT_CALCULATION_WRITE = "write"
 export const RIGHT_CALCULATION_UPDATE = "update"
+export const QUERY_STRING_POLICYHOLDER = "ph"

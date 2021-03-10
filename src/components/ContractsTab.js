@@ -1,11 +1,23 @@
 import React, { Component, Fragment } from "react";
 import { Tab, Grid, Typography, Fab } from "@material-ui/core";
-import { PublishedComponent, FormattedMessage, withModulesManager, formatMessage,
-    historyPush, decodeId, withHistory } from "@openimis/fe-core";
-import AddIcon from '@material-ui/icons/Add';
-import { RIGHT_POLICYHOLDERCONTRACT_UPDATE, RIGHT_POLICYHOLDERCONTRACT_APPROVE, CONTRACTS_TAB_VALUE } from "../constants"
+import {
+    PublishedComponent,
+    FormattedMessage,
+    withModulesManager,
+    formatMessage,
+    historyPush,
+    decodeId,
+    withHistory
+} from "@openimis/fe-core";
+import AddIcon from "@material-ui/icons/Add";
+import {
+    RIGHT_POLICYHOLDERCONTRACT_CREATE,
+    RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+    RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+    CONTRACTS_TAB_VALUE,
+    QUERY_STRING_POLICYHOLDER
+} from "../constants";
 import ContractSearcher from "./ContractSearcher";
-import { Link } from 'react-router-dom';
 
 class ContractsTabLabel extends Component {
     render() {
@@ -25,8 +37,15 @@ class ContractsTabLabel extends Component {
 }
 
 class RawContractsTabPanel extends Component {
-    contractPageLink = contract =>
-        `${process.env.PUBLIC_URL || ""}${"/" + this.props.modulesManager.getRef("contract.route.contract")}${"/" + decodeId(contract.id)}`;
+    contractCreatePageUrl = () =>
+        `${process.env.PUBLIC_URL || ""}/${this.props.modulesManager.getRef("contract.route.contract")}`;
+
+    contractUpdatePageUrl = (contract) => `${this.contractCreatePageUrl()}/${decodeId(contract.id)}`;
+
+    onCreateButtonClick = () => {
+        const { history, policyHolder } = this.props;
+        history.push(`${this.contractCreatePageUrl()}?${QUERY_STRING_POLICYHOLDER}=${decodeId(policyHolder.id)}`);
+    };
 
     onDoubleClick = (contract, newTab = false) => {
         const { rights, modulesManager, history } = this.props;
@@ -38,8 +57,14 @@ class RawContractsTabPanel extends Component {
     render() {
         const { rights, value, isTabsEnabled, policyHolder } = this.props;
         return (
-            (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE) || rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) && (
-                <PublishedComponent pubRef="policyHolder.TabPanel" module="contract" index={CONTRACTS_TAB_VALUE} value={value}>
+            (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE) ||
+                rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) && (
+                <PublishedComponent
+                    pubRef="policyHolder.TabPanel"
+                    module="contract"
+                    index={CONTRACTS_TAB_VALUE}
+                    value={value}
+                >
                     {isTabsEnabled && (
                         <Fragment>
                             <Grid container justify="flex-end" alignItems="center" spacing={1}>
@@ -49,21 +74,19 @@ class RawContractsTabPanel extends Component {
                                     </Typography>
                                 </Grid>
                                 <Grid item>
-                                    <Link to={{
-                                        pathname: `${process.env.PUBLIC_URL || ""}${"/" + this.props.modulesManager.getRef("contract.route.contract")}`,
-                                        state: {
-                                            policyHolder: policyHolder
-                                        }
-                                    }}>
-                                        <Fab size="small" color="primary">
-                                            <AddIcon/>
-                                        </Fab>
-                                    </Link>
+                                    <Fab
+                                        size="small"
+                                        color="primary"
+                                        onClick={this.onCreateButtonClick}
+                                        disabled={!rights.includes(RIGHT_POLICYHOLDERCONTRACT_CREATE)}
+                                    >
+                                        <AddIcon />
+                                    </Fab>
                                 </Grid>
                             </Grid>
                             <ContractSearcher
                                 onDoubleClick={this.onDoubleClick}
-                                contractPageLink={this.contractPageLink}
+                                contractUpdatePageUrl={this.contractUpdatePageUrl}
                                 rights={rights}
                                 policyHolder={policyHolder}
                             />

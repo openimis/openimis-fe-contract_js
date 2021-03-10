@@ -88,7 +88,7 @@ class ContractSearcher extends Component {
     }
 
     itemFormatters = () => {
-        const { intl, modulesManager, rights, contractPageLink } = this.props;
+        const { intl, modulesManager, rights, contractUpdatePageUrl } = this.props;
         const result = [
             contract => !!contract.code ? contract.code : "",
             contract => !!contract.state
@@ -121,7 +121,7 @@ class ContractSearcher extends Component {
                 contract => !this.isDeletedFilterEnabled(contract) && withTooltip(
                     <div>
                         <IconButton
-                            href={contractPageLink(contract)}
+                            href={contractUpdatePageUrl(contract)}
                             disabled={this.state.deleted.includes(contract.id)}>
                             <EditIcon/>
                         </IconButton>
