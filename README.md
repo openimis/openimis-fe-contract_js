@@ -45,7 +45,7 @@ None
 
 ## Other Modules Redux State Bindings
 * `state.core.user`, to access user info (rights,...)
-* `state.policyHolder`, retrieving Policy Holder to fetch corresponding Policy Holder Contribution Plan Bundles and Policy Holder Insurees
+* `state.policyHolder`, to retrieve Policy Holders and Policy Holder Insurees for their respective pickers
 
 ## Configurations Options
 * `contractForm.updatable`: list of states of an updatable Contract (Default: [1,2,11])

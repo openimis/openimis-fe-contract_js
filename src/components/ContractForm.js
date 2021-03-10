@@ -29,9 +29,7 @@ class ContractForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            contract: {
-                policyHolder: !!props.predefinedPolicyHolder ? props.predefinedPolicyHolder : null
-            },
+            contract: {},
             reset: 0,
             readOnlyFields: ['amountNotified', 'amountRectified', 'amountDue', 'state', 'amendment'],
             isDirty: false,
@@ -65,6 +63,13 @@ class ContractForm extends Component {
                 this.props.fetchContract(this.props.modulesManager, [`clientMutationId: "${this.props.mutation.clientMutationId}"`]);
                 this.setState((_, props) => ({ createMutationId: props.mutation.clientMutationId }));
             }
+        } else if (prevProps.policyHolders !== this.props.policyHolders) {
+            this.setState((state, props) => ({
+                contract: {
+                    ...state.contract,
+                    policyHolder: props.policyHolders.find((v) => decodeId(v.id) === props.predefinedPolicyHolderId)
+                }
+            }));
         }
     }
 
@@ -128,7 +133,7 @@ class ContractForm extends Component {
     }
 
     render() {
-        const { intl, rights, classes, contract, back, setConfirmedAction, counter, predefinedPolicyHolder } = this.props;
+        const { intl, rights, classes, contract, back, setConfirmedAction, counter, predefinedPolicyHolderId } = this.props;
         return (
             <Fragment>
                 <Form
@@ -156,7 +161,7 @@ class ContractForm extends Component {
                     reset={this.state.reset}
                     setConfirmedAction={setConfirmedAction}
                     isAmendment={this.isAmendment()}
-                    isPolicyHolderPredefined={!!predefinedPolicyHolder}
+                    isPolicyHolderPredefined={!!predefinedPolicyHolderId}
                 />
                 {rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable() && !this.state.isDirty && (
                     <Tooltip title={formatMessage(intl, "contract", "counterButton.tooltip")} placement="left">
@@ -177,6 +182,7 @@ const mapStateToProps = state => ({
     fetchedContract: state.contract.fetchedContract,
     contract: state.contract.contract,
     errorContract: state.contract.errorContract,
+    policyHolders: state.policyHolder.policyHolders,
     submittingMutation: state.contract.submittingMutation,
     mutation: state.contract.mutation
 });

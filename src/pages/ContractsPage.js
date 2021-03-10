@@ -21,7 +21,7 @@ class ContractsPage extends Component {
 
     onAdd = () => historyPush(this.props.modulesManager, this.props.history, "contract.route.contract");
 
-    contractPageLink = contract => `${this.props.modulesManager.getRef("contract.route.contract")}${"/" + decodeId(contract.id)}`;
+    contractUpdatePageUrl = contract => `${this.props.modulesManager.getRef("contract.route.contract")}${"/" + decodeId(contract.id)}`;
 
     onDoubleClick = (contract, newTab = false) => {
         const { rights, modulesManager, history } = this.props;
@@ -37,7 +37,7 @@ class ContractsPage extends Component {
                 <div className={classes.page}>
                     <ContractSearcher
                         onDoubleClick={this.onDoubleClick}
-                        contractPageLink={this.contractPageLink}
+                        contractUpdatePageUrl={this.contractUpdatePageUrl}
                         rights={rights}
                     />
                     {rights.includes(RIGHT_POLICYHOLDERCONTRACT_CREATE) && withTooltip(

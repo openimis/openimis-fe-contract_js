@@ -1,11 +1,29 @@
-import React, { Component } from "react"
-import { withModulesManager, withHistory, historyPush, formatMessage, formatMessageWithValues, coreConfirm } from "@openimis/fe-core";
+import React, { Component } from "react";
+import {
+    withModulesManager,
+    withHistory,
+    formatMessage,
+    formatMessageWithValues,
+    coreConfirm
+} from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { createContract, updateContract, submitContract, approveContract, counterContract, amendContract } from "../actions"
-import { RIGHT_POLICYHOLDERCONTRACT_CREATE, RIGHT_POLICYHOLDERCONTRACT_UPDATE, RIGHT_POLICYHOLDERCONTRACT_APPROVE } from "../constants"
+import {
+    createContract,
+    updateContract,
+    submitContract,
+    approveContract,
+    counterContract,
+    amendContract
+} from "../actions";
+import {
+    RIGHT_POLICYHOLDERCONTRACT_CREATE,
+    RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+    RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+    QUERY_STRING_POLICYHOLDER
+} from "../constants";
 import ContractForm from "../components/ContractForm";
 
 const AMENDMENT_INCREMENT = 1;
@@ -20,26 +38,15 @@ class ContractPage extends Component {
         this.state = {
             amendConfirmed: false
         }
-        this.predefinedPolicyHolder = !!this.props.location.state
-            ? this.getPolicyHolderPickerValue(this.props.location.state.policyHolder)
-            : null;
+        this.predefinedPolicyHolderId = !!props.contractId
+            ? null
+            : new URLSearchParams(this.props.location.search).get(QUERY_STRING_POLICYHOLDER);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
             this.state.confirmedAction();
         }
-    }
-
-    getPolicyHolderPickerValue = policyHolder => {
-        const policyHolderPickerValue = {};
-        const policyHolderPickerProjection = this.props.modulesManager.getRef("policyHolder.PolicyHolderPicker.projection");
-        if (!!policyHolderPickerProjection) {
-            policyHolderPickerProjection.forEach(key => {
-                policyHolderPickerValue[key] = policyHolder[key]
-            });
-        }
-        return policyHolderPickerValue;
     }
 
     setConfirmedAction = (confirm, confirmedAction) => this.setState({ confirmedAction }, confirm);
@@ -117,7 +124,7 @@ class ContractPage extends Component {
                         setConfirmedAction={this.setConfirmedAction}
                         amendConfirmed={this.state.amendConfirmed}
                         toggleAmendConfirmed={this.toggleAmendConfirmed}
-                        predefinedPolicyHolder={this.predefinedPolicyHolder}
+                        predefinedPolicyHolderId={this.predefinedPolicyHolderId}
                     />
                 </div>
             )
