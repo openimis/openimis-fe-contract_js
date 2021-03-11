@@ -5,7 +5,7 @@ import { withModulesManager, formatMessage, FormPanel, TextInput,
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { MAX_CODE_LENGTH, MAX_PAYMENT_REFERENCE_LENGTH, MIN_AMOUNT_VALUE, MIN_AMENDMENT_VALUE, DEFAULT_STATE_VALUE,
-    DEFAULT_AMENDMENT_VALUE, RIGHT_POLICYHOLDERCONTRACT_APPROVE, RIGHT_POLICYHOLDERCONTRACT_UPDATE, DATE_TO_DATETIME_SUFFIX } from "../constants"
+    DEFAULT_AMENDMENT_VALUE, RIGHT_POLICYHOLDERCONTRACT_APPROVE, RIGHT_POLICYHOLDERCONTRACT_UPDATE } from "../constants"
 import ContractStatePicker from "../pickers/ContractStatePicker";
 
 const styles = theme => ({
@@ -139,8 +139,7 @@ class ContractHeadPanel extends FormPanel {
                             module="contract"
                             label="dateApproved"
                             value={!!edited && !!edited.dateApproved && edited.dateApproved}
-                            onChange={v => this.updateAttribute('dateApproved', `${v}${DATE_TO_DATETIME_SUFFIX}`)}
-                            readOnly={readOnlyFields.includes('dateApproved')}
+                            readOnly
                         />
                     </Grid>
                     <Grid item xs={2} className={classes.item}>
