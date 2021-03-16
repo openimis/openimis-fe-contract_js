@@ -148,8 +148,7 @@ class ContractHeadPanel extends FormPanel {
                             module="contract"
                             label="datePaymentDue"
                             value={!!edited && !!edited.datePaymentDue && edited.datePaymentDue}
-                            onChange={v => this.updateAttribute('datePaymentDue', v)}
-                            readOnly={readOnlyFields.includes('datePaymentDue')}
+                            readOnly
                         />
                     </Grid>
                     <Grid item xs={2} className={classes.item}>
