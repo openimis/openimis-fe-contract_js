@@ -98,13 +98,7 @@ class ContractSearcher extends Component {
                     value={contract.state}
                     readOnly />
                 : "",
-            contract => contract.amountDue !== null
-                ? contract.amountDue
-                : contract.amountRectified !== null
-                    ? contract.amountRectified
-                    : contract.amountNotified !== null
-                        ? contract.amountNotified
-                        : "",
+            contract => !!contract.amount ? contract.amount : "",
             contract => !!contract.datePaymentDue
                 ? formatDateFromISO(modulesManager, intl, contract.datePaymentDue)
                 : "",
@@ -220,7 +214,7 @@ class ContractSearcher extends Component {
     sorts = () => [
         ['code', true],
         ['state', true],
-        null,
+        ['amount', true],
         ['datePaymentDue', true],
         ['dateValidFrom', true],
         ['dateValidTo', true],

@@ -96,7 +96,7 @@ class ContractFilter extends Component {
                         onChange={v => onChangeFilters([{
                             id: 'amountFrom',
                             value: v,
-                            filter: `amountDue_${GREATER_OR_EQUAL_LOOKUP}: ${v}`
+                            filter: `amountFrom: "${v}"`
                         }])}
                     />
                 </Grid>
@@ -108,7 +108,7 @@ class ContractFilter extends Component {
                         onChange={v => onChangeFilters([{
                             id: 'amountTo',
                             value: v,
-                            filter: `amountDue_${LESS_OR_EQUAL_LOOKUP}: ${v}`
+                            filter: `amountTo: "${v}"`
                         }])}
                     />
                 </Grid>
