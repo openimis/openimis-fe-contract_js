@@ -49,9 +49,6 @@ class ContractSearcher extends Component {
         const params = Object.keys(state.filters)
             .filter(f => !!state.filters[f]['filter'])
             .map(f => state.filters[f]['filter']);
-        if (!state.filters.hasOwnProperty('isDeleted')) {
-            params.push("isDeleted: false");
-        }
         const queryParams = [...params];
         params.push(`first: ${state.pageSize}`);
         if (!!state.afterCursor) {
@@ -221,11 +218,24 @@ class ContractSearcher extends Component {
         ['amendment', true]
     ];
 
-    defaultFilters = () => !!this.props.policyHolder && {
-        policyHolder_Id: {
-            value: decodeId(this.props.policyHolder.id),
-            filter: `policyHolder_Id: "${decodeId(this.props.policyHolder.id)}"`
+    defaultFilters = () => {
+        const filters = {
+            isDeleted: {
+                value: false,
+                filter: "isDeleted: false"
+            },
+            applyDefaultValidityFilter: {
+                value: true,
+                filter: "applyDefaultValidityFilter: true"
+            }
+        };
+        if (!!this.props.policyHolder) {
+            filters.policyHolder_Id = {
+                value: decodeId(this.props.policyHolder.id),
+                filter: `policyHolder_Id: "${decodeId(this.props.policyHolder.id)}"`
+            }
         }
+        return filters;
     };
 
     render() {
