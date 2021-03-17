@@ -3,7 +3,7 @@ import {
 } from "@openimis/fe-core";
 
 const CONTRACT_FULL_PROJECTION = modulesManager => [
-    "id", "code", "amount", "dateApproved", "datePaymentDue",
+    "id", "code", "amount", "amountNotified", "amountRectified", "amountDue", "dateApproved", "datePaymentDue",
     "state", "paymentReference", "amendment", "dateValidFrom", "dateValidTo", "isDeleted",
     "policyHolder" + modulesManager.getProjection("policyHolder.PolicyHolderPicker.projection")
 ];
