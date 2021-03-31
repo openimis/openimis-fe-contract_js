@@ -1,16 +1,39 @@
 import React, { Component, Fragment } from "react"
 import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessage, formatMessageWithValues, Searcher, formatDateFromISO,
-    withTooltip, coreConfirm, journalize, decodeId } from "@openimis/fe-core";
+import {
+    withModulesManager,
+    formatMessage,
+    formatMessageWithValues,
+    Searcher,
+    formatDateFromISO,
+    withTooltip,
+    coreConfirm,
+    journalize,
+    decodeId
+} from "@openimis/fe-core";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { fetchContracts, fetchContractsForBulkActions, deleteContract, approveContractBulk,
-    counterContractBulk } from "../actions"
+import {
+    fetchContracts,
+    fetchContractsForBulkActions,
+    deleteContract,
+    approveContractBulk,
+    counterContractBulk
+} from "../actions";
 import { IconButton } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS, RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-    RIGHT_POLICYHOLDERCONTRACT_UPDATE, RIGHT_POLICYHOLDERCONTRACT_DELETE, APPROVABLE_STATES } from "../constants"
+import {
+    DEFAULT_PAGE_SIZE,
+    ROWS_PER_PAGE_OPTIONS,
+    RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+    RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+    RIGHT_POLICYHOLDERCONTRACT_DELETE,
+    APPROVABLE_STATES,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
+} from "../constants";
 import ContractFilter from "./ContractFilter";
 import ContractStatePicker from "../pickers/ContractStatePicker";
 
@@ -75,7 +98,15 @@ class ContractSearcher extends Component {
             "contract.dateValidTo",
             "contract.amendment"
         ];
-        if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE) || rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) {
+        if (
+            [
+                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
+            ].some(right => rights.includes(right))
+        ) {
             result.push("contract.emptyLabel");
         }
         if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_DELETE)) {
@@ -107,7 +138,15 @@ class ContractSearcher extends Component {
                 : "",
             contract => contract.amendment !== null ? contract.amendment : "",
         ];
-        if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE) || rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) {
+        if (
+            [
+                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
+            ].some(right => rights.includes(right))
+        ) {
             result.push(
                 contract => !this.isDeletedFilterEnabled(contract) && withTooltip(
                     <div>

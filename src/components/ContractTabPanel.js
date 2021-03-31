@@ -3,7 +3,12 @@ import { Paper, Grid } from "@material-ui/core";
 import { withModulesManager, FormPanel, Contributions } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { RIGHT_POLICYHOLDERCONTRACT_UPDATE, RIGHT_POLICYHOLDERCONTRACT_APPROVE, CONTRACTDETAILS_TAB_VALUE } from "../constants"
+import {
+    RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+    RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+    CONTRACTDETAILS_TAB_VALUE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_SEARCH
+} from "../constants";
 
 const styles = theme => ({
     paper: theme.paper.paper,
@@ -23,13 +28,14 @@ const CONTRACT_TABS_PANEL_CONTRIBUTION_KEY = "contract.TabPanel.panel";
 const CONTRACT_TABS_LABEL_CONTRIBUTION_KEY = "contract.TabPanel.label";
 
 class ContractTabPanel extends FormPanel {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: props.rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE) || props.rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)
-                ? CONTRACTDETAILS_TAB_VALUE
-                : undefined
-        }
+    state = {
+        value: [
+            RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+            RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+            RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_SEARCH
+        ].some(right => this.props.rights.includes(right))
+            ? CONTRACTDETAILS_TAB_VALUE
+            : undefined
     }
 
     isSelected = value => value === this.state.value;
