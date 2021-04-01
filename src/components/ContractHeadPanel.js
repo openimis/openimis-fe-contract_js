@@ -1,11 +1,27 @@
 import React, { Fragment } from "react";
 import { Grid, Divider, Typography } from "@material-ui/core";
-import { withModulesManager, formatMessage, FormPanel, TextInput,
-    FormattedMessage, PublishedComponent, NumberInput } from "@openimis/fe-core";
+import {
+    withModulesManager,
+    formatMessage,
+    FormPanel,
+    TextInput,
+    FormattedMessage,
+    PublishedComponent,
+    NumberInput
+} from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { MAX_CODE_LENGTH, MAX_PAYMENT_REFERENCE_LENGTH, MIN_AMOUNT_VALUE, MIN_AMENDMENT_VALUE, DEFAULT_STATE_VALUE,
-    DEFAULT_AMENDMENT_VALUE, RIGHT_POLICYHOLDERCONTRACT_APPROVE, RIGHT_POLICYHOLDERCONTRACT_UPDATE } from "../constants"
+import {
+    MAX_CODE_LENGTH,
+    MAX_PAYMENT_REFERENCE_LENGTH,
+    MIN_AMOUNT_VALUE,
+    MIN_AMENDMENT_VALUE,
+    DEFAULT_STATE_VALUE,
+    DEFAULT_AMENDMENT_VALUE,
+    RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+    RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE
+} from "../constants";
 import ContractStatePicker from "../pickers/ContractStatePicker";
 
 const styles = theme => ({
@@ -50,7 +66,13 @@ class ContractHeadPanel extends FormPanel {
                     return isApprovable ? true : !isUpdatable;
                 } else return true;
             default:
-                if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE) || rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) {
+                if (
+                    [
+                        RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+                        RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+                        RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE
+                    ].some(right => rights.includes(right))
+                ) {
                     return isApprovable ? false : !isUpdatable;
                 } else return true;
         }

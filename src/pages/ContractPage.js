@@ -22,7 +22,11 @@ import {
     RIGHT_POLICYHOLDERCONTRACT_CREATE,
     RIGHT_POLICYHOLDERCONTRACT_UPDATE,
     RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-    QUERY_STRING_POLICYHOLDER
+    QUERY_STRING_POLICYHOLDER,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_CREATE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
 } from "../constants";
 import ContractForm from "../components/ContractForm";
 
@@ -105,11 +109,21 @@ class ContractPage extends Component {
 
     titleParams = contract => ({ label: !!contract.code ? contract.code : null });
 
+    isSufficientRights = () =>
+        [
+            RIGHT_POLICYHOLDERCONTRACT_CREATE,
+            RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+            RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+            RIGHT_PORTALPOLICYHOLDERCONTRACT_CREATE,
+            RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+            RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+            RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
+        ].some(right => this.props.rights.includes(right));
+
     render() {
         const { classes, rights, contractId, submitContract, approveContract, counterContract } = this.props;
         return (
-            rights.includes(RIGHT_POLICYHOLDERCONTRACT_CREATE) && (
-                rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE)  || rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) && (
+            this.isSufficientRights() && (
                 <div className={classes.page}>
                     <ContractForm
                         contractId={contractId}

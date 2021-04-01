@@ -20,7 +20,11 @@ import {
     DEFAULT_PAGE_SIZE,
     ROWS_PER_PAGE_OPTIONS,
     CONTRACTDETAILS_CALCULATION_CONTRIBUTION_KEY,
-    CONTRACTDETAILS_CLASSNAME
+    CONTRACTDETAILS_CLASSNAME,
+    RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+    RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_UPDATE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_DELETE
 } from "../constants";
 import ContractDetailsFilter from "../components/ContractDetailsFilter";
 import UpdateContractDetailsDialog from "../dialogs/UpdateContractDetailsDialog";
@@ -70,60 +74,105 @@ class ContractDetailsSearcher extends Component {
         return params;
     }
 
-    headers = () => [
-        "contract.insuree",
-        "contract.contributionPlanBundle",
-        "contract.calculation",
-        "contract.emptyLabel",
-        "contract.emptyLabel"
-    ];
+    headers = () => {
+        const { rights } = this.props;
+        const result = [
+            "contract.insuree",
+            "contract.contributionPlanBundle",
+            "contract.calculation"
+        ];
+        if (
+            [
+                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_UPDATE
+            ].some(right => rights.includes(right))
+        ) {
+            result.push("contract.emptyLabel");
+        }
+        if (
+            [
+                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_DELETE
+            ].some(right => rights.includes(right))
+        ) {
+            result.push("contract.emptyLabel");
+        }
+        return result;
+    }
 
-    itemFormatters = () => [
-        contractDetails => !!contractDetails.insuree
-            ? <PublishedComponent
-                pubRef="policyHolder.PolicyHolderInsureePicker"
-                value={contractDetails.insuree}
-                withLabel={false}
-                policyHolderId={!!this.props.contract.policyHolder && decodeId(this.props.contract.policyHolder.id)}
-                readOnly/>
-            : "",
-        contractDetails => !!contractDetails.contributionPlanBundle
-            ? <PublishedComponent
-                pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
-                value={contractDetails.contributionPlanBundle}
-                withLabel={false}
-                policyHolderId={!!this.props.contract.policyHolder && decodeId(this.props.contract.policyHolder.id)}
-                readOnly/>
-            : "",
-        contractDetails => !!contractDetails.jsonExt
-            ? <Contributions
-                contributionKey={CONTRACTDETAILS_CALCULATION_CONTRIBUTION_KEY}
-                intl={this.props.intl}
-                className={CONTRACTDETAILS_CLASSNAME}
-                entity={contractDetails}
-                value={contractDetails.jsonExt}
-                readOnly/>
-            : "",
-        contractDetails => (
-            <UpdateContractDetailsDialog
-                contract={this.props.contract}
-                contractDetails={contractDetails}
-                onSave={this.props.onSave}
-                disabled={this.state.deleted.includes(contractDetails.id) || !this.props.isActionEnabled}
-                setConfirmedAction={this.props.setConfirmedAction}
-            />
-        ),
-        contractDetails => withTooltip(
-            <div>
-                <IconButton
-                    onClick={() => this.onDelete(contractDetails)}
-                    disabled={this.state.deleted.includes(contractDetails.id) || !this.props.isActionEnabled}>
-                    <DeleteIcon/>
-                </IconButton>
-            </div>,
-            formatMessage(this.props.intl, "contract", "deleteButton.tooltip")
-        )
-    ];
+
+    itemFormatters = () => {
+        const { intl, rights, contract, isActionEnabled, onSave, setConfirmedAction } = this.props;
+        const result = [
+            contractDetails => !!contractDetails.insuree
+                ? <PublishedComponent
+                    pubRef="policyHolder.PolicyHolderInsureePicker"
+                    value={contractDetails.insuree}
+                    withLabel={false}
+                    policyHolderId={!!contract.policyHolder && decodeId(contract.policyHolder.id)}
+                    readOnly/>
+                : "",
+            contractDetails => !!contractDetails.contributionPlanBundle
+                ? <PublishedComponent
+                    pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
+                    value={contractDetails.contributionPlanBundle}
+                    withLabel={false}
+                    policyHolderId={!!contract.policyHolder && decodeId(contract.policyHolder.id)}
+                    readOnly/>
+                : "",
+            contractDetails => !!contractDetails.jsonExt
+                ? <Contributions
+                    contributionKey={CONTRACTDETAILS_CALCULATION_CONTRIBUTION_KEY}
+                    intl={intl}
+                    className={CONTRACTDETAILS_CLASSNAME}
+                    entity={contractDetails}
+                    value={contractDetails.jsonExt}
+                    readOnly/>
+                : ""
+        ];
+        if (
+            [
+                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_UPDATE
+            ].some(right => rights.includes(right))
+        ) {
+            result.push(
+                contractDetails => (
+                    <UpdateContractDetailsDialog
+                        contract={contract}
+                        contractDetails={contractDetails}
+                        onSave={onSave}
+                        disabled={this.state.deleted.includes(contractDetails.id) || !isActionEnabled}
+                        setConfirmedAction={setConfirmedAction}
+                    />
+                )
+            );
+        }
+        if (
+            [
+                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_DELETE
+            ].some(right => rights.includes(right))
+        ) {
+            result.push(
+                contractDetails => withTooltip(
+                    <div>
+                        <IconButton
+                            onClick={() => this.onDelete(contractDetails)}
+                            disabled={this.state.deleted.includes(contractDetails.id) || !isActionEnabled}>
+                            <DeleteIcon/>
+                        </IconButton>
+                    </div>,
+                    formatMessage(intl, "contract", "deleteButton.tooltip")
+                )
+            )
+        }
+        return result;
+    }
 
     onDelete = contractDetails => {
         const { intl, contract, coreConfirm, deleteContractDetails, setConfirmedAction } = this.props;

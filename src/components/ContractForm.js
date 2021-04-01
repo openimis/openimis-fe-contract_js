@@ -1,18 +1,34 @@
 import React, { Component, Fragment } from "react";
-import { Form, withModulesManager, formatMessage, formatMessageWithValues, journalize, decodeId } from "@openimis/fe-core";
+import {
+    Form,
+    withModulesManager,
+    formatMessage,
+    formatMessageWithValues,
+    journalize,
+    decodeId
+} from "@openimis/fe-core";
 import { Fab, Tooltip } from "@material-ui/core";
 import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { fetchContract } from "../actions"
-import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
-import NoteAddIcon from '@material-ui/icons/NoteAdd';
+import { fetchContract } from "../actions";
+import OpenInBrowserIcon from "@material-ui/icons/OpenInBrowser";
+import CheckIcon from "@material-ui/icons/Check";
+import CloseIcon from "@material-ui/icons/Close";
+import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import ContractHeadPanel from "./ContractHeadPanel";
-import { UPDATABLE_STATES, APPROVABLE_STATES, TERMINATED_STATE, RIGHT_POLICYHOLDERCONTRACT_SUBMIT,
-    RIGHT_POLICYHOLDERCONTRACT_APPROVE, RIGHT_POLICYHOLDERCONTRACT_AMEND, MIN_AMENDMENT_VALUE } from "../constants"
+import {
+    UPDATABLE_STATES,
+    APPROVABLE_STATES,
+    TERMINATED_STATE,
+    RIGHT_POLICYHOLDERCONTRACT_SUBMIT,
+    RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+    RIGHT_POLICYHOLDERCONTRACT_AMEND,
+    MIN_AMENDMENT_VALUE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
+} from "../constants";
 import ContractTabPanel from "./ContractTabPanel";
 
 const styles = theme => ({
@@ -103,12 +119,29 @@ class ContractForm extends Component {
 
     fab = () => {
         const { rights } = this.props;
-        if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_SUBMIT) && this.isUpdatable()) {
-            return <OpenInBrowserIcon/>;
-        } else if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable()) {
-            return <CheckIcon/>;
-        } else if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_AMEND) && !this.isUpdatable() && !this.isApprovable() && !this.isTerminated()) {
-            return <NoteAddIcon/>;
+        if (
+            [
+                RIGHT_POLICYHOLDERCONTRACT_SUBMIT,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT
+            ].some(right => rights.includes(right)) &&
+            this.isUpdatable()
+        ) {
+            return <OpenInBrowserIcon />;
+        } else if (
+            rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) &&
+            this.isApprovable()
+        ) {
+            return <CheckIcon />;
+        } else if (
+            [
+                RIGHT_POLICYHOLDERCONTRACT_AMEND,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
+            ].some(right => rights.includes(right)) &&
+            !this.isUpdatable() &&
+            !this.isApprovable() &&
+            !this.isTerminated()
+        ) {
+            return <NoteAddIcon />;
         } else return null;
     }
 

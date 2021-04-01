@@ -5,11 +5,17 @@ import reducer from "./reducer";
 import ContractsPage from "./pages/ContractsPage";
 import ContractPage from "./pages/ContractPage"
 import { FormattedMessage } from "@openimis/fe-core";
-import ReceiptIcon from '@material-ui/icons/Receipt';
-import { RIGHT_POLICYHOLDERCONTRACT_SEARCH } from "./constants"
+import ReceiptIcon from "@material-ui/icons/Receipt";
+import { RIGHT_POLICYHOLDERCONTRACT_SEARCH } from "./constants";
 import { ContractDetailsTabLabel, ContractDetailsTabPanel } from "./components/ContractDetailsTab";
-import { ContractsTabLabel, ContractsTabPanel } from "./components/ContractsTab";
-import { ContractContributionDetailsTabLabel, ContractContributionDetailsTabPanel } from "./components/ContractContributionDetailsTab";
+import {
+    PolicyHolderContractsTabLabel,
+    PolicyHolderContractsTabPanel
+} from "./components/PolicyHolderContractsTab";
+import {
+    ContractContributionDetailsTabLabel,
+    ContractContributionDetailsTabPanel
+} from "./components/ContractContributionDetailsTab";
 
 const ROUTE_CONTRACTS = "contracts";
 const ROUTE_CONTRACT = "contracts/contract";
@@ -38,8 +44,8 @@ const DEFAULT_CONFIG = {
     ],
     "contract.TabPanel.label": [ContractDetailsTabLabel, ContractContributionDetailsTabLabel],
     "contract.TabPanel.panel": [ContractDetailsTabPanel, ContractContributionDetailsTabPanel],
-    "policyHolder.TabPanel.label": [ContractsTabLabel],
-    "policyHolder.TabPanel.panel": [ContractsTabPanel]
+    "policyHolder.TabPanel.label": [PolicyHolderContractsTabLabel],
+    "policyHolder.TabPanel.panel": [PolicyHolderContractsTabPanel]
 }
 
 export const ContractModule = (cfg) => {

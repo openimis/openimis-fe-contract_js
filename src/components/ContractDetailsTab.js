@@ -1,7 +1,14 @@
 import React, { Component, Fragment } from "react";
 import { Tab, Grid, Typography } from "@material-ui/core";
 import { formatMessage, PublishedComponent, FormattedMessage } from "@openimis/fe-core";
-import { RIGHT_POLICYHOLDERCONTRACT_UPDATE, RIGHT_POLICYHOLDERCONTRACT_APPROVE, CONTRACTDETAILS_TAB_VALUE } from "../constants"
+import {
+    RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+    RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+    CONTRACTDETAILS_TAB_VALUE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_SEARCH,
+    RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_UPDATE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_CREATE
+} from "../constants";
 import ContractDetailsSearcher from "./ContractDetailsSearcher";
 import CreateContractDetailsDialog from "../dialogs/CreateContractDetailsDialog"
 
@@ -9,7 +16,11 @@ class ContractDetailsTabLabel extends Component {
     render() {
         const { intl, rights, onChange, disabled, tabStyle, isSelected } = this.props;
         return (
-            (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE) || rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) &&
+            [
+                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_SEARCH
+            ].some(right => rights.includes(right)) && (
                 <Tab
                     onChange={onChange}
                     disabled={disabled}
@@ -18,6 +29,7 @@ class ContractDetailsTabLabel extends Component {
                     value={CONTRACTDETAILS_TAB_VALUE}
                     label={formatMessage(intl, "contract", "contractDetails.label")}
                 />
+            )
         )
     }
 }
@@ -40,7 +52,12 @@ class ContractDetailsTabPanel extends Component {
         const { rights, isUpdatable, isApprovable } = this.props;
         if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) {
             return isUpdatable || isApprovable;
-        } else if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE)) {
+        } else if (
+            [
+                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_UPDATE
+            ].some(right => rights.includes(right))
+         ) {
             return isUpdatable;
         }
         return false;
@@ -49,7 +66,11 @@ class ContractDetailsTabPanel extends Component {
     render() {
         const { rights, value, isTabsEnabled, contract, setConfirmedAction } = this.props;
         return (
-            (rights.includes(RIGHT_POLICYHOLDERCONTRACT_UPDATE) || rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)) &&
+            [
+                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_SEARCH
+            ].some(right => rights.includes(right)) && (
                 <PublishedComponent
                     pubRef="policyHolder.TabPanel"
                     module="contract"
@@ -58,21 +79,30 @@ class ContractDetailsTabPanel extends Component {
                 >
                     {isTabsEnabled ? (
                         <Fragment>
-                            <Grid container justify="flex-end" alignItems="center" spacing={1}>
-                                <Grid item>
-                                    <Typography>
-                                        <FormattedMessage module="contract" id="contractDetails.createContractDetails" />
-                                    </Typography>
+                            {[
+                                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+                                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+                                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_CREATE
+                            ].some(right => rights.includes(right)) && (
+                                <Grid container justify="flex-end" alignItems="center" spacing={1}>
+                                    <Grid item>
+                                        <Typography>
+                                            <FormattedMessage
+                                                module="contract"
+                                                id="contractDetails.createContractDetails"
+                                            />
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <CreateContractDetailsDialog
+                                            contract={contract}
+                                            onSave={this.onSave}
+                                            setConfirmedAction={setConfirmedAction}
+                                            disabled={!this.isActionEnabled()}
+                                        />
+                                    </Grid>
                                 </Grid>
-                                <Grid item>
-                                    <CreateContractDetailsDialog
-                                        contract={contract}
-                                        onSave={this.onSave}
-                                        setConfirmedAction={setConfirmedAction}
-                                        disabled={!this.isActionEnabled()}
-                                    />
-                                </Grid>
-                            </Grid>
+                            )}
                             <ContractDetailsSearcher
                                 contract={contract}
                                 rights={rights}
@@ -83,9 +113,13 @@ class ContractDetailsTabPanel extends Component {
                             />
                         </Fragment>
                     ) : (
-                        <FormattedMessage module="contract" id="contractDetails.tabDisabledError" />
+                        <FormattedMessage
+                            module="contract"
+                            id="contractDetails.tabDisabledError"
+                        />
                     )}
                 </PublishedComponent>
+            )
         )
     }
 }
