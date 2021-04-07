@@ -5,7 +5,9 @@ import {
     RIGHT_POLICYHOLDERCONTRACT_UPDATE,
     RIGHT_POLICYHOLDERCONTRACT_APPROVE,
     CONTRACTCONTRIBUTIONDETAILS_TAB_VALUE,
-    RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_SEARCH
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
 } from "../constants";
 import ContractContributionDetailsSearcher from "./ContractContributionDetailsSearcher";
 
@@ -16,7 +18,9 @@ class ContractContributionDetailsTabLabel extends Component {
             [
                 RIGHT_POLICYHOLDERCONTRACT_UPDATE,
                 RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_SEARCH
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
             ].some(right => rights.includes(right)) &&
             !isUpdatable &&
             !isApprovable &&
@@ -41,7 +45,9 @@ class ContractContributionDetailsTabPanel extends Component {
             [
                 RIGHT_POLICYHOLDERCONTRACT_UPDATE,
                 RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_SEARCH
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
             ].some(right => rights.includes(right)) &&
             !isUpdatable &&
             !isApprovable && (

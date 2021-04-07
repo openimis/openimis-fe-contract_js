@@ -23,8 +23,9 @@ import {
     CONTRACTDETAILS_CLASSNAME,
     RIGHT_POLICYHOLDERCONTRACT_UPDATE,
     RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-    RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_UPDATE,
-    RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_DELETE
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
 } from "../constants";
 import ContractDetailsFilter from "../components/ContractDetailsFilter";
 import UpdateContractDetailsDialog from "../dialogs/UpdateContractDetailsDialog";
@@ -85,18 +86,12 @@ class ContractDetailsSearcher extends Component {
             [
                 RIGHT_POLICYHOLDERCONTRACT_UPDATE,
                 RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_UPDATE
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
             ].some(right => rights.includes(right))
         ) {
             result.push("contract.emptyLabel");
-        }
-        if (
-            [
-                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
-                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_DELETE
-            ].some(right => rights.includes(right))
-        ) {
             result.push("contract.emptyLabel");
         }
         return result;
@@ -136,7 +131,9 @@ class ContractDetailsSearcher extends Component {
             [
                 RIGHT_POLICYHOLDERCONTRACT_UPDATE,
                 RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_UPDATE
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
             ].some(right => rights.includes(right))
         ) {
             result.push(
@@ -150,14 +147,6 @@ class ContractDetailsSearcher extends Component {
                     />
                 )
             );
-        }
-        if (
-            [
-                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
-                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_DELETE
-            ].some(right => rights.includes(right))
-        ) {
             result.push(
                 contractDetails => withTooltip(
                     <div>
