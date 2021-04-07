@@ -5,9 +5,9 @@ import {
     RIGHT_POLICYHOLDERCONTRACT_UPDATE,
     RIGHT_POLICYHOLDERCONTRACT_APPROVE,
     CONTRACTDETAILS_TAB_VALUE,
-    RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_SEARCH,
-    RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_UPDATE,
-    RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_CREATE
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+    RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
 } from "../constants";
 import ContractDetailsSearcher from "./ContractDetailsSearcher";
 import CreateContractDetailsDialog from "../dialogs/CreateContractDetailsDialog"
@@ -19,7 +19,9 @@ class ContractDetailsTabLabel extends Component {
             [
                 RIGHT_POLICYHOLDERCONTRACT_UPDATE,
                 RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_SEARCH
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
             ].some(right => rights.includes(right)) && (
                 <Tab
                     onChange={onChange}
@@ -55,7 +57,7 @@ class ContractDetailsTabPanel extends Component {
         } else if (
             [
                 RIGHT_POLICYHOLDERCONTRACT_UPDATE,
-                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_UPDATE
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE
             ].some(right => rights.includes(right))
          ) {
             return isUpdatable;
@@ -69,7 +71,9 @@ class ContractDetailsTabPanel extends Component {
             [
                 RIGHT_POLICYHOLDERCONTRACT_UPDATE,
                 RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_SEARCH
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+                RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
             ].some(right => rights.includes(right)) && (
                 <PublishedComponent
                     pubRef="policyHolder.TabPanel"
@@ -79,30 +83,24 @@ class ContractDetailsTabPanel extends Component {
                 >
                     {isTabsEnabled ? (
                         <Fragment>
-                            {[
-                                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
-                                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-                                RIGHT_PORTALPOLICYHOLDERCONTRACTDETAILS_CREATE
-                            ].some(right => rights.includes(right)) && (
-                                <Grid container justify="flex-end" alignItems="center" spacing={1}>
-                                    <Grid item>
-                                        <Typography>
-                                            <FormattedMessage
-                                                module="contract"
-                                                id="contractDetails.createContractDetails"
-                                            />
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <CreateContractDetailsDialog
-                                            contract={contract}
-                                            onSave={this.onSave}
-                                            setConfirmedAction={setConfirmedAction}
-                                            disabled={!this.isActionEnabled()}
+                            <Grid container justify="flex-end" alignItems="center" spacing={1}>
+                                <Grid item>
+                                    <Typography>
+                                        <FormattedMessage
+                                            module="contract"
+                                            id="contractDetails.createContractDetails"
                                         />
-                                    </Grid>
+                                    </Typography>
                                 </Grid>
-                            )}
+                                <Grid item>
+                                    <CreateContractDetailsDialog
+                                        contract={contract}
+                                        onSave={this.onSave}
+                                        setConfirmedAction={setConfirmedAction}
+                                        disabled={!this.isActionEnabled()}
+                                    />
+                                </Grid>
+                            </Grid>
                             <ContractDetailsSearcher
                                 contract={contract}
                                 rights={rights}
