@@ -35,7 +35,8 @@ class CreateContractDetailsDialog extends Component {
         super(props);
         this.state = {
             open: false,
-            contractDetails: {}
+            contractDetails: {},
+            jsonExtValid: true
         }
     }
 
@@ -51,7 +52,8 @@ class CreateContractDetailsDialog extends Component {
             contractDetails: {
                 ...props.contractDetails,
                 contract: props.contract
-            }
+            },
+            jsonExtValid: true
         }));
     };
 
@@ -103,10 +105,11 @@ class CreateContractDetailsDialog extends Component {
     }
 
     canSave = () => {
-        const { contractDetails } = this.state;
-        return !!contractDetails.contract
-            && !!contractDetails.insuree
-            && !!contractDetails.contributionPlanBundle;
+        const { contractDetails, jsonExtValid } = this.state;
+        return !!contractDetails.contract &&
+            !!contractDetails.insuree &&
+            !!contractDetails.contributionPlanBundle &&
+            !!jsonExtValid;
     }
 
     setPolicyHolderContributionPlanBundle = () => {
@@ -119,6 +122,8 @@ class CreateContractDetailsDialog extends Component {
             this.updateAttribute('contributionPlanBundle', null);
         }
     }
+
+    setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
 
     render() {
         const { intl, classes, contract, disabled } = this.props;
@@ -169,6 +174,7 @@ class CreateContractDetailsDialog extends Component {
                                 value={!!contractDetails.jsonExt && contractDetails.jsonExt}
                                 onChange={this.updateAttribute}
                                 gridItemStyle={classes.item}
+                                setJsonExtValid={this.setJsonExtValid}
                             />
                         </Grid>
                     </DialogContent>
