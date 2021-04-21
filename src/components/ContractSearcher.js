@@ -302,7 +302,7 @@ class ContractSearcher extends Component {
                     onDoubleClick={contract => this.isOnDoubleClickEnabled(contract) && onDoubleClick(contract)}
                     rowDisabled={this.isRowDisabled}
                     rowLocked={this.isRowDisabled}
-                    withSelection="multiple"
+                    withSelection={!!this.props.policyHolder ? null : "multiple"}
                     rowIdentifier={this.rowIdentifier}
                     selectionMessage="contract.contracts.selection.count"
                     actions={this.actions()}

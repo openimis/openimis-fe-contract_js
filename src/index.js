@@ -16,6 +16,7 @@ import {
     ContractContributionDetailsTabLabel,
     ContractContributionDetailsTabPanel
 } from "./components/ContractContributionDetailsTab";
+import { ContractPaymentsTabLabel, ContractPaymentsTabPanel } from "./components/ContractPaymentsTab";
 
 const ROUTE_CONTRACTS = "contracts";
 const ROUTE_CONTRACT = "contracts/contract";
@@ -42,8 +43,16 @@ const DEFAULT_CONFIG = {
             filter: rights => rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH)
         }
     ],
-    "contract.TabPanel.label": [ContractDetailsTabLabel, ContractContributionDetailsTabLabel],
-    "contract.TabPanel.panel": [ContractDetailsTabPanel, ContractContributionDetailsTabPanel],
+    "contract.TabPanel.label": [
+        ContractDetailsTabLabel,
+        ContractContributionDetailsTabLabel,
+        ContractPaymentsTabLabel
+    ],
+    "contract.TabPanel.panel": [
+        ContractDetailsTabPanel,
+        ContractContributionDetailsTabPanel,
+        ContractPaymentsTabPanel
+    ],
     "policyHolder.TabPanel.label": [PolicyHolderContractsTabLabel],
     "policyHolder.TabPanel.panel": [PolicyHolderContractsTabPanel]
 }
