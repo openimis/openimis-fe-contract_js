@@ -22,6 +22,10 @@ const CONTRACTCONTRIBUTIONDETAILS_FULL_PROJECTION = modulesManager => [
     "contributionPlan" + modulesManager.getProjection("contributionPlan.ContributionPlanPicker.projection")
 ];
 
+const INSUREEPOLICY_FULL_PROJECTION = modulesManager => [
+    "insuree" + modulesManager.getProjection("insuree.InsureePicker.projection")
+];
+
 function dateTimeToDate(date) {
     return date.split('T')[0];
 }
@@ -69,6 +73,15 @@ export function fetchContractContributionDetails(modulesManager, params) {
         CONTRACTCONTRIBUTIONDETAILS_FULL_PROJECTION(modulesManager)
     );
     return graphql(payload, "CONTRACT_CONTRACTCONTRIBUTIONDETAILS");
+}
+
+export function fetchInsureePolicies(modulesManager, params) {
+    const payload = formatPageQueryWithCount(
+        "insureePolicy",
+        params,
+        INSUREEPOLICY_FULL_PROJECTION(modulesManager)
+    );
+    return graphql(payload, "CONTRACT_INSUREEPOLICIES");
 }
 
 function formatContractGQL(contract, readOnlyFields = []) {
