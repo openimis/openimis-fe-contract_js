@@ -17,6 +17,7 @@ import {
     ContractContributionDetailsTabPanel
 } from "./components/ContractContributionDetailsTab";
 import { ContractPaymentsTabLabel, ContractPaymentsTabPanel } from "./components/ContractPaymentsTab";
+import { ContractInsureePolicyTabLabel, ContractInsureePolicyTabPanel } from "./components/ContractInsureePolicyTab";
 
 const ROUTE_CONTRACTS = "contracts";
 const ROUTE_CONTRACT = "contracts/contract";
@@ -46,12 +47,14 @@ const DEFAULT_CONFIG = {
     "contract.TabPanel.label": [
         ContractDetailsTabLabel,
         ContractContributionDetailsTabLabel,
-        ContractPaymentsTabLabel
+        ContractPaymentsTabLabel,
+        ContractInsureePolicyTabLabel,
     ],
     "contract.TabPanel.panel": [
         ContractDetailsTabPanel,
         ContractContributionDetailsTabPanel,
-        ContractPaymentsTabPanel
+        ContractPaymentsTabPanel,
+        ContractInsureePolicyTabPanel,
     ],
     "policyHolder.TabPanel.label": [PolicyHolderContractsTabLabel],
     "policyHolder.TabPanel.panel": [PolicyHolderContractsTabPanel]
