@@ -23,7 +23,6 @@ None
 
 ## Dispatched Redux Actions
 * `CONTRACT_CONTRACTS_{REQ|RESP|ERR}`, fetching Contracts (as triggered by the searcher)
-* `CONTRACT_CONTRACTS_BULK_{REQ|RESP|ERR}`, fetching Contracts for bulk actions (approve, counter)
 * `CONTRACT_CONTRACT_{REQ|RESP|ERR}`, fetching Contract
 * `CONTRACT_CONTRACTDETAILS_{REQ|RESP|ERR}`, fetching Contract Details (as triggered by the searcher)
 * `CONTRACT_MUTATION_{REQ|ERR}`, sending a mutation

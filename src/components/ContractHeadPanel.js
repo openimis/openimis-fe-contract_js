@@ -38,8 +38,7 @@ class ContractHeadPanel extends FormPanel {
         this.state = {
             isPolicyHolderSet: false
         };
-        this.updatableFields = ['code', 'policyHolder', 'dateApproved',
-            'datePaymentDue', 'paymentReference', 'dateValidFrom', 'dateValidTo'];
+        this.updatableFields = ['code', 'policyHolder', 'paymentReference', 'dateValidFrom', 'dateValidTo'];
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
