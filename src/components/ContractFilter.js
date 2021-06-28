@@ -95,7 +95,7 @@ class ContractFilter extends Component {
                         value={this._filterValue('amountFrom')}
                         onChange={v => onChangeFilters([{
                             id: 'amountFrom',
-                            value: v,
+                            value: !!v ? v : null,
                             filter: `amountFrom: "${v}"`
                         }])}
                     />
@@ -107,7 +107,7 @@ class ContractFilter extends Component {
                         value={this._filterValue('amountTo')}
                         onChange={v => onChangeFilters([{
                             id: 'amountTo',
-                            value: v,
+                            value: !!v ? v : null,
                             filter: `amountTo: "${v}"`
                         }])}
                     />

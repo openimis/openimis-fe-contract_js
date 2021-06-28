@@ -1,14 +1,13 @@
 import {
     graphql, formatPageQuery, formatPageQueryWithCount, decodeId, formatMutation, formatGQLString
 } from "@openimis/fe-core";
+import { APPLY_DEFAULT_VALIDITY_FILTER } from "./constants";
 
 const CONTRACT_FULL_PROJECTION = modulesManager => [
     "id", "code", "amount", "amountNotified", "amountRectified", "amountDue", "dateApproved", "datePaymentDue",
     "state", "paymentReference", "amendment", "dateValidFrom", "dateValidTo", "isDeleted",
     "policyHolder" + modulesManager.getProjection("policyHolder.PolicyHolderPicker.projection")
 ];
-
-const CONTRACT_BULK_PROJECTION = () => ["id", "code", "state"];
 
 const CONTRACTDETAILS_FULL_PROJECTION = modulesManager => [
     "id", "jsonExt", "contract{id}", 
@@ -26,6 +25,14 @@ const INSUREEPOLICY_FULL_PROJECTION = modulesManager => [
     "insuree" + modulesManager.getProjection("insuree.InsureePicker.projection")
 ];
 
+const extendedFilters = query =>
+    `"{${query
+        .filter(filter => filter.split(":")[0] !== APPLY_DEFAULT_VALIDITY_FILTER)
+        .map(filter => `\\"${filter.split(":")[0]}\\": \\"${filter.split(":")[1].replaceAll('"', '').trim()}\\"`)
+        .join(",")
+        .replaceAll("false", "False")
+        .replaceAll("true", "True")}}"`;
+
 function dateTimeToDate(date) {
     return date.split('T')[0];
 }
@@ -37,15 +44,6 @@ export function fetchContracts(modulesManager, params) {
         CONTRACT_FULL_PROJECTION(modulesManager)
     );
     return graphql(payload, "CONTRACT_CONTRACTS");
-}
-
-export function fetchContractsForBulkActions(params) {
-    const payload = formatPageQuery(
-        "contract",
-        params,
-        CONTRACT_BULK_PROJECTION()
-    );
-    return graphql(payload, "CONTRACT_CONTRACTS_BULK");
 }
 
 export function fetchContract(modulesManager, params) {
@@ -181,7 +179,7 @@ export function approveContract(contract, clientMutationLabel) {
 }
 
 export function approveContractBulk(contracts, clientMutationLabel, clientMutationDetails = null) {
-    let contractUuids = `contractUuids: ["${contracts.map(contract => decodeId(contract.id)).join("\",\"")}"]`; 
+    let contractUuids = `contractUuids: ["${contracts.map(contract => decodeId(contract.id)).join("\",\"")}"]`;
     let mutation = formatMutation("approveBulkContract", contractUuids, clientMutationLabel, clientMutationDetails);
     var requestedDateTime = new Date();
     contracts.forEach(contract => contract.clientMutationId = mutation.clientMutationId);
@@ -196,6 +194,25 @@ export function approveContractBulk(contracts, clientMutationLabel, clientMutati
         }
     );
 }
+
+export function approveContractAll(query, clientMutationLabel) {
+    const mutationInput = `
+        contractUuids: []
+        extendedFilters: ${extendedFilters(query)}
+    `;
+    const mutation = formatMutation("approveBulkContract", mutationInput, clientMutationLabel);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRACT_MUTATION_REQ", "CONTRACT_APPROVE_CONTRACT_BULK_RESP", "CONTRACT_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
 
 export function counterContract(contract, clientMutationLabel) {
     let contractId = `id: "${decodeId(contract.id)}"`; 
@@ -224,6 +241,24 @@ export function counterContractBulk(contracts, clientMutationLabel, clientMutati
             clientMutationId: mutation.clientMutationId,
             clientMutationLabel,
             clientMutationDetails: !!clientMutationDetails ? JSON.stringify(clientMutationDetails) : null,
+            requestedDateTime
+        }
+    );
+}
+
+export function counterContractAll(query, clientMutationLabel) {
+    const mutationInput = `
+        contractUuids: []
+        extendedFilters: ${extendedFilters(query)}
+    `;
+    const mutation = formatMutation("counterBulkContract", mutationInput, clientMutationLabel);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRACT_MUTATION_REQ", "CONTRACT_COUNTER_CONTRACT_BULK_RESP", "CONTRACT_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
             requestedDateTime
         }
     );

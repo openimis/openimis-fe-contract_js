@@ -11,10 +11,6 @@ function reducer(
         contracts: [],
         contractsPageInfo: {},
         contractsTotalCount: 0,
-        fetchingContractsBulk: false,
-        fetchedContractsBulk: false,
-        contractsBulk: [],
-        errorContractsBulk: null,
         fetchingContract: false,
         fetchedContract: false,
         contract: {},
@@ -66,28 +62,6 @@ function reducer(
                 ...state,
                 fetchingContracts: false,
                 errorContracts: formatServerError(action.payload)
-            };
-        case "CONTRACT_CONTRACTS_BULK_REQ":
-            return {
-                ...state,
-                fetchingContractsBulk: true,
-                fetchedContractsBulk: false,
-                contractsBulk: [],
-                errorContractsBulk: null
-            };
-        case "CONTRACT_CONTRACTS_BULK_RESP":
-            return {
-                ...state,
-                fetchingContractsBulk: false,
-                fetchedContractsBulk: true,
-                contractsBulk: parseData(action.payload.data.contract),
-                errorContractsBulk: formatGraphQLError(action.payload)
-            };
-        case "CONTRACT_CONTRACTS_BULK_ERR":
-            return {
-                ...state,
-                fetchingContractsBulk: false,
-                errorContractsBulk: formatServerError(action.payload)
             };
         case "CONTRACT_CONTRACT_REQ":
             return {
