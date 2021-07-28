@@ -1,6 +1,6 @@
 {
   "name": "@openimis/fe-contract",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "license": "AGPL-3.0-only",
   "description": "openIMIS Frontend Contract module",
   "repository": "openimis/openimis-fe-contract_js",
