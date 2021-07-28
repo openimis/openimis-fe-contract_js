@@ -1,0 +1,13 @@
+{
+    "contract.ContractStatePicker.requestForInformation": "Demande d'information",
+    "contract.ContractStatePicker.draft": "Brouillon",
+    "contract.ContractStatePicker.offer": "Offre",
+    "contract.ContractStatePicker.negotiable": "En negociation",
+    "contract.ContractStatePicker.executable": "Apprové",
+    "contract.ContractStatePicker.addendum": "Addendum",
+    "contract.ContractStatePicker.effective": "En cours",
+    "contract.ContractStatePicker.executed": "Appliqué",
+    "contract.ContractStatePicker.disputed": "Suspendu",
+    "contract.ContractStatePicker.terminated": "Terminé",
+    "contract.ContractStatePicker.counter": "Révision demandé"
+}
