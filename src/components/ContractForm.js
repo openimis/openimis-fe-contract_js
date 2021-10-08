@@ -5,7 +5,8 @@ import {
     formatMessage,
     formatMessageWithValues,
     journalize,
-    decodeId
+    decodeId,
+    Helmet,
 } from "@openimis/fe-core";
 import { Fab, Tooltip } from "@material-ui/core";
 import { injectIntl } from "react-intl";
@@ -56,7 +57,6 @@ class ContractForm extends Component {
     }
 
     componentDidMount() {
-        document.title = formatMessageWithValues(this.props.intl, "contract", "page.title", this.titleParams());
         if (!!this.props.contractId) {
             this.props.fetchContract(this.props.modulesManager, [`id: "${this.props.contractId}"`]);
         }
@@ -65,8 +65,7 @@ class ContractForm extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.fetchedContract !== this.props.fetchedContract && !!this.props.fetchedContract) {
             this.setState(
-                (state, props) => ({ contract: props.contract, reset: state.reset + 1, isDirty: false }),
-                () => document.title = formatMessageWithValues(this.props.intl, "contract", "page.title", this.titleParams())
+                (state, props) => ({ contract: props.contract, reset: state.reset + 1, isDirty: false })
             );
         } else if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);
@@ -169,6 +168,7 @@ class ContractForm extends Component {
         const { intl, rights, classes, contract, back, setConfirmedAction, counter, predefinedPolicyHolderId } = this.props;
         return (
             <Fragment>
+                <Helmet title={formatMessageWithValues(this.props.intl, "contract", "page.title", this.titleParams())} />
                 <Form
                     module="contract"
                     title="contract.page.title"
