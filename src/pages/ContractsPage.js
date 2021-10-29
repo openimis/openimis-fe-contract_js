@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withModulesManager, formatMessage, withTooltip, historyPush, decodeId } from "@openimis/fe-core";
+import { Helmet, withModulesManager, formatMessage, withTooltip, historyPush, decodeId } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -15,10 +15,6 @@ const styles = theme => ({
 })
 
 class ContractsPage extends Component {
-    componentDidMount() {
-        document.title = formatMessage(this.props.intl, "contract", "contracts.page.title");
-    }
-
     onAdd = () => historyPush(this.props.modulesManager, this.props.history, "contract.route.contract");
 
     contractUpdatePageUrl = contract => `${this.props.modulesManager.getRef("contract.route.contract")}${"/" + decodeId(contract.id)}`;
@@ -35,6 +31,7 @@ class ContractsPage extends Component {
         return (
             rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH) && (
                 <div className={classes.page}>
+                    <Helmet title={formatMessage(this.props.intl, "contract", "contracts.page.title")} />
                     <ContractSearcher
                         onDoubleClick={this.onDoubleClick}
                         contractUpdatePageUrl={this.contractUpdatePageUrl}
