@@ -9,9 +9,10 @@ None
 
 ## Other Contributions
 * `core.Router`: registering `contracts`, `contracts/contract` route in openIMIS client-side router
-* `insuree.MainMenu`:
+* `invoice.MainMenu`:
     
     **Contracts** (`menu.contracts` translation key)
+* `invoice.SubjectAndThirdpartyPicker`: providing Contract picker for Invoice module
 
 ## Available Contribution Points
 * `contract.TabPanel.label` ability to extend Contract tab panel with a label
@@ -19,7 +20,8 @@ None
 * `contract.ContractDetails.calculation` placeholder for `Calculation` module contributions
 
 ## Published Components
-None
+* `contract.ContractPicker`, picker for Contract
+* `contract.ContractStatePicker`, picker for Contract State
 
 ## Dispatched Redux Actions
 * `CONTRACT_CONTRACTS_{REQ|RESP|ERR}`, fetching Contracts (as triggered by the searcher)

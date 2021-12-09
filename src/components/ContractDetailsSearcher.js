@@ -106,7 +106,7 @@ class ContractDetailsSearcher extends Component {
                     pubRef="policyHolder.PolicyHolderInsureePicker"
                     value={contractDetails.insuree}
                     withLabel={false}
-                    policyHolderId={!!contract.policyHolder && decodeId(contract.policyHolder.id)}
+                    policyHolderId={contract?.policyHolder?.id}
                     readOnly/>
                 : "",
             contractDetails => !!contractDetails.contributionPlanBundle
@@ -114,7 +114,7 @@ class ContractDetailsSearcher extends Component {
                     pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
                     value={contractDetails.contributionPlanBundle}
                     withLabel={false}
-                    policyHolderId={!!contract.policyHolder && decodeId(contract.policyHolder.id)}
+                    policyHolderId={contract?.policyHolder?.id}
                     readOnly/>
                 : "",
             contractDetails => !!contractDetails.jsonExt

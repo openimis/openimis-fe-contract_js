@@ -18,6 +18,9 @@ import {
 } from "./components/ContractContributionDetailsTab";
 import { ContractPaymentsTabLabel, ContractPaymentsTabPanel } from "./components/ContractPaymentsTab";
 import { ContractInsureePolicyTabLabel, ContractInsureePolicyTabPanel } from "./components/ContractInsureePolicyTab";
+import ContractPicker from "./pickers/ContractPicker";
+import { CONTRACT_PICKER_PROJECTION } from "./actions";
+import ContractStatePicker from "./pickers/ContractStatePicker";
 
 const ROUTE_CONTRACTS = "contracts";
 const ROUTE_CONTRACT = "contracts/contract";
@@ -30,13 +33,16 @@ const DEFAULT_CONFIG = {
     "reducers": [{ key: 'contract', reducer }],
     "refs": [
         { key: "contract.route.contracts", ref: ROUTE_CONTRACTS },
-        { key: "contract.route.contract", ref: ROUTE_CONTRACT }
+        { key: "contract.route.contract", ref: ROUTE_CONTRACT },
+        { key: "contract.ContractPicker", ref: ContractPicker },
+        { key: "contract.ContractPicker.projection", ref: CONTRACT_PICKER_PROJECTION },
+        { key: "contract.ContractStatePicker", ref: ContractStatePicker }
     ],
     "core.Router": [
         { path: ROUTE_CONTRACTS, component: ContractsPage },
         { path: ROUTE_CONTRACT  + "/:contract_id?", component: ContractPage }
     ],
-    "insuree.MainMenu": [
+    "invoice.MainMenu": [
         {
             text: <FormattedMessage module="contract" id="menu.contracts" />,
             icon: <ReceiptIcon />,
@@ -57,7 +63,14 @@ const DEFAULT_CONFIG = {
         ContractInsureePolicyTabPanel,
     ],
     "policyHolder.TabPanel.label": [PolicyHolderContractsTabLabel],
-    "policyHolder.TabPanel.panel": [PolicyHolderContractsTabPanel]
+    "policyHolder.TabPanel.panel": [PolicyHolderContractsTabPanel],
+    "invoice.SubjectAndThirdpartyPicker": [
+        {
+            type: "contract",
+            picker: ContractPicker,
+            pickerProjection: CONTRACT_PICKER_PROJECTION
+        },
+    ],
 }
 
 export const ContractModule = (cfg) => {

@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessage, TextInput, NumberInput, PublishedComponent, decodeId } from "@openimis/fe-core";
+import { withModulesManager, formatMessage, TextInput, NumberInput, PublishedComponent } from "@openimis/fe-core";
 import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { DATE_TO_DATETIME_SUFFIX, GREATER_OR_EQUAL_LOOKUP, LESS_OR_EQUAL_LOOKUP, CONTAINS_LOOKUP, MIN_AMENDMENT_VALUE } from "../constants"
@@ -83,7 +83,7 @@ class ContractFilter extends Component {
                             onChange={v => onChangeFilters([{
                                 id: 'policyHolder_Id',
                                 value: v,
-                                filter: `policyHolder_Id: "${!!v && decodeId(v.id)}"`
+                                filter: `policyHolder_Id: "${!!v && v.id}"`
                             }])}
                         />
                     </Grid>

@@ -65,7 +65,17 @@ class ContractForm extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.fetchedContract !== this.props.fetchedContract && !!this.props.fetchedContract) {
             this.setState(
-                (state, props) => ({ contract: props.contract, reset: state.reset + 1, isDirty: false })
+                (state, props) => ({
+                    contract: {
+                        ...props.contract,
+                        policyHolder: {
+                            ...props.contract.policyHolder,
+                            id: decodeId(props.contract.policyHolder.id)
+                        },
+                    },
+                    reset: state.reset + 1,
+                    isDirty: false,
+                })
             );
         } else if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);

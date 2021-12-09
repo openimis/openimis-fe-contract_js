@@ -9,6 +9,8 @@ const CONTRACT_FULL_PROJECTION = modulesManager => [
     "policyHolder" + modulesManager.getProjection("policyHolder.PolicyHolderPicker.projection")
 ];
 
+export const CONTRACT_PICKER_PROJECTION = ["id", "code"];
+
 const CONTRACTDETAILS_FULL_PROJECTION = modulesManager => [
     "id", "jsonExt", "contract{id}", 
     "insuree" + modulesManager.getProjection("insuree.InsureePicker.projection"),
@@ -42,6 +44,15 @@ export function fetchContracts(modulesManager, params) {
         "contract",
         params,
         CONTRACT_FULL_PROJECTION(modulesManager)
+    );
+    return graphql(payload, "CONTRACT_CONTRACTS");
+}
+
+export function fetchPickerContracts(params) {
+    const payload = formatPageQuery(
+        "contract",
+        params,
+        CONTRACT_PICKER_PROJECTION
     );
     return graphql(payload, "CONTRACT_CONTRACTS");
 }
@@ -86,7 +97,7 @@ function formatContractGQL(contract, readOnlyFields = []) {
     return `
         ${!!contract.id ? `id: "${decodeId(contract.id)}"` : ''}
         ${!!contract.code && !readOnlyFields.includes('code') ? `code: "${formatGQLString(contract.code)}"` : ""}
-        ${!!contract.policyHolder && !readOnlyFields.includes('policyHolder') ? `policyHolderId: "${decodeId(contract.policyHolder.id)}"` : ""}
+        ${!!contract.policyHolder && !readOnlyFields.includes('policyHolder') ? `policyHolderId: "${contract.policyHolder.id}"` : ""}
         ${!!contract.dateApproved && !readOnlyFields.includes('dateApproved') ? `dateApproved: "${contract.dateApproved}"` : ""}
         ${!!contract.datePaymentDue && !readOnlyFields.includes('datePaymentDue') ? `datePaymentDue: "${contract.datePaymentDue}"` : ""}
         ${!!contract.paymentReference && !readOnlyFields.includes('paymentReference') ? `paymentReference: "${formatGQLString(contract.paymentReference)}"` : ""}

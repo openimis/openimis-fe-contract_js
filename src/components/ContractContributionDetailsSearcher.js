@@ -24,7 +24,7 @@ class ContractContributionDetailsSearcher extends Component {
                 pubRef="policyHolder.PolicyHolderInsureePicker"
                 value={contractContributionDetails.contractDetails.insuree}
                 withLabel={false}
-                policyHolderId={!!this.props.contract.policyHolder && decodeId(this.props.contract.policyHolder.id)}
+                policyHolderId={this.props.contract?.policyHolder?.id}
                 readOnly/>
             : "",
         contractContributionDetails => !!contractContributionDetails.contributionPlan
