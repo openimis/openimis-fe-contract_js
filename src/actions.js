@@ -3,11 +3,15 @@ import {
 } from "@openimis/fe-core";
 import { APPLY_DEFAULT_VALIDITY_FILTER } from "./constants";
 
+const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+
 const CONTRACT_FULL_PROJECTION = modulesManager => [
     "id", "code", "amount", "amountNotified", "amountRectified", "amountDue", "dateApproved", "datePaymentDue",
     "state", "paymentReference", "amendment", "dateValidFrom", "dateValidTo", "isDeleted",
     "policyHolder" + modulesManager.getProjection("policyHolder.PolicyHolderPicker.projection")
 ];
+
+export const CONTRACT_PICKER_PROJECTION = ["id", "code"];
 
 const CONTRACTDETAILS_FULL_PROJECTION = modulesManager => [
     "id", "jsonExt", "contract{id}", 
@@ -42,6 +46,15 @@ export function fetchContracts(modulesManager, params) {
         "contract",
         params,
         CONTRACT_FULL_PROJECTION(modulesManager)
+    );
+    return graphql(payload, "CONTRACT_CONTRACTS");
+}
+
+export function fetchPickerContracts(params) {
+    const payload = formatPageQuery(
+        "contract",
+        params,
+        CONTRACT_PICKER_PROJECTION
     );
     return graphql(payload, "CONTRACT_CONTRACTS");
 }
@@ -83,10 +96,16 @@ export function fetchInsureePolicies(modulesManager, params) {
 }
 
 function formatContractGQL(contract, readOnlyFields = []) {
+    // check if uuid decoded correctly 
+    var policyHolderId = null;
+    if (contract.policyHolder && !readOnlyFields.includes('policyHolder')){
+        policyHolderId = contract.policyHolder.id 
+        policyHolderId = (regexExp.test(policyHolderId))? policyHolderId : decodeId(policyHolderId);
+    }
     return `
         ${!!contract.id ? `id: "${decodeId(contract.id)}"` : ''}
         ${!!contract.code && !readOnlyFields.includes('code') ? `code: "${formatGQLString(contract.code)}"` : ""}
-        ${!!contract.policyHolder && !readOnlyFields.includes('policyHolder') ? `policyHolderId: "${decodeId(contract.policyHolder.id)}"` : ""}
+        ${!!contract.policyHolder && !readOnlyFields.includes('policyHolder') ? `policyHolderId: "${policyHolderId}"` : ""}
         ${!!contract.dateApproved && !readOnlyFields.includes('dateApproved') ? `dateApproved: "${contract.dateApproved}"` : ""}
         ${!!contract.datePaymentDue && !readOnlyFields.includes('datePaymentDue') ? `datePaymentDue: "${contract.datePaymentDue}"` : ""}
         ${!!contract.paymentReference && !readOnlyFields.includes('paymentReference') ? `paymentReference: "${formatGQLString(contract.paymentReference)}"` : ""}
