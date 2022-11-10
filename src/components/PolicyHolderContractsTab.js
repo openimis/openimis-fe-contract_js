@@ -54,7 +54,8 @@ class RawPolicyHolderContractsTabPanel extends Component {
 
     onCreateButtonClick = () => {
         const { history, policyHolder } = this.props;
-        history.push(`${this.contractCreatePageUrl()}?${QUERY_STRING_POLICYHOLDER}=${decodeId(policyHolder.id)}`);
+        let urlContractPageFromPolicyHolder = `${this.contractCreatePageUrl()}?${QUERY_STRING_POLICYHOLDER}=${decodeId(policyHolder.id)}`;
+        history.push(urlContractPageFromPolicyHolder.replace('front/',''));
     };
 
     onDoubleClick = (contract, newTab = false) => {
