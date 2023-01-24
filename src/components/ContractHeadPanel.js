@@ -118,6 +118,7 @@ class ContractHeadPanel extends FormPanel {
                             pubRef="policyHolder.PolicyHolderPicker"
                             module="contract"
                             withNull
+                            required
                             nullLabel={formatMessage(intl, "contract", "emptyLabel")}
                             value={!!edited && !!edited.policyHolder && edited.policyHolder}
                             onChange={v => this.updateAttribute('policyHolder', v)}
