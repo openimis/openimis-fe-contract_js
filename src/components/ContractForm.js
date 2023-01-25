@@ -100,8 +100,10 @@ class ContractForm extends Component {
 
     isMandatoryFieldsEmpty = () => {
         const { contract } = this.state;
-
-        return (!contract.code || !contract.policyHolder || !contract.dateValidFrom || !contract.dateValidTo);
+        if (!!contract.code && !!contract.dateValidFrom && !!contract.dateValidTo) {
+            return false;
+        }
+        return true;
     }
 
     canSave = () => !this.isMandatoryFieldsEmpty();
