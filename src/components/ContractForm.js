@@ -68,10 +68,10 @@ class ContractForm extends Component {
                 (state, props) => ({
                     contract: {
                         ...props.contract,
-                        policyHolder: {
+                        policyHolder: !!props.contract.policyHolder ? {
                             ...props.contract.policyHolder,
                             id: decodeId(props.contract.policyHolder.id)
-                        },
+                        } : null,
                     },
                     reset: state.reset + 1,
                     isDirty: false,
