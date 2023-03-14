@@ -76,12 +76,16 @@ class ContractSearcher extends Component {
             state.filters.hasOwnProperty("isDeleted") && !!state.filters["isDeleted"].value
                 ? state.filters["isDeleted"].value
                 : false;
+        if (!state.beforeCursor && !state.afterCursor) {
         params.push(`first: ${state.pageSize}`);
+        }
         if (!!state.afterCursor) {
             params.push(`after: "${state.afterCursor}"`);
+            params.push(`first: ${state.pageSize}`);
         }
         if (!!state.beforeCursor) {
             params.push(`before: "${state.beforeCursor}"`);
+            params.push(`last: ${state.pageSize}`);
         }
         if (!!state.orderBy) {
             params.push(`orderBy: ["${state.orderBy}"]`);
