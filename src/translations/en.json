@@ -104,5 +104,6 @@
     "contract.contractContributionDetails.searcher.title": "{contractContributionDetailsTotalCount} Contract Contribution Details Found",
     "contract.insureePolicy.label": "Persons Covered",
     "contract.insureePolicy.searcher.title": "{insureePoliciesTotalCount} Persons Covered Found",
-    "contract.contract": "Contract"
+    "contract.contract": "Contract",
+    "contract.codeTaken": "Contract code already exists"
 }

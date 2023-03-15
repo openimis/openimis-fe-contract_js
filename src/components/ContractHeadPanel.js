@@ -1,5 +1,10 @@
 import React, { Fragment } from "react";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+
 import { Grid, Divider, Typography } from "@material-ui/core";
+import { withTheme, withStyles } from "@material-ui/core/styles";
+
 import {
   withModulesManager,
   formatMessage,
@@ -8,9 +13,13 @@ import {
   FormattedMessage,
   PublishedComponent,
   NumberInput,
+  ValidatedTextInput,
 } from "@openimis/fe-core";
-import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import {
+  contractCodeValidation,
+  contractCodeSetValid,
+  contractCodeClear,
+} from "../actions";
 import {
   MAX_CODE_LENGTH,
   MAX_PAYMENT_REFERENCE_LENGTH,
@@ -91,6 +100,11 @@ class ContractHeadPanel extends FormPanel {
     }
   };
 
+  shouldValidate = (input) => {
+    const { savedContractCode } = this.props;
+    return input !== savedContractCode;
+  };
+
   render() {
     const {
       intl,
@@ -100,6 +114,9 @@ class ContractHeadPanel extends FormPanel {
       readOnlyFields,
       isAmendment,
       isPolicyHolderPredefined,
+      isCodeValid,
+      isCodeValidating,
+      codeValidationError,
     } = this.props;
     return (
       <Fragment>
@@ -134,12 +151,21 @@ class ContractHeadPanel extends FormPanel {
         )}
         <Grid container className={classes.item}>
           <Grid item xs={2} className={classes.item}>
-            <TextInput
+            <ValidatedTextInput
+              itemQueryIdentifier="insuranceNumber"
+              codeTakenLabel="contract.codeTaken"
+              shouldValidate={this.shouldValidate}
+              isValid={isCodeValid}
+              isValidating={isCodeValidating}
+              validationError={codeValidationError}
+              action={contractCodeValidation}
+              clearAction={contractCodeClear}
+              setValidAction={contractCodeSetValid}
               module="contract"
+              required={true}
               label="code"
-              required
-              inputProps={{ maxLength: MAX_CODE_LENGTH }}
               value={!!edited && !!edited.code ? edited.code : ""}
+              inputProps={{ maxLength: MAX_CODE_LENGTH }}
               onChange={(v) => this.updateAttribute("code", v)}
               readOnly={readOnlyFields.includes("code") || isAmendment}
             />
@@ -281,6 +307,16 @@ class ContractHeadPanel extends FormPanel {
   }
 }
 
+const mapStateToProps = (store) => ({
+  isCodeValid: store.contract.validationFields?.contractCode?.isValid,
+  isCodeValidating: store.contract.validationFields?.contractCode?.isValidating,
+  codeValidationError:
+    store.contract.validationFields?.contractCode?.validationError,
+  savedContractCode: store.contract.contract?.code,
+});
+
 export default withModulesManager(
-  injectIntl(withTheme(withStyles(styles)(ContractHeadPanel)))
+  injectIntl(
+    connect(mapStateToProps)(withTheme(withStyles(styles)(ContractHeadPanel)))
+  )
 );

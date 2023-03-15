@@ -5,6 +5,7 @@ import {
   decodeId,
   formatMutation,
   formatGQLString,
+  graphqlWithVariables,
 } from "@openimis/fe-core";
 import { APPLY_DEFAULT_VALIDITY_FILTER } from "./constants";
 
@@ -99,6 +100,12 @@ export function fetchContract(modulesManager, params) {
     CONTRACT_FULL_PROJECTION(modulesManager)
   );
   return graphql(payload, "CONTRACT_CONTRACT");
+}
+
+export function clearContract() {
+  return (dispatch) => {
+    dispatch({ type: "CONTRACT_CONTRACT_CLEAR" });
+  };
 }
 
 export function fetchContractDetails(modulesManager, params) {
@@ -572,3 +579,31 @@ export function deleteContractDetails(
     }
   );
 }
+
+export const contractCodeValidation = (mm, variables) => {
+  return graphqlWithVariables(
+    `
+        query ($insuranceNumber: String!) {
+          insureeNumberValidity(insureeNumber: $insuranceNumber) {
+            isValid
+            errorCode
+            errorMessage
+          }
+        }
+        `,
+    variables,
+    "CONTRACT_CODE_FIELDS_VALIDATION"
+  );
+};
+
+export const contractCodeSetValid = () => {
+  return (dispatch) => {
+    dispatch({ type: "CONTRACT_CODE_FIELDS_VALIDATION_SET_VALID" });
+  };
+};
+
+export const contractCodeClear = () => {
+  return (dispatch) => {
+    dispatch({ type: "CONTRACT_CODE_FIELDS_VALIDATION_CLEAR" });
+  };
+};

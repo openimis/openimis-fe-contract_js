@@ -94,6 +94,14 @@ function reducer(
         fetchingContract: false,
         errorContract: formatServerError(action.payload),
       };
+    case "CONTRACT_CONTRACT_CLEAR":
+      return {
+        ...state,
+        fetchingContract: false,
+        fetchedContract: false,
+        contract: [],
+        errorContract: null,
+      };
     case "CONTRACT_CONTRACTDETAILS_REQ":
       return {
         ...state,
@@ -183,6 +191,68 @@ function reducer(
         fetchingInsureePolicies: false,
         errorInsureePolicies: formatServerError(action.payload),
       };
+    case "CONTRACT_CODE_FIELDS_VALIDATION_REQ":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          contractCode: {
+            isValidating: true,
+            isValid: false,
+            validationError: null,
+          },
+        },
+      };
+    case "CONTRACT_CODE_FIELDS_VALIDATION_RESP":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          contractCode: {
+            isValidating: false,
+            //has to be adjusted to contract code query
+            isValid: action.payload?.data.insureeNumberValidity.isValid,
+            validationError: formatGraphQLError(action.payload),
+          },
+        },
+      };
+    case "CONTRACT_CODE_FIELDS_VALIDATION_ERR":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          contractCode: {
+            isValidating: false,
+            isValid: false,
+            validationError: formatServerError(action.payload),
+          },
+        },
+      };
+    case "CONTRACT_CODE_FIELDS_VALIDATION_CLEAR":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          contractCode: {
+            isValidating: true,
+            isValid: false,
+            validationError: null,
+          },
+        },
+      };
+    case "CONTRACT_CODE_FIELDS_VALIDATION_SET_VALID":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          contractCode: {
+            isValidating: false,
+            isValid: true,
+            validationError: null,
+          },
+        },
+      };
+
     case "CONTRACT_MUTATION_REQ":
       return dispatchMutationReq(state, action);
     case "CONTRACT_MUTATION_ERR":
