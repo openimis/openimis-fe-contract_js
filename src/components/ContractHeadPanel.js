@@ -152,7 +152,7 @@ class ContractHeadPanel extends FormPanel {
         <Grid container className={classes.item}>
           <Grid item xs={2} className={classes.item}>
             <ValidatedTextInput
-              itemQueryIdentifier="insuranceNumber"
+              itemQueryIdentifier="contractCode"
               codeTakenLabel="contract.codeTaken"
               shouldValidate={this.shouldValidate}
               isValid={isCodeValid}

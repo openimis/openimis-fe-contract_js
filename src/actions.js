@@ -583,13 +583,12 @@ export function deleteContractDetails(
 export const contractCodeValidation = (mm, variables) => {
   return graphqlWithVariables(
     `
-        query ($insuranceNumber: String!) {
-          insureeNumberValidity(insureeNumber: $insuranceNumber) {
-            isValid
-            errorCode
-            errorMessage
-          }
-        }
+    query ($contractCode: String!) {
+      validateContractCode(contractCode: $contractCode) 
+      {
+        isValid
+      }
+    }
         `,
     variables,
     "CONTRACT_CODE_FIELDS_VALIDATION"
