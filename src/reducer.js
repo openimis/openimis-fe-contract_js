@@ -99,7 +99,7 @@ function reducer(
         ...state,
         fetchingContract: false,
         fetchedContract: false,
-        contract: [],
+        contract: {},
         errorContract: null,
       };
     case "CONTRACT_CONTRACTDETAILS_REQ":
