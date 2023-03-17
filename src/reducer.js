@@ -210,7 +210,6 @@ function reducer(
           ...state.validationFields,
           contractCode: {
             isValidating: false,
-            //has to be adjusted to contract code query
             isValid: action.payload?.data?.validateContractCode.isValid,
             validationError: formatGraphQLError(action.payload),
           },
