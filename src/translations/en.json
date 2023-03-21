@@ -52,7 +52,7 @@
     "contract.deleteButton.tooltip": "Delete",
     "contract.DeleteContract.mutationLabel": "Delete Contract {label}",
     "contract.deleteContract.confirm.title": "Are you sure you want to delete {label}?",
-    "contract.deleteContract.confirm.message": "Deleting data does not mean erasing it from OpenIMIS database. The data will only be deactivated from the viewed list.",
+    "contract.deleteContract.confirm.message": "Deleting data does not mean erasing it from openIMIS database. The data will only be deactivated from the viewed list.",
     "contract.contractDetails.label": "Contract Details",
     "contract.contractDetails.searcher.title": "{contractDetailsTotalCount} Contract Details Found",
     "contract.contractDetails.tabDisabledError": "To start creating new Contract Details, you need to fill in General Information fields and click Save.",
