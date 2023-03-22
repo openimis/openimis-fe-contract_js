@@ -175,7 +175,7 @@ class ContractForm extends Component {
     }
 
     render() {
-        const { intl, rights, classes, contract, back, setConfirmedAction, counter, predefinedPolicyHolderId } = this.props;
+        const { intl, rights, classes, contract, back, setConfirmedAction, counter, save, predefinedPolicyHolderId } = this.props;
         return (
             <Fragment>
                 <Helmet title={formatMessageWithValues(this.props.intl, "contract", "page.title", this.titleParams())} />
@@ -205,6 +205,7 @@ class ContractForm extends Component {
                     setConfirmedAction={setConfirmedAction}
                     isAmendment={this.isAmendment()}
                     isPolicyHolderPredefined={!!predefinedPolicyHolderId}
+                    openDirty={save}
                 />
                 {rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable() && !this.state.isDirty && (
                     <Tooltip title={formatMessage(intl, "contract", "counterButton.tooltip")} placement="left">
