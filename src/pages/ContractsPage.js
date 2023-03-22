@@ -17,6 +17,8 @@ import {
   RIGHT_POLICYHOLDERCONTRACT_CREATE,
   RIGHT_POLICYHOLDERCONTRACT_UPDATE,
   RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+  CONTRACT_ROUTE_CONTRACT,
+  MODULE_NAME,
 } from "../constants";
 import ContractSearcher from "../components/ContractSearcher";
 import { Fab } from "@material-ui/core";
@@ -32,11 +34,11 @@ class ContractsPage extends Component {
     historyPush(
       this.props.modulesManager,
       this.props.history,
-      "contract.route.contract"
+      CONTRACT_ROUTE_CONTRACT
     );
 
   contractUpdatePageUrl = (contract) =>
-    `${this.props.modulesManager.getRef("contract.route.contract")}${
+    `${this.props.modulesManager.getRef(CONTRACT_ROUTE_CONTRACT)}${
       "/" + decodeId(contract.id)
     }`;
 
@@ -49,7 +51,7 @@ class ContractsPage extends Component {
       historyPush(
         modulesManager,
         history,
-        "contract.route.contract",
+        CONTRACT_ROUTE_CONTRACT,
         [decodeId(contract.id)],
         newTab
       );
@@ -57,9 +59,8 @@ class ContractsPage extends Component {
   };
 
   componentDidMount = () => {
-    const moduleName = "contact";
     const { module } = this.props;
-    if (module !== moduleName) this.props.clearCurrentPaginationPage();
+    if (module !== MODULE_NAME) this.props.clearCurrentPaginationPage();
   };
 
   render() {
