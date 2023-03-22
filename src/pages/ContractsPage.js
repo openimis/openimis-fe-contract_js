@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import {
   Helmet,
   withModulesManager,
@@ -6,6 +7,7 @@ import {
   withTooltip,
   historyPush,
   decodeId,
+  clearCurrentPaginationPage,
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
@@ -54,6 +56,12 @@ class ContractsPage extends Component {
     }
   };
 
+  componentDidMount = () => {
+    const moduleName = "contact";
+    const { module } = this.props;
+    if (module !== moduleName) this.props.clearCurrentPaginationPage();
+  };
+
   render() {
     const { intl, classes, rights } = this.props;
     return (
@@ -91,10 +99,18 @@ const mapStateToProps = (state) => ({
     !!state.core && !!state.core.user && !!state.core.user.i_user
       ? state.core.user.i_user.rights
       : [],
+  module: state.core?.savedPagination?.module,
 });
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ clearCurrentPaginationPage }, dispatch);
 
 export default withModulesManager(
   injectIntl(
-    withTheme(withStyles(styles)(connect(mapStateToProps, null)(ContractsPage)))
+    withTheme(
+      withStyles(styles)(
+        connect(mapStateToProps, mapDispatchToProps)(ContractsPage)
+      )
+    )
   )
 );
