@@ -18,7 +18,7 @@ const styles = theme => ({
 class ContractContributionDetailsFilter extends Component {
     _filterValue = k => {
         const { filters } = this.props;
-        return !!filters[k] ? filters[k].value : null
+        return !!filters[k] ? filters[k].value : "";
     }
 
     render() {
