@@ -58,15 +58,19 @@ class ContractDetailsSearcher extends Component {
         let params = Object.keys(state.filters)
             .filter(f => !!state.filters[f]['filter'])
             .map(f => state.filters[f]['filter']);
+        if (!state.beforeCursor && !state.afterCursor) {
         params.push(`first: ${state.pageSize}`);
+        }
         if (!state.filters.hasOwnProperty('isDeleted')) {
             params.push("isDeleted: false");
         }
         if (!!state.afterCursor) {
             params.push(`after: "${state.afterCursor}"`);
+            params.push(`first: ${state.pageSize}`);
         }
         if (!!state.beforeCursor) {
             params.push(`before: "${state.beforeCursor}"`);
+            params.push(`last: ${state.pageSize}`);
         }
         if (!!state.orderBy) {
             params.push(`orderBy: ["${state.orderBy}"]`);

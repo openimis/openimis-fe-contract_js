@@ -1,4 +1,15 @@
 import React, { Component, Fragment } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+
+import { Fab, Tooltip } from "@material-ui/core";
+import { withTheme, withStyles } from "@material-ui/core/styles";
+import CheckIcon from "@material-ui/icons/Check";
+import CloseIcon from "@material-ui/icons/Close";
+import NoteAddIcon from "@material-ui/icons/NoteAdd";
+import OpenInBrowserIcon from "@material-ui/icons/OpenInBrowser";
+
 import {
     Form,
     withModulesManager,
@@ -8,17 +19,7 @@ import {
     decodeId,
     Helmet,
 } from "@openimis/fe-core";
-import { Fab, Tooltip } from "@material-ui/core";
-import { injectIntl } from "react-intl";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { fetchContract } from "../actions";
-import OpenInBrowserIcon from "@material-ui/icons/OpenInBrowser";
-import CheckIcon from "@material-ui/icons/Check";
-import CloseIcon from "@material-ui/icons/Close";
-import NoteAddIcon from "@material-ui/icons/NoteAdd";
-import ContractHeadPanel from "./ContractHeadPanel";
+import { fetchContract, clearContract} from "../actions";
 import {
     UPDATABLE_STATES,
     APPROVABLE_STATES,
@@ -30,6 +31,7 @@ import {
     RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
     RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
 } from "../constants";
+import ContractHeadPanel from "./ContractHeadPanel";
 import ContractTabPanel from "./ContractTabPanel";
 
 const styles = theme => ({
@@ -68,10 +70,10 @@ class ContractForm extends Component {
                 (state, props) => ({
                     contract: {
                         ...props.contract,
-                        policyHolder: {
+                        policyHolder: !!props.contract.policyHolder ? {
                             ...props.contract.policyHolder,
                             id: decodeId(props.contract.policyHolder.id)
-                        },
+                        } : null,
                     },
                     reset: state.reset + 1,
                     isDirty: false,
@@ -98,6 +100,10 @@ class ContractForm extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.props.clearContract();
+    }
+
     isMandatoryFieldsEmpty = () => {
         const { contract } = this.state;
         if (!!contract.code && !!contract.dateValidFrom && !!contract.dateValidTo) {
@@ -106,7 +112,7 @@ class ContractForm extends Component {
         return true;
     }
 
-    canSave = () => !this.isMandatoryFieldsEmpty();
+    canSave = () => !this.isMandatoryFieldsEmpty() && this.props.isCodeValid;
 
     save = contract => this.props.save(contract, this.state.readOnlyFields);
 
@@ -175,7 +181,7 @@ class ContractForm extends Component {
     }
 
     render() {
-        const { intl, rights, classes, contract, back, setConfirmedAction, counter, predefinedPolicyHolderId } = this.props;
+        const { intl, rights, classes, contract, back, setConfirmedAction, counter, save, predefinedPolicyHolderId } = this.props;
         return (
             <Fragment>
                 <Helmet title={formatMessageWithValues(this.props.intl, "contract", "page.title", this.titleParams())} />
@@ -205,6 +211,7 @@ class ContractForm extends Component {
                     setConfirmedAction={setConfirmedAction}
                     isAmendment={this.isAmendment()}
                     isPolicyHolderPredefined={!!predefinedPolicyHolderId}
+                    openDirty={save}
                 />
                 {rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable() && !this.state.isDirty && (
                     <Tooltip title={formatMessage(intl, "contract", "counterButton.tooltip")} placement="left">
@@ -227,11 +234,12 @@ const mapStateToProps = state => ({
     errorContract: state.contract.errorContract,
     policyHolders: state.policyHolder.policyHolders,
     submittingMutation: state.contract.submittingMutation,
-    mutation: state.contract.mutation
+    mutation: state.contract.mutation,
+    isCodeValid: state.contract.validationFields?.contractCode?.isValid,
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchContract, journalize }, dispatch);
+    return bindActionCreators({ clearContract, fetchContract, journalize }, dispatch);
 };
 
 export default withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ContractForm)))));

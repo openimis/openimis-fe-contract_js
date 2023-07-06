@@ -41,3 +41,5 @@ export const RIGHT_PORTALPAYMENT_SEARCH = 154501
 export const RIGHT_INSUREEPOLICY_SEARCH = 101500
 export const RIGHT_PORTALINSUREEPOLICY_SEARCH = 154901
 export const APPLY_DEFAULT_VALIDITY_FILTER = "applyDefaultValidityFilter";
+export const MODULE_NAME = "contact";
+export const CONTRACT_ROUTE_CONTRACT = "contract.route.contract";
