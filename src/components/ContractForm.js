@@ -94,7 +94,12 @@ class ContractForm extends Component {
             this.setState((state, props) => ({
                 contract: {
                     ...state.contract,
-                    policyHolder: props.policyHolders.find((v) => decodeId(v.id) === props.predefinedPolicyHolderId)
+                    policyHolder: props.predefinedPolicyHolderId 
+                      ? props.policyHolders.find((v) => decodeId(v.id) === props.predefinedPolicyHolderId)  
+                      : ( props.contract.policyHolder 
+                        ? props.policyHolders.find((v) => decodeId(v.id) === decodeId(props.contract.policyHolder.id))
+                        : null
+                      )
                 }
             }));
         }
