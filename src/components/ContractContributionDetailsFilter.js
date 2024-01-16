@@ -18,7 +18,12 @@ const styles = theme => ({
 class ContractContributionDetailsFilter extends Component {
     _filterValue = k => {
         const { filters } = this.props;
-        return !!filters[k] ? filters[k].value : null
+        return !!filters[k] ? filters[k].value : null;
+    }
+
+    _filterTextFieldValue = (key) => {
+        const { filters } = this.props;
+        return !!filters[key] ? filters[key].value : "";
     }
 
     render() {
@@ -29,7 +34,7 @@ class ContractContributionDetailsFilter extends Component {
                     <TextInput
                         module="contract" 
                         label="insureeChfId"
-                        value={this._filterValue('contractDetails_Insuree_ChfId')}
+                        value={this._filterTextFieldValue('contractDetails_Insuree_ChfId')}
                         onChange={v => onChangeFilters([{
                             id: 'contractDetails_Insuree_ChfId',
                             value: v,
@@ -69,6 +74,7 @@ class ContractContributionDetailsFilter extends Component {
                         pubRef="product.ProductPicker"
                         withNull={true}
                         label={formatMessage(intl, "contract", "benefitPlan")}
+                        value={this._filterValue('contributionPlan_BenefitPlan_Id')}
                         onChange={v => onChangeFilters([{
                             id: 'contributionPlan_BenefitPlan_Id',
                             value: v,

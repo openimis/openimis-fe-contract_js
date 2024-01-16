@@ -27,7 +27,12 @@ class ContractFilter extends Component {
 
     _filterValue = k => {
         const { filters } = this.props;
-        return !!filters[k] ? filters[k].value : null
+        return !!filters[k] ? filters[k].value : null;
+    }
+
+    _filterTextFieldValue = (key) => {
+        const { filters } = this.props;
+        return !!filters[key] ? filters[key].value : "";
     }
 
     _onChangeFilter = (k, v) => {
@@ -68,7 +73,7 @@ class ContractFilter extends Component {
                     <TextInput
                         module="contract"
                         label="code"
-                        value={this._filterValue('code')}
+                        value={this._filterTextFieldValue('code')}
                         onChange={v => this._onChangeStringFilter('code', v, CONTAINS_LOOKUP)}
                     />
                 </Grid>
@@ -139,7 +144,7 @@ class ContractFilter extends Component {
                     <TextInput
                         module="contract"
                         label="paymentReference"
-                        value={this._filterValue('paymentReference')}
+                        value={this._filterTextFieldValue('paymentReference')}
                         onChange={v => this._onChangeStringFilter('paymentReference', v, CONTAINS_LOOKUP)}
                     />
                 </Grid>
