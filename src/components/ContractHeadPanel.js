@@ -280,10 +280,13 @@ class ContractHeadPanel extends FormPanel {
               module="contract"
               label="dateValidFrom"
               required
-              maxDate={!!edited && !!edited.dateValidTo && edited.dateValidTo}
               value={!!edited && !!edited.dateValidFrom && edited.dateValidFrom}
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
               readOnly={readOnlyFields.includes("dateValidFrom") || isAmendment}
+              // NOTE: maxDate cannot be passed if endDate does not exist.
+              // Passing any other falsy value will block months manipulation.
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...(edited.dateValidTo ? { maxDate: edited.dateValidTo } : null)}
             />
           </Grid>
           <Grid item xs={2} className={classes.item}>
@@ -292,12 +295,13 @@ class ContractHeadPanel extends FormPanel {
               module="contract"
               label="dateValidTo"
               required
-              minDate={
-                !!edited && !!edited.dateValidFrom && edited.dateValidFrom
-              }
               value={!!edited && !!edited.dateValidTo && edited.dateValidTo}
               onChange={(v) => this.updateAttribute("dateValidTo", v)}
               readOnly={readOnlyFields.includes("dateValidTo")}
+              // NOTE: minDate cannot be passed if startDate does not exist.
+              // Passing any other falsy value will block months manipulation.
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...(edited.dateValidFrom ? { minDate: edited.dateValidFrom } : null)}
             />
           </Grid>
         </Grid>
