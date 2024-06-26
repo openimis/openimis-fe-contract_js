@@ -149,7 +149,7 @@ class CreateContractDetailsDialog extends Component {
                                 <PublishedComponent
                                     pubRef="policyHolder.PolicyHolderInsureePicker"
                                     required
-                                    withNull
+                                    withNull={false}
                                     policyHolderId={contract?.policyHolder?.id}
                                     value={!!contractDetails.insuree && contractDetails.insuree}
                                     readOnly
@@ -158,7 +158,7 @@ class CreateContractDetailsDialog extends Component {
                             <Grid item className={classes.item}>
                                 <PublishedComponent
                                     pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
-                                    withNull
+                                    withNull={false}
                                     nullLabel={formatMessage(intl, "contract", "emptyLabel")}
                                     policyHolderId={contract?.policyHolder?.id}
                                     value={!!contractDetails.contributionPlanBundle && contractDetails.contributionPlanBundle}
