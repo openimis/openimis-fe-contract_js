@@ -38,8 +38,8 @@ const styles = theme => ({
     fab: theme.fab,
     counterFab: {
         position: 'fixed',
-        bottom: theme.spacing(11),
-        right: theme.spacing(2),
+        bottom: theme.spacing(18),
+        right: theme.spacing(1),
         zIndex: 1200
     }
 });
@@ -221,7 +221,7 @@ class ContractForm extends Component {
                 {rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable() && !this.state.isDirty && (
                     <Tooltip title={formatMessage(intl, "contract", "counterButton.tooltip")} placement="left">
                         <div className={classes.counterFab}>
-                            <Fab color="primary" size="small" onClick={() => counter(this.state.contract)}>
+                            <Fab color="primary" size="normal" onClick={() => counter(this.state.contract)}>
                                 <CloseIcon/>
                             </Fab>
                         </div>
