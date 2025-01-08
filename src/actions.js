@@ -9,8 +9,8 @@ import {
 } from "@openimis/fe-core";
 import { APPLY_DEFAULT_VALIDITY_FILTER } from "./constants";
 
-const regexExp =
-  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+const uuidRegex = 
+  /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/i;
 
 const CONTRACT_FULL_PROJECTION = (modulesManager) => [
   "id",
@@ -140,7 +140,7 @@ function formatContractGQL(contract, readOnlyFields = []) {
   var policyHolderId = null;
   if (contract.policyHolder && !readOnlyFields.includes("policyHolder")) {
     policyHolderId = contract.policyHolder.id;
-    policyHolderId = regexExp.test(policyHolderId)
+    policyHolderId = uuidRegex.test(policyHolderId)
       ? policyHolderId
       : decodeId(policyHolderId);
   }
