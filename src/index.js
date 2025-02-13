@@ -47,7 +47,8 @@ const DEFAULT_CONFIG = {
             text: <FormattedMessage module="contract" id="menu.contracts" />,
             icon: <ReceiptIcon />,
             route: "/" + ROUTE_CONTRACTS,
-            filter: rights => rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH)
+            filter: rights => rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH),
+            id: "legalAndFinance.contracts",
         }
     ],
     "contract.TabPanel.label": [
