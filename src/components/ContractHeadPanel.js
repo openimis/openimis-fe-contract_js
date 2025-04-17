@@ -177,6 +177,7 @@ class ContractHeadPanel extends FormPanel {
               withNull={false}
               value={!!edited && !!edited.policyHolder && edited.policyHolder}
               onChange={(v) => this.updateAttribute("policyHolder", v)}
+              required
               readOnly={
                 readOnlyFields.includes("policyHolder") ||
                 isAmendment ||
