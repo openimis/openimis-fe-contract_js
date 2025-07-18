@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { PublishedComponent } from "@openimis/fe-core";
-import { Grid } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { Grid } from "@mui/material";
+import { withTheme, withStyles } from "@mui/material/styles";
 
 const styles = theme => ({
     form: {

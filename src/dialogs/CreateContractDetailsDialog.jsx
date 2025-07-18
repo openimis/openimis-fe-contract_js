@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import EditIcon from "@material-ui/icons/Edit";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import AddIcon from "@mui/icons-material/Add";
 import {
     FormattedMessage,
     formatMessage,
@@ -14,16 +14,16 @@ import {
     coreConfirm,
     Contributions
 } from "@openimis/fe-core";
-import { Grid, IconButton, Tooltip } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { updateContractDetails } from "../actions";
+import { Fab, Grid } from "@mui/material";
+import { withTheme, withStyles } from "@mui/material/styles";
+import { createContractDetails } from "../actions";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
     CONTRACTDETAILS_CALCULATION_CONTRIBUTION_KEY,
     CONTRACTDETAILS_CLASSNAME,
-    RIGHT_CALCULATION_UPDATE
+    RIGHT_CALCULATION_WRITE
 } from "../constants";
 
 const styles = theme => ({
@@ -50,7 +50,6 @@ class CreateContractDetailsDialog extends Component {
         this.setState((_, props) => ({
             open: true,
             contractDetails: {
-                ...props.contractDetails,
                 contract: props.contract
             },
             jsonExtValid: true
@@ -62,26 +61,19 @@ class CreateContractDetailsDialog extends Component {
     };
 
     handleSave = () => {
-        const { intl, contract, coreConfirm, onSave, updateContractDetails, setConfirmedAction } = this.props;
+        const { intl, contract, coreConfirm, onSave, createContractDetails, setConfirmedAction } = this.props;
         const { contractDetails } = this.state;
         let confirm = () => coreConfirm(
-            formatMessage(intl, "contract", "contractDetails.editContractDetails.confirm.title"),
-            formatMessageWithValues(
-                intl,
-                "contract",
-                "contractDetails.editContractDetails.confirm.message",
-                {
-                    insuree: decodeId(contractDetails.insuree.id),
-                    contributionPlanBundle: contractDetails.contributionPlanBundle.code
-                })
+            formatMessage(intl, "contract", "contractDetails.createContractDetails.confirm.title"),
+            formatMessage(intl, "contract", "contractDetails.createContractDetails.confirm.message")
         );
         let confirmedAction = () => {
-            updateContractDetails(
+            createContractDetails(
                 contractDetails,
                 formatMessageWithValues(
                     intl,
                     "contract",
-                    "UpdateContractDetails.mutationLabel",
+                    "CreateContractDetails.mutationLabel",
                     {
                         insuree: decodeId(contractDetails.insuree.id),
                         contributionPlanBundle: contractDetails.contributionPlanBundle.code,
@@ -130,18 +122,16 @@ class CreateContractDetailsDialog extends Component {
         const { open, contractDetails } = this.state;
         return (
             <Fragment>
-                <Tooltip title={formatMessage(intl, "contract", "editButton.tooltip")}>
-                    <div>
-                        <IconButton
-                            onClick={this.handleOpen}
-                            disabled={disabled}>
-                            <EditIcon/>
-                        </IconButton>
-                    </div>
-                </Tooltip>
+                <Fab
+                    size="small"
+                    color="primary"
+                    onClick={this.handleOpen}
+                    disabled={disabled}>
+                    <AddIcon/>
+                </Fab>
                 <Dialog open={open} onClose={this.handleClose}>
                     <DialogTitle>
-                        <FormattedMessage module="contract" id="contractDetails.editContractDetails" />
+                        <FormattedMessage module="contract" id="contractDetails.createContractDetails" />
                     </DialogTitle>
                     <DialogContent>
                         <Grid container direction="column" className={classes.item}>
@@ -152,7 +142,7 @@ class CreateContractDetailsDialog extends Component {
                                     withNull={false}
                                     policyHolderId={contract?.policyHolder?.id}
                                     value={!!contractDetails.insuree && contractDetails.insuree}
-                                    readOnly
+                                    onChange={v => this.updateAttribute('insuree', v)}
                                 />
                             </Grid>
                             <Grid item className={classes.item}>
@@ -170,7 +160,7 @@ class CreateContractDetailsDialog extends Component {
                                 intl={intl}
                                 className={CONTRACTDETAILS_CLASSNAME}
                                 entity={contractDetails}
-                                requiredRights={[RIGHT_CALCULATION_UPDATE]}
+                                requiredRights={[RIGHT_CALCULATION_WRITE]}
                                 value={!!contractDetails.jsonExt && contractDetails.jsonExt}
                                 onChange={this.updateAttribute}
                                 gridItemStyle={classes.item}
@@ -183,7 +173,7 @@ class CreateContractDetailsDialog extends Component {
                             <FormattedMessage module="contract" id="dialog.cancel" />
                         </Button>
                         <Button onClick={this.handleSave} disabled={!this.canSave()} variant="contained" color="primary" autoFocus>
-                            <FormattedMessage module="contract" id="dialog.update" />
+                            <FormattedMessage module="contract" id="dialog.create" />
                         </Button>
                     </DialogActions>
                 </Dialog>
@@ -197,7 +187,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ updateContractDetails, coreConfirm }, dispatch);
+    return bindActionCreators({ createContractDetails, coreConfirm }, dispatch);
 };
 
 export default injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(CreateContractDetailsDialog))));

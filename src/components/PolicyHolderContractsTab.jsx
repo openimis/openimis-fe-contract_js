@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Tab, Grid, Typography, Fab } from "@material-ui/core";
+import { Tab, Grid, Typography, Fab } from "@mui/material";
 import {
     PublishedComponent,
     FormattedMessage,
@@ -9,7 +9,7 @@ import {
     decodeId,
     withHistory
 } from "@openimis/fe-core";
-import AddIcon from "@material-ui/icons/Add";
+import AddIcon from "@mui/icons-material/Add";
 import {
     RIGHT_POLICYHOLDERCONTRACT_CREATE,
     RIGHT_POLICYHOLDERCONTRACT_UPDATE,

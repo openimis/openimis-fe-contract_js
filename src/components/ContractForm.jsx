@@ -3,12 +3,12 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 
-import { Fab, Tooltip } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import CheckIcon from "@material-ui/icons/Check";
-import CloseIcon from "@material-ui/icons/Close";
-import NoteAddIcon from "@material-ui/icons/NoteAdd";
-import OpenInBrowserIcon from "@material-ui/icons/OpenInBrowser";
+import { Fab, Tooltip } from "@mui/material";
+import { withTheme, withStyles } from "@mui/material/styles";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import OpenInBrowserIcon from "@mui/icons-material/OpenInBrowser";
 
 import {
     Form,

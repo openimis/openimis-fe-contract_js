@@ -5,7 +5,7 @@ import reducer from "./reducer";
 import ContractsPage from "./pages/ContractsPage";
 import ContractPage from "./pages/ContractPage"
 import { FormattedMessage } from "@openimis/fe-core";
-import ReceiptIcon from "@material-ui/icons/Receipt";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 import { RIGHT_POLICYHOLDERCONTRACT_SEARCH } from "./constants";
 import { ContractDetailsTabLabel, ContractDetailsTabPanel } from "./components/ContractDetailsTab";
 import {

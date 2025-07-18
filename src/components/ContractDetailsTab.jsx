@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Tab, Grid, Typography } from "@material-ui/core";
+import { Tab, Grid, Typography } from "@mui/material";
 import { formatMessage, PublishedComponent, FormattedMessage } from "@openimis/fe-core";
 import {
     RIGHT_POLICYHOLDERCONTRACT_UPDATE,
@@ -27,7 +27,7 @@ class ContractDetailsTabLabel extends Component {
                     onChange={onChange}
                     disabled={disabled}
                     className={tabStyle(CONTRACTDETAILS_TAB_VALUE)}
-                    selected={isSelected(CONTRACTDETAILS_TAB_VALUE)}
+                    // selected prop removed for MUI v5; selection is controlled by Tabs value prop
                     value={CONTRACTDETAILS_TAB_VALUE}
                     label={formatMessage(intl, "contract", "contractDetails.label")}
                 />
@@ -83,7 +83,7 @@ class ContractDetailsTabPanel extends Component {
                 >
                     {isTabsEnabled ? (
                         <Fragment>
-                            <Grid container justify="flex-end" alignItems="center" spacing={1}>
+                            <Grid container justifyContent="flex-end" alignItems="center" spacing={1}>
                                 <Grid item>
                                     <Typography>
                                         <FormattedMessage

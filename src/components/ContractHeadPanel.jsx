@@ -2,8 +2,8 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 
-import { Grid, Divider, Typography } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { Grid, Divider, Typography } from "@mui/material";
+import { withTheme, withStyles } from "@mui/material/styles";
 
 import {
   withModulesManager,

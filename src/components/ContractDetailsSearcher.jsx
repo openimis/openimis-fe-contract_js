@@ -14,8 +14,8 @@ import {
 import { fetchContractDetails, deleteContractDetails } from "../actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { IconButton } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
     DEFAULT_PAGE_SIZE,
     ROWS_PER_PAGE_OPTIONS,
