@@ -15,7 +15,7 @@ import {
     Contributions
 } from "@openimis/fe-core";
 import { Fab, Grid } from "@mui/material";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { useTheme, styled } from "@mui/material/styles";
 import { createContractDetails } from "../actions";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
@@ -26,9 +26,9 @@ import {
     RIGHT_CALCULATION_WRITE
 } from "../constants";
 
-const styles = theme => ({
-    item: theme.paper.item
-});
+const StyledGrid = styled(Grid)(({ theme }) => ({
+    '& .item': theme.paper.item
+}));
 
 class CreateContractDetailsDialog extends Component {
     constructor(props) {
@@ -118,7 +118,7 @@ class CreateContractDetailsDialog extends Component {
     setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
 
     render() {
-        const { intl, classes, contract, disabled } = this.props;
+        const { intl, contract, disabled } = this.props;
         const { open, contractDetails } = this.state;
         return (
             <Fragment>
@@ -134,8 +134,8 @@ class CreateContractDetailsDialog extends Component {
                         <FormattedMessage module="contract" id="contractDetails.createContractDetails" />
                     </DialogTitle>
                     <DialogContent>
-                        <Grid container direction="column" className={classes.item}>
-                            <Grid item className={classes.item}>
+                        <StyledGrid container direction="column" className="item">
+                            <StyledGrid item className="item">
                                 <PublishedComponent
                                     pubRef="policyHolder.PolicyHolderInsureePicker"
                                     required
@@ -144,8 +144,8 @@ class CreateContractDetailsDialog extends Component {
                                     value={!!contractDetails.insuree && contractDetails.insuree}
                                     onChange={v => this.updateAttribute('insuree', v)}
                                 />
-                            </Grid>
-                            <Grid item className={classes.item}>
+                            </StyledGrid>
+                            <StyledGrid item className="item">
                                 <PublishedComponent
                                     pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
                                     withNull={false}
@@ -154,7 +154,7 @@ class CreateContractDetailsDialog extends Component {
                                     value={!!contractDetails.contributionPlanBundle && contractDetails.contributionPlanBundle}
                                     readOnly
                                 />
-                            </Grid>
+                            </StyledGrid>
                             <Contributions
                                 contributionKey={CONTRACTDETAILS_CALCULATION_CONTRIBUTION_KEY}
                                 intl={intl}
@@ -163,10 +163,10 @@ class CreateContractDetailsDialog extends Component {
                                 requiredRights={[RIGHT_CALCULATION_WRITE]}
                                 value={!!contractDetails.jsonExt && contractDetails.jsonExt}
                                 onChange={this.updateAttribute}
-                                gridItemStyle={classes.item}
+                                gridItemStyle="item"
                                 setJsonExtValid={this.setJsonExtValid}
                             />
-                        </Grid>
+                        </StyledGrid>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} variant="outlined">
@@ -190,4 +190,4 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ createContractDetails, coreConfirm }, dispatch);
 };
 
-export default injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(CreateContractDetailsDialog))));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(CreateContractDetailsDialog));

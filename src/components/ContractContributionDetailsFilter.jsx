@@ -3,17 +3,17 @@ import { injectIntl } from 'react-intl';
 import { connect } from "react-redux";
 import { formatMessage, TextInput, PublishedComponent, decodeId } from "@openimis/fe-core";
 import { Grid } from "@mui/material";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { useTheme, styled } from "@mui/material/styles";
 import { STARTS_WITH_LOOKUP } from "../constants"
 
-const styles = theme => ({
-    form: {
+const StyledGrid = styled(Grid)(({ theme }) => ({
+    '& .form': {
         padding: 0
     },
-    item: {
+    '& .item': {
         padding: theme.spacing(1)
     }
-});
+}));
 
 class ContractContributionDetailsFilter extends Component {
     _filterValue = k => {
@@ -27,10 +27,10 @@ class ContractContributionDetailsFilter extends Component {
     }
 
     render() {
-        const { intl, classes, onChangeFilters, policyHolder } = this.props;
+        const { intl, onChangeFilters, policyHolder } = this.props;
         return (
-            <Grid container className={classes.form}>
-                <Grid item xs={3} className={classes.item}>
+            <StyledGrid container className="form">
+                <StyledGrid item xs={3} className="item">
                     <TextInput
                         module="contract" 
                         label="insureeChfId"
@@ -41,8 +41,8 @@ class ContractContributionDetailsFilter extends Component {
                             filter: `contractDetails_Insuree_ChfId_${STARTS_WITH_LOOKUP}: "${v}"`
                         }])}
                     />
-                </Grid>
-                <Grid item xs={3} className={classes.item}>
+                </StyledGrid>
+                <StyledGrid item xs={3} className="item">
                     <PublishedComponent
                         pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
                         withNull
@@ -55,8 +55,8 @@ class ContractContributionDetailsFilter extends Component {
                             filter: `contractDetails_ContributionPlanBundle_Id: "${!!v && decodeId(v.id)}"`
                         }])}
                     />
-                </Grid>
-                <Grid item xs={3} className={classes.item}>
+                </StyledGrid>
+                <StyledGrid item xs={3} className="item">
                     <PublishedComponent
                         pubRef="contributionPlan.ContributionPlanPicker"
                         withNull
@@ -68,8 +68,8 @@ class ContractContributionDetailsFilter extends Component {
                             filter: `contributionPlan_Id: "${!!v && decodeId(v.id)}"`
                         }])}
                     />
-                </Grid>
-                <Grid item xs={3} className={classes.item}>
+                </StyledGrid>
+                <StyledGrid item xs={3} className="item">
                     <PublishedComponent
                         pubRef="product.ProductPicker"
                         withNull={true}
@@ -81,8 +81,8 @@ class ContractContributionDetailsFilter extends Component {
                             filter: `contributionPlan_BenefitPlan_Id: ${!!v && decodeId(v.id)}`
                         }])}
                     />
-                </Grid>
-            </Grid>
+                </StyledGrid>
+            </StyledGrid>
         )
     }
 }
@@ -91,4 +91,4 @@ const mapStateToProps = state => ({
     policyHolder: !!state.contract.contract ? state.contract.contract.policyHolder : null
 });
 
-export default injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, null)((ContractContributionDetailsFilter)))));
+export default injectIntl(connect(mapStateToProps, null)((ContractContributionDetailsFilter)));

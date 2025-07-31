@@ -10,7 +10,7 @@ import {
   clearCurrentPaginationPage,
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { useTheme, styled } from "@mui/material/styles";
 import { connect } from "react-redux";
 import {
   RIGHT_POLICYHOLDERCONTRACT_SEARCH,
@@ -24,10 +24,10 @@ import ContractSearcher from "../components/ContractSearcher";
 import { Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
-const styles = (theme) => ({
-  page: theme.page,
-  fab: theme.fab,
-});
+const StyledDiv = styled("div")(({ theme }) => ({
+  ...theme.page,
+  '& .fab': theme.fab,
+}));
 
 class ContractsPage extends Component {
   onAdd = () =>
@@ -64,10 +64,10 @@ class ContractsPage extends Component {
   };
 
   render() {
-    const { intl, classes, rights } = this.props;
+    const { intl, rights } = this.props;
     return (
       rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH) && (
-        <div className={classes.page}>
+        <StyledDiv className="page">
           <Helmet
             title={formatMessage(
               this.props.intl,
@@ -82,14 +82,14 @@ class ContractsPage extends Component {
           />
           {rights.includes(RIGHT_POLICYHOLDERCONTRACT_CREATE) &&
             withTooltip(
-              <div className={classes.fab}>
+              <div className="fab">
                 <Fab color="primary" onClick={this.onAdd}>
                   <AddIcon />
                 </Fab>
               </div>,
               formatMessage(intl, "contract", "createButton.tooltip")
             )}
-        </div>
+        </StyledDiv>
       )
     );
   }
@@ -108,10 +108,6 @@ const mapDispatchToProps = (dispatch) =>
 
 export default withModulesManager(
   injectIntl(
-    withTheme(
-      withStyles(styles)(
-        connect(mapStateToProps, mapDispatchToProps)(ContractsPage)
-      )
-    )
+    connect(mapStateToProps, mapDispatchToProps)(ContractsPage)
   )
 );

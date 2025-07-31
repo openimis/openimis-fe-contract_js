@@ -2,7 +2,7 @@ import React from "react";
 import { Paper, Grid } from "@mui/material";
 import { withModulesManager, FormPanel, Contributions } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { useTheme, styled } from "@mui/material/styles";
 import {
     RIGHT_POLICYHOLDERCONTRACT_UPDATE,
     RIGHT_POLICYHOLDERCONTRACT_APPROVE,
@@ -12,19 +12,19 @@ import {
     RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
 } from "../constants";
 
-const styles = theme => ({
-    paper: theme.paper.paper,
-    tableTitle: theme.table.title,
-    tabs: {
+const StyledPaper = styled(Paper)(({ theme }) => ({
+    ...theme.paper.paper,
+    '& .tableTitle': theme.table.title,
+    '& .tabs': {
         padding: 0
     },
-    selectedTab: {
+    '& .selectedTab': {
         borderBottom: "4px solid white"
     },
-    unselectedTab: {
+    '& .unselectedTab': {
         borderBottom: "4px solid transparent"
     }
-});
+}));
 
 const CONTRACT_TABS_PANEL_CONTRIBUTION_KEY = "contract.TabPanel.panel";
 const CONTRACT_TABS_LABEL_CONTRIBUTION_KEY = "contract.TabPanel.label";
@@ -44,17 +44,17 @@ class ContractTabPanel extends FormPanel {
 
     isSelected = value => value === this.state.value;
 
-    tabStyle = value => this.isSelected(value) ? this.props.classes.selectedTab : this.props.classes.unselectedTab;
+    tabStyle = value => this.isSelected(value) ? "selectedTab" : "unselectedTab";
 
     handleChange = (_, value) => this.setState({ value });
 
     render() {
-        const { intl, rights, classes, edited, mandatoryFieldsEmpty, setConfirmedAction, isUpdatable, isApprovable } = this.props;
+        const { intl, rights, edited, mandatoryFieldsEmpty, setConfirmedAction, isUpdatable, isApprovable } = this.props;
         const { value } = this.state;
         const isTabsEnabled = !!edited && !!edited.id && !mandatoryFieldsEmpty;
         return (
-            <Paper className={classes.paper}>
-                <Grid container className={`${classes.tableTitle} ${classes.tabs}`}>
+            <StyledPaper className="paper">
+                <Grid container className="tableTitle tabs">
                     <Contributions
                         contributionKey={CONTRACT_TABS_LABEL_CONTRIBUTION_KEY}
                         intl={intl}
@@ -78,9 +78,9 @@ class ContractTabPanel extends FormPanel {
                     isUpdatable={isUpdatable}
                     isApprovable={isApprovable}
                 />
-            </Paper>
+            </StyledPaper>
         )
     }
 }
 
-export default withModulesManager(injectIntl(withTheme(withStyles(styles)(ContractTabPanel))));
+export default withModulesManager(injectIntl(ContractTabPanel));

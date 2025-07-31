@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 
 import { Fab, Tooltip } from "@mui/material";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { useTheme, styled } from "@mui/material/styles";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
@@ -34,15 +34,15 @@ import {
 import ContractHeadPanel from "./ContractHeadPanel";
 import ContractTabPanel from "./ContractTabPanel";
 
-const styles = theme => ({
-    fab: theme.fab,
-    counterFab: {
+const StyledDiv = styled("div")(({ theme }) => ({
+    ...theme.fab,
+    '& .counterFab': {
         position: 'fixed',
         bottom: theme.spacing(18),
         right: theme.spacing(1),
         zIndex: 1200
     }
-});
+}));
 
 class ContractForm extends Component {
     constructor(props) {
@@ -186,7 +186,7 @@ class ContractForm extends Component {
     }
 
     render() {
-        const { intl, rights, classes, contract, back, setConfirmedAction, counter, save, predefinedPolicyHolderId } = this.props;
+        const { intl, rights, contract, back, setConfirmedAction, counter, save, predefinedPolicyHolderId } = this.props;
         return (
             <Fragment>
                 <Helmet title={formatMessageWithValues(this.props.intl, "contract", "page.title", this.titleParams())} />
@@ -220,11 +220,11 @@ class ContractForm extends Component {
                 />
                 {rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable() && !this.state.isDirty && (
                     <Tooltip title={formatMessage(intl, "contract", "counterButton.tooltip")} placement="left">
-                        <div className={classes.counterFab}>
+                        <StyledDiv className="counterFab">
                             <Fab color="primary" size="normal" onClick={() => counter(this.state.contract)}>
                                 <CloseIcon/>
                             </Fab>
-                        </div>
+                        </StyledDiv>
                     </Tooltip>
                 )}
             </Fragment>
@@ -247,4 +247,4 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ clearContract, fetchContract, journalize }, dispatch);
 };
 
-export default withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ContractForm)))));
+export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContractForm)));
