@@ -84,7 +84,7 @@ class ContractDetailsTabPanel extends Component {
                     {isTabsEnabled ? (
                         <Fragment>
                             <Grid container justifyContent="flex-end" alignItems="center" spacing={1}>
-                                <Grid item>
+                                <Grid>
                                     <Typography>
                                         <FormattedMessage
                                             module="contract"
@@ -92,7 +92,7 @@ class ContractDetailsTabPanel extends Component {
                                         />
                                     </Typography>
                                 </Grid>
-                                <Grid item>
+                                <Grid>
                                     <CreateContractDetailsDialog
                                         contract={contract}
                                         onSave={this.onSave}

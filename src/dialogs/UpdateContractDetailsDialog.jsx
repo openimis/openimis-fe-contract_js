@@ -145,7 +145,7 @@ class CreateContractDetailsDialog extends Component {
                     </DialogTitle>
                     <DialogContent>
                         <StyledGrid container direction="column" className="item">
-                            <StyledGrid item className="item">
+                            <StyledGrid className="item">
                                 <PublishedComponent
                                     pubRef="policyHolder.PolicyHolderInsureePicker"
                                     required
@@ -155,7 +155,7 @@ class CreateContractDetailsDialog extends Component {
                                     readOnly
                                 />
                             </StyledGrid>
-                            <StyledGrid item className="item">
+                            <StyledGrid className="item">
                                 <PublishedComponent
                                     pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
                                     withNull={false}
@@ -200,4 +200,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ updateContractDetails, coreConfirm }, dispatch);
 };
 
+export { StyledGrid };
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(CreateContractDetailsDialog));

@@ -17,7 +17,7 @@ class ContractInsureePolicyFilter extends Component {
         const { filters, onChangeFilters } = this.props;
         return (
             <StyledGrid container className="form">
-                <StyledGrid item xs={3} className="item">
+                <StyledGrid size={3} className="item">
                     <PublishedComponent
                         pubRef="insuree.InsureePicker"
                         value={!!filters["insuree_ChfId"] ? filters["insuree_ChfId"].value : null}

@@ -98,7 +98,7 @@ class RawPolicyHolderContractsTabPanel extends Component {
                                     alignItems="center"
                                     spacing={1}
                                 >
-                                    <Grid item>
+                                    <Grid>
                                         <Typography>
                                             <FormattedMessage
                                                 module="contract"
@@ -106,7 +106,7 @@ class RawPolicyHolderContractsTabPanel extends Component {
                                             />
                                         </Typography>
                                     </Grid>
-                                    <Grid item>
+                                    <Grid>
                                         <Fab
                                             size="small"
                                             color="primary"

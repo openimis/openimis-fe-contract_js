@@ -156,4 +156,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ createContract, updateContract, submitContract, approveContract, counterContract, amendContract, coreConfirm }, dispatch);
 };
 
+export { AMENDMENT_INCREMENT };
 export default withHistory(withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContractPage))));

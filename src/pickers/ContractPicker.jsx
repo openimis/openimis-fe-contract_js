@@ -56,4 +56,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchPickerContracts }, dispatch);
 };
 
+export { ContractPicker };
 export default connect(mapStateToProps, mapDispatchToProps)(ContractPicker);

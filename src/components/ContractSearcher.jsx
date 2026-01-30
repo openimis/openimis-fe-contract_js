@@ -369,4 +369,5 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
+export { ContractSearcher };
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContractSearcher)));

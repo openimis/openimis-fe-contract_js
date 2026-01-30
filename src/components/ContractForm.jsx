@@ -247,4 +247,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ clearContract, fetchContract, journalize }, dispatch);
 };
 
+export { StyledDiv };
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContractForm)));

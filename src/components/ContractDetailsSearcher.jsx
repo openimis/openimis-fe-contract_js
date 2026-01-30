@@ -262,4 +262,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchContractDetails, deleteContractDetails, coreConfirm }, dispatch);
 };
 
+export { DEFAULT_ORDER_BY };
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContractDetailsSearcher)));

@@ -69,7 +69,7 @@ class ContractFilter extends Component {
         const { intl, onChangeFilters } = this.props;
         return (
             <StyledGrid container className="form">
-                <StyledGrid item xs={2} className="item">
+                <StyledGrid size={2} className="item">
                     <TextInput
                         module="contract"
                         label="code"
@@ -78,7 +78,7 @@ class ContractFilter extends Component {
                     />
                 </StyledGrid>
                 {!this.isFilteredByDefaultPolicyHolder && (
-                    <StyledGrid item xs={2} className="item">
+                    <StyledGrid size={2} className="item">
                         <PublishedComponent
                             pubRef="policyHolder.PolicyHolderPicker"
                             module="contract"
@@ -93,7 +93,7 @@ class ContractFilter extends Component {
                         />
                     </StyledGrid>
                 )}
-                <StyledGrid item xs={2} className="item">
+                <StyledGrid size={2} className="item">
                     <NumberInput
                         module="contract"
                         label="amountFrom"
@@ -105,7 +105,7 @@ class ContractFilter extends Component {
                         }])}
                     />
                 </StyledGrid>
-                <StyledGrid item xs={2} className="item">
+                <StyledGrid size={2} className="item">
                     <NumberInput
                         module="contract"
                         label="amountTo"
@@ -117,7 +117,7 @@ class ContractFilter extends Component {
                         }])}
                     />
                 </StyledGrid>
-                <StyledGrid item xs={2} className="item">
+                <StyledGrid size={2} className="item">
                     <PublishedComponent
                         pubRef="core.DatePicker"
                         module="contract"
@@ -130,7 +130,7 @@ class ContractFilter extends Component {
                         }])}
                     />
                 </StyledGrid>
-                <StyledGrid item xs={2} className="item">
+                <StyledGrid size={2} className="item">
                     <ContractStatePicker
                         module="contract"
                         label="state"
@@ -140,7 +140,7 @@ class ContractFilter extends Component {
                         nullLabel={formatMessage(intl, "contract", "any")}
                     />
                 </StyledGrid>
-                <StyledGrid item xs={2} className="item">
+                <StyledGrid size={2} className="item">
                     <TextInput
                         module="contract"
                         label="paymentReference"
@@ -148,7 +148,7 @@ class ContractFilter extends Component {
                         onChange={v => this._onChangeStringFilter('paymentReference', v, CONTAINS_LOOKUP)}
                     />
                 </StyledGrid>
-                <StyledGrid item xs={2} className="item">
+                <StyledGrid size={2} className="item">
                     <NumberInput
                         module="contract"
                         label="amendment"
@@ -157,7 +157,7 @@ class ContractFilter extends Component {
                         onChange={v => this._onChangeFilter('amendment', !!v ? v : null)}
                     />
                 </StyledGrid>
-                <StyledGrid item xs={2} className="item">
+                <StyledGrid size={2} className="item">
                     <PublishedComponent
                         pubRef="core.DatePicker"
                         module="contract"
@@ -166,7 +166,7 @@ class ContractFilter extends Component {
                         onChange={v => this._onChangeDateFilter('dateValidFrom', v, GREATER_OR_EQUAL_LOOKUP)}
                     />
                 </StyledGrid>
-                <StyledGrid item xs={2} className="item">
+                <StyledGrid size={2} className="item">
                     <PublishedComponent
                         pubRef="core.DatePicker"
                         module="contract"
@@ -175,7 +175,7 @@ class ContractFilter extends Component {
                         onChange={v => this._onChangeDateFilter('dateValidTo', v, LESS_OR_EQUAL_LOOKUP)}
                     />
                 </StyledGrid>
-                <StyledGrid item xs={2} className="item">
+                <StyledGrid size={2} className="item">
                     <FormControlLabel
                         control={<Checkbox 
                             checked={!!this._filterValue('isDeleted')}
@@ -190,4 +190,5 @@ class ContractFilter extends Component {
     }
 }
 
+export { StyledGrid };
 export default withModulesManager(injectIntl(ContractFilter));

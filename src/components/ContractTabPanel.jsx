@@ -83,4 +83,5 @@ class ContractTabPanel extends FormPanel {
     }
 }
 
+export { StyledPaper };
 export default withModulesManager(injectIntl(ContractTabPanel));

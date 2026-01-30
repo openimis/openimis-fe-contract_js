@@ -30,7 +30,7 @@ class ContractContributionDetailsFilter extends Component {
         const { intl, onChangeFilters, policyHolder } = this.props;
         return (
             <StyledGrid container className="form">
-                <StyledGrid item xs={3} className="item">
+                <StyledGrid size={3} className="item">
                     <TextInput
                         module="contract" 
                         label="insureeChfId"
@@ -42,7 +42,7 @@ class ContractContributionDetailsFilter extends Component {
                         }])}
                     />
                 </StyledGrid>
-                <StyledGrid item xs={3} className="item">
+                <StyledGrid size={3} className="item">
                     <PublishedComponent
                         pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
                         withNull
@@ -56,7 +56,7 @@ class ContractContributionDetailsFilter extends Component {
                         }])}
                     />
                 </StyledGrid>
-                <StyledGrid item xs={3} className="item">
+                <StyledGrid size={3} className="item">
                     <PublishedComponent
                         pubRef="contributionPlan.ContributionPlanPicker"
                         withNull
@@ -69,7 +69,7 @@ class ContractContributionDetailsFilter extends Component {
                         }])}
                     />
                 </StyledGrid>
-                <StyledGrid item xs={3} className="item">
+                <StyledGrid size={3} className="item">
                     <PublishedComponent
                         pubRef="product.ProductPicker"
                         withNull={true}
@@ -91,4 +91,5 @@ const mapStateToProps = state => ({
     policyHolder: !!state.contract.contract ? state.contract.contract.policyHolder : null
 });
 
+export { StyledGrid };
 export default injectIntl(connect(mapStateToProps, null)((ContractContributionDetailsFilter)));

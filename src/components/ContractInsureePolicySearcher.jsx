@@ -95,4 +95,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchInsureePolicies }, dispatch);
 };
 
+export { DEFAULT_ORDER_BY };
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContractInsureePolicySearcher)));

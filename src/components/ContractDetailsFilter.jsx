@@ -38,7 +38,7 @@ class ContractDetailsFilter extends Component {
 
     return (
       <StyledGrid container className="form">
-        <Grid item xs={3} className="item">
+        <Grid size={3} className="item">
           <TextInput
             module="contract"
             label="insureeChfId"
@@ -55,7 +55,7 @@ class ContractDetailsFilter extends Component {
           />
         </Grid>
 
-        <Grid item xs={3} className="item">
+        <Grid size={3} className="item">
           <PublishedComponent
             pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
             withNull
@@ -82,6 +82,8 @@ const mapStateToProps = (state) => ({
   policyHolder: state.contract?.contract?.policyHolder ?? null,
 });
 
+export { StyledGrid };
+export { ContractDetailsFilter };
 export default withModulesManager(
   injectIntl(connect(mapStateToProps)(ContractDetailsFilter))
 );
