@@ -34,8 +34,8 @@ import {
 import ContractStatePicker from "../pickers/ContractStatePicker";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
-  '& .tableTitle': theme.table.title,
-  '& .item': theme.paper.item,
+  '& .tableTitle': theme.table?.title ?? {},
+  '& .item': theme.paper?.item ?? {},
   '& .fullHeight': {
     height: "100%",
   },

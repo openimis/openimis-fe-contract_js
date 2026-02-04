@@ -25,8 +25,8 @@ import { Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 const StyledDiv = styled("div")(({ theme }) => ({
-  ...theme.page,
-  '& .fab': theme.fab,
+  ...theme.page ?? {},
+  '& .fab': theme.fab ?? {},
 }));
 
 class ContractsPage extends Component {

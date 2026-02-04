@@ -33,7 +33,7 @@ import ContractForm from "../components/ContractForm";
 const AMENDMENT_INCREMENT = 1;
 
 const StyledDiv = styled("div")(({ theme }) => ({
-    ...theme.page
+    ...theme.page ?? {}
 }));
 
 class ContractPage extends Component {

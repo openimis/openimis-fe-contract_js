@@ -35,7 +35,7 @@ import ContractHeadPanel from "./ContractHeadPanel";
 import ContractTabPanel from "./ContractTabPanel";
 
 const StyledDiv = styled("div")(({ theme }) => ({
-    ...theme.fab,
+    ...theme.fab ?? {},
     '& .counterFab': {
         position: 'fixed',
         bottom: theme.spacing(18),
