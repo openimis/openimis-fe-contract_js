@@ -16,12 +16,6 @@
     "format": "prettier src -w",
     "prepare": "npm run build"
   },
-  "dependencies": {
-    "@mui/material": "^7.2.0",
-    "@mui/icons-material": "^7.2.0",
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.0"
-  },
   "peerDependency": {
     "react-intl": "^7.1.11"
   },
@@ -31,5 +25,11 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "peerDependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^7.2.0",
+    "@mui/icons-material": "^7.2.0"
+  }
 }
