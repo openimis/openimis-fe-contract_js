@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { PublishedComponent } from "@openimis/fe-core";
+import { PublishedComponent, GRID_RESPONSIVE_STANDARD } from "@openimis/fe-core";
 import { Grid } from "@mui/material";
 import { useTheme, styled } from "@mui/material/styles";
 
@@ -17,7 +17,7 @@ class ContractInsureePolicyFilter extends Component {
         const { filters, onChangeFilters } = this.props;
         return (
             <StyledGrid container className="form">
-                <StyledGrid size={3} className="item">
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <PublishedComponent
                         pubRef="insuree.InsureePicker"
                         value={!!filters["insuree_ChfId"] ? filters["insuree_ChfId"].value : null}

@@ -7,6 +7,7 @@ import {
   TextInput,
   PublishedComponent,
   decodeId,
+  GRID_RESPONSIVE_STANDARD,
 } from "@openimis/fe-core";
 import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -38,7 +39,7 @@ class ContractDetailsFilter extends Component {
 
     return (
       <StyledGrid container className="form">
-        <Grid size={3} className="item">
+        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
           <TextInput
             module="contract"
             label="insureeChfId"
@@ -55,7 +56,7 @@ class ContractDetailsFilter extends Component {
           />
         </Grid>
 
-        <Grid size={3} className="item">
+        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
           <PublishedComponent
             pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
             withNull

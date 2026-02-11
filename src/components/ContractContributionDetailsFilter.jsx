@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { injectIntl } from 'react-intl';
 import { connect } from "react-redux";
-import { formatMessage, TextInput, PublishedComponent, decodeId } from "@openimis/fe-core";
+import { formatMessage, TextInput, PublishedComponent, decodeId, GRID_RESPONSIVE_STANDARD } from "@openimis/fe-core";
 import { Grid } from "@mui/material";
 import { useTheme, styled } from "@mui/material/styles";
 import { STARTS_WITH_LOOKUP } from "../constants"
@@ -30,7 +30,7 @@ class ContractContributionDetailsFilter extends Component {
         const { intl, onChangeFilters, policyHolder } = this.props;
         return (
             <StyledGrid container className="form">
-                <StyledGrid size={3} className="item">
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <TextInput
                         module="contract" 
                         label="insureeChfId"
@@ -42,7 +42,7 @@ class ContractContributionDetailsFilter extends Component {
                         }])}
                     />
                 </StyledGrid>
-                <StyledGrid size={3} className="item">
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <PublishedComponent
                         pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
                         withNull
@@ -56,7 +56,7 @@ class ContractContributionDetailsFilter extends Component {
                         }])}
                     />
                 </StyledGrid>
-                <StyledGrid size={3} className="item">
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <PublishedComponent
                         pubRef="contributionPlan.ContributionPlanPicker"
                         withNull
@@ -69,7 +69,7 @@ class ContractContributionDetailsFilter extends Component {
                         }])}
                     />
                 </StyledGrid>
-                <StyledGrid size={3} className="item">
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <PublishedComponent
                         pubRef="product.ProductPicker"
                         withNull={true}
