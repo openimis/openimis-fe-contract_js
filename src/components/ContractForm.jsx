@@ -5,10 +5,11 @@ import { injectIntl } from "react-intl";
 
 import { Fab, Tooltip } from "@mui/material";
 import { useTheme, styled } from "@mui/material/styles";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
-import OpenInBrowserIcon from "@mui/icons-material/OpenInBrowser";
+import { GetIconComponent } from "@openimis/fe-core";
+const CheckIcon = GetIconComponent("Check")
+const CloseIcon = GetIconComponent("Close")
+const NoteAddIcon = GetIconComponent("NoteAdd")
+const OpenInBrowserIcon = GetIconComponent("OpenInBrowser")
 
 import {
     Form,

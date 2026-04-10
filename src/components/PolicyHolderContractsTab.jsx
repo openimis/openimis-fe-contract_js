@@ -9,7 +9,8 @@ import {
     decodeId,
     withHistory
 } from "@openimis/fe-core";
-import AddIcon from "@mui/icons-material/Add";
+import { GetIconComponent } from "@openimis/fe-core";
+const AddIcon = GetIconComponent("Add")
 import {
     RIGHT_POLICYHOLDERCONTRACT_CREATE,
     RIGHT_POLICYHOLDERCONTRACT_UPDATE,

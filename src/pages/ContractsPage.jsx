@@ -22,7 +22,8 @@ import {
 } from "../constants";
 import ContractSearcher from "../components/ContractSearcher";
 import { Fab } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { GetIconComponent } from "@openimis/fe-core";
+const AddIcon = GetIconComponent("Add")
 
 const StyledDiv = styled("div")(({ theme }) => ({
   ...theme.page ?? {},

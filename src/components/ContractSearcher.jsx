@@ -22,8 +22,10 @@ import {
     counterContractAll,
 } from "../actions";
 import { IconButton } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { GetIconComponent } from "@openimis/fe-core";
+
+const EditIcon = GetIconComponent("Edit");
+const DeleteIcon = GetIconComponent("Delete");
 import {
     DEFAULT_PAGE_SIZE,
     ROWS_PER_PAGE_OPTIONS,
