@@ -40,16 +40,12 @@ const DEFAULT_CONFIG = {
         { key: "contract.ContractStatePicker", ref: ContractStatePicker }
     ],
     "core.Router": [
-        { path: ROUTE_CONTRACTS, component: ContractsPage },
-        { path: ROUTE_CONTRACT  + "/:contract_id?", component: ContractPage }
+        { path: ROUTE_CONTRACTS, text: "contract.menu.contracts", id: "legalAndFinance.contracts",component: ContractsPage, rights: [RIGHT_POLICYHOLDERCONTRACT_SEARCH], icon: "Receipt" },
+        { path: ROUTE_CONTRACT  + "/:contract_id?", component: ContractPage, rights: [RIGHT_POLICYHOLDERCONTRACT_SEARCH], icon: "Receipt" }
     ],
     "invoice.MainMenu": [
         {
-            text: <FormattedMessage module="contract" id="menu.contracts" />,
-            icon: <ReceiptIcon />,
-            route: "/" + ROUTE_CONTRACTS,
-            filter: rights => rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH),
-            id: "legalAndFinance.contracts",
+            route: ROUTE_CONTRACTS,
         }
     ],
     "contract.TabPanel.label": [
