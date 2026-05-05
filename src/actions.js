@@ -15,7 +15,6 @@ const uuidRegex =
 const CONTRACT_FULL_PROJECTION = (modulesManager) => [
   "id",
   "code",
-  "amount",
   "amountNotified",
   "amountRectified",
   "amountDue",
