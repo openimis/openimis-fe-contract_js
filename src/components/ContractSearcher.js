@@ -99,7 +99,7 @@ class ContractSearcher extends Component {
         const result = [
             "contract.code",
             "contract.state",
-            "contract.amount",
+            "contract.amountDue",
             "contract.datePaymentDue",
             "contract.dateValidFrom",
             "contract.dateValidTo",
@@ -133,7 +133,7 @@ class ContractSearcher extends Component {
                     value={contract.state}
                     readOnly />
                 : "",
-            contract => !!contract.amount ? contract.amount : "",
+            contract => !!contract.amountDue ? contract.amountDue : "",
             contract => !!contract.datePaymentDue
                 ? formatDateFromISO(modulesManager, intl, contract.datePaymentDue)
                 : "",
