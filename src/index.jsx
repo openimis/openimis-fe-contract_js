@@ -5,7 +5,8 @@ import reducer from "./reducer";
 import ContractsPage from "./pages/ContractsPage";
 import ContractPage from "./pages/ContractPage"
 import { FormattedMessage } from "@openimis/fe-core";
-import ReceiptIcon from "@material-ui/icons/Receipt";
+import { GetIconComponent } from "@openimis/fe-core";
+const ReceiptIcon = GetIconComponent("Receipt")
 import { RIGHT_POLICYHOLDERCONTRACT_SEARCH } from "./constants";
 import { ContractDetailsTabLabel, ContractDetailsTabPanel } from "./components/ContractDetailsTab";
 import {
@@ -39,16 +40,12 @@ const DEFAULT_CONFIG = {
         { key: "contract.ContractStatePicker", ref: ContractStatePicker }
     ],
     "core.Router": [
-        { path: ROUTE_CONTRACTS, component: ContractsPage },
-        { path: ROUTE_CONTRACT  + "/:contract_id?", component: ContractPage }
+        { path: ROUTE_CONTRACTS, text: "contract.menu.contracts", id: "legalAndFinance.contracts",component: ContractsPage, rights: [RIGHT_POLICYHOLDERCONTRACT_SEARCH], icon: "Receipt" },
+        { path: ROUTE_CONTRACT  + "/:contract_id?", component: ContractPage, rights: [RIGHT_POLICYHOLDERCONTRACT_SEARCH], icon: "Receipt" }
     ],
     "invoice.MainMenu": [
         {
-            text: <FormattedMessage module="contract" id="menu.contracts" />,
-            icon: <ReceiptIcon />,
-            route: "/" + ROUTE_CONTRACTS,
-            filter: rights => rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH),
-            id: "legalAndFinance.contracts",
+            route: ROUTE_CONTRACTS,
         }
     ],
     "contract.TabPanel.label": [

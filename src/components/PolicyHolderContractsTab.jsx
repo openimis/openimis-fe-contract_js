@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Tab, Grid, Typography, Fab } from "@material-ui/core";
+import { Tab, Grid, Typography, Fab } from "@mui/material";
 import {
     PublishedComponent,
     FormattedMessage,
@@ -9,7 +9,8 @@ import {
     decodeId,
     withHistory
 } from "@openimis/fe-core";
-import AddIcon from "@material-ui/icons/Add";
+import { GetIconComponent } from "@openimis/fe-core";
+const AddIcon = GetIconComponent("Add")
 import {
     RIGHT_POLICYHOLDERCONTRACT_CREATE,
     RIGHT_POLICYHOLDERCONTRACT_UPDATE,
@@ -98,7 +99,7 @@ class RawPolicyHolderContractsTabPanel extends Component {
                                     alignItems="center"
                                     spacing={1}
                                 >
-                                    <Grid item>
+                                    <Grid>
                                         <Typography>
                                             <FormattedMessage
                                                 module="contract"
@@ -106,7 +107,7 @@ class RawPolicyHolderContractsTabPanel extends Component {
                                             />
                                         </Typography>
                                     </Grid>
-                                    <Grid item>
+                                    <Grid>
                                         <Fab
                                             size="small"
                                             color="primary"

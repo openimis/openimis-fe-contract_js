@@ -1,19 +1,19 @@
 import React, { Component } from "react"
 import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessage, TextInput, NumberInput, PublishedComponent } from "@openimis/fe-core";
-import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { withModulesManager, formatMessage, TextInput, NumberInput, PublishedComponent, GRID_RESPONSIVE_STANDARD, GRID_RESPONSIVE_SMALL } from "@openimis/fe-core";
+import { Grid, FormControlLabel, Checkbox } from "@mui/material";
+import { useTheme, styled } from "@mui/material/styles";
 import { DATE_TO_DATETIME_SUFFIX, GREATER_OR_EQUAL_LOOKUP, LESS_OR_EQUAL_LOOKUP, CONTAINS_LOOKUP, MIN_AMENDMENT_VALUE } from "../constants"
 import ContractStatePicker from "../pickers/ContractStatePicker";
 
-const styles = theme => ({
-    form: {
+const StyledGrid = styled(Grid)(({ theme }) => ({
+    '& .form': {
         padding: 0
     },
-    item: {
+    '& .item': {
         padding: theme.spacing(1)
     }
-});
+}));
 
 class ContractFilter extends Component {
     componentDidMount() {
@@ -66,19 +66,19 @@ class ContractFilter extends Component {
     }
 
     render() {
-        const { intl, classes, onChangeFilters } = this.props;
+        const { intl, onChangeFilters } = this.props;
         return (
-            <Grid container className={classes.form}>
-                <Grid item xs={2} className={classes.item}>
+            <StyledGrid container className="form">
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <TextInput
                         module="contract"
                         label="code"
                         value={this._filterTextFieldValue('code')}
                         onChange={v => this._onChangeStringFilter('code', v, CONTAINS_LOOKUP)}
                     />
-                </Grid>
+                </StyledGrid>
                 {!this.isFilteredByDefaultPolicyHolder && (
-                    <Grid item xs={2} className={classes.item}>
+                    <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                         <PublishedComponent
                             pubRef="policyHolder.PolicyHolderPicker"
                             module="contract"
@@ -91,9 +91,9 @@ class ContractFilter extends Component {
                                 filter: `policyHolder_Id: "${!!v && v.id}"`
                             }])}
                         />
-                    </Grid>
+                    </StyledGrid>
                 )}
-                <Grid item xs={2} className={classes.item}>
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <NumberInput
                         module="contract"
                         label="amountFrom"
@@ -104,8 +104,8 @@ class ContractFilter extends Component {
                             filter: `amountFrom: "${v}"`
                         }])}
                     />
-                </Grid>
-                <Grid item xs={2} className={classes.item}>
+                </StyledGrid>
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <NumberInput
                         module="contract"
                         label="amountTo"
@@ -116,8 +116,8 @@ class ContractFilter extends Component {
                             filter: `amountTo: "${v}"`
                         }])}
                     />
-                </Grid>
-                <Grid item xs={2} className={classes.item}>
+                </StyledGrid>
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <PublishedComponent
                         pubRef="core.DatePicker"
                         module="contract"
@@ -129,8 +129,8 @@ class ContractFilter extends Component {
                             filter: `datePaymentDue: "${v}"`
                         }])}
                     />
-                </Grid>
-                <Grid item xs={2} className={classes.item}>
+                </StyledGrid>
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <ContractStatePicker
                         module="contract"
                         label="state"
@@ -139,16 +139,16 @@ class ContractFilter extends Component {
                         withNull
                         nullLabel={formatMessage(intl, "contract", "any")}
                     />
-                </Grid>
-                <Grid item xs={2} className={classes.item}>
+                </StyledGrid>
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <TextInput
                         module="contract"
                         label="paymentReference"
                         value={this._filterTextFieldValue('paymentReference')}
                         onChange={v => this._onChangeStringFilter('paymentReference', v, CONTAINS_LOOKUP)}
                     />
-                </Grid>
-                <Grid item xs={2} className={classes.item}>
+                </StyledGrid>
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <NumberInput
                         module="contract"
                         label="amendment"
@@ -156,8 +156,8 @@ class ContractFilter extends Component {
                         value={this._filterValue('amendment')}
                         onChange={v => this._onChangeFilter('amendment', !!v ? v : null)}
                     />
-                </Grid>
-                <Grid item xs={2} className={classes.item}>
+                </StyledGrid>
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <PublishedComponent
                         pubRef="core.DatePicker"
                         module="contract"
@@ -165,8 +165,8 @@ class ContractFilter extends Component {
                         value={this._filterValue('dateValidFrom')}
                         onChange={v => this._onChangeDateFilter('dateValidFrom', v, GREATER_OR_EQUAL_LOOKUP)}
                     />
-                </Grid>
-                <Grid item xs={2} className={classes.item}>
+                </StyledGrid>
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <PublishedComponent
                         pubRef="core.DatePicker"
                         module="contract"
@@ -174,8 +174,8 @@ class ContractFilter extends Component {
                         value={this._filterValue('dateValidTo')}
                         onChange={v => this._onChangeDateFilter('dateValidTo', v, LESS_OR_EQUAL_LOOKUP)}
                     />
-                </Grid>
-                <Grid item xs={2} className={classes.item}>
+                </StyledGrid>
+                <StyledGrid size={GRID_RESPONSIVE_SMALL} className="item">
                     <FormControlLabel
                         control={<Checkbox 
                             checked={!!this._filterValue('isDeleted')}
@@ -184,10 +184,11 @@ class ContractFilter extends Component {
                         />}
                         label={formatMessage(intl, "contract", "isDeleted")}
                     />
-                </Grid>
-            </Grid>
+                </StyledGrid>
+            </StyledGrid>
         )
     }
 }
 
-export default withModulesManager(injectIntl(withTheme(withStyles(styles)(ContractFilter))));
+export { StyledGrid };
+export default withModulesManager(injectIntl(ContractFilter));

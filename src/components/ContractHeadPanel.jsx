@@ -2,8 +2,8 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 
-import { Grid, Divider, Typography } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { Grid, Divider, Typography } from "@mui/material";
+import { useTheme, styled } from "@mui/material/styles";
 
 import {
   withModulesManager,
@@ -33,13 +33,13 @@ import {
 } from "../constants";
 import ContractStatePicker from "../pickers/ContractStatePicker";
 
-const styles = (theme) => ({
-  tableTitle: theme.table.title,
-  item: theme.paper.item,
-  fullHeight: {
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  '& .tableTitle': theme.table?.title ?? {},
+  '& .item': theme.paper?.item ?? {},
+  '& .fullHeight': {
     height: "100%",
   },
-});
+}));
 
 class ContractHeadPanel extends FormPanel {
   constructor(props) {
@@ -108,7 +108,6 @@ class ContractHeadPanel extends FormPanel {
   render() {
     const {
       intl,
-      classes,
       edited,
       mandatoryFieldsEmpty,
       readOnlyFields,
@@ -120,27 +119,27 @@ class ContractHeadPanel extends FormPanel {
     } = this.props;
     return (
       <Fragment>
-        <Grid container className={classes.tableTitle}>
-          <Grid item>
+        <StyledGrid container className="tableTitle">
+          <Grid>
             <Grid
               container
               align="center"
               justify="center"
               direction="column"
-              className={classes.fullHeight}
+              className="fullHeight"
             >
-              <Grid item>
+              <Grid>
                 <Typography>
                   <FormattedMessage module="contract" id="headPanel.title" />
                 </Typography>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        </StyledGrid>
         <Divider />
         {mandatoryFieldsEmpty && (
           <Fragment>
-            <div className={classes.item}>
+            <div className="item">
               <FormattedMessage
                 module="contract"
                 id="mandatoryFieldsEmptyError"
@@ -149,8 +148,8 @@ class ContractHeadPanel extends FormPanel {
             <Divider />
           </Fragment>
         )}
-        <Grid container className={classes.item}>
-          <Grid item xs={2} className={classes.item}>
+        <StyledGrid container className="item">
+          <Grid size={2} className="item">
             <ValidatedTextInput
               itemQueryIdentifier="contractCode"
               codeTakenLabel="contract.codeTaken"
@@ -170,7 +169,7 @@ class ContractHeadPanel extends FormPanel {
               readOnly={readOnlyFields.includes("code") || isAmendment}
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid size={2} className="item">
             <PublishedComponent
               pubRef="policyHolder.PolicyHolderPicker"
               module="contract"
@@ -185,7 +184,7 @@ class ContractHeadPanel extends FormPanel {
               }
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid size={2} className="item">
             <NumberInput
               module="contract"
               label="amountNotified"
@@ -197,7 +196,7 @@ class ContractHeadPanel extends FormPanel {
               readOnly
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid size={2} className="item">
             <NumberInput
               module="contract"
               label="amountRectified"
@@ -209,7 +208,7 @@ class ContractHeadPanel extends FormPanel {
               readOnly
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid size={2} className="item">
             <NumberInput
               module="contract"
               label="amountDue"
@@ -219,7 +218,7 @@ class ContractHeadPanel extends FormPanel {
               readOnly
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid size={2} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contract"
@@ -228,7 +227,7 @@ class ContractHeadPanel extends FormPanel {
               readOnly
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid size={2} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contract"
@@ -239,7 +238,7 @@ class ContractHeadPanel extends FormPanel {
               readOnly
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid size={2} className="item">
             <ContractStatePicker
               module="contract"
               label="state"
@@ -249,7 +248,7 @@ class ContractHeadPanel extends FormPanel {
               readOnly
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid size={2} className="item">
             <TextInput
               module="contract"
               label="paymentReference"
@@ -261,7 +260,7 @@ class ContractHeadPanel extends FormPanel {
               readOnly={readOnlyFields.includes("paymentReference")}
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid size={2} className="item">
             <NumberInput
               module="contract"
               label="amendment"
@@ -275,7 +274,7 @@ class ContractHeadPanel extends FormPanel {
               readOnly
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid size={2} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contract"
@@ -290,7 +289,7 @@ class ContractHeadPanel extends FormPanel {
               {...(edited.dateValidTo ? { maxDate: edited.dateValidTo } : null)}
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid size={2} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contract"
@@ -305,7 +304,7 @@ class ContractHeadPanel extends FormPanel {
               {...(edited.dateValidFrom ? { minDate: edited.dateValidFrom } : null)}
             />
           </Grid>
-        </Grid>
+        </StyledGrid>
       </Fragment>
     );
   }
@@ -319,8 +318,10 @@ const mapStateToProps = (store) => ({
   savedContractCode: store.contract.contract?.code,
 });
 
+export { StyledGrid };
+export { ContractHeadPanel };
 export default withModulesManager(
   injectIntl(
-    connect(mapStateToProps)(withTheme(withStyles(styles)(ContractHeadPanel)))
+    connect(mapStateToProps)(ContractHeadPanel)
   )
 );

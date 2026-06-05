@@ -87,4 +87,5 @@ class ContractStatePicker extends Component {
     }
 }
 
+export { ContractStatePicker };
 export default withModulesManager(injectIntl(ContractStatePicker));

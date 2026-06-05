@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import EditIcon from "@material-ui/icons/Edit";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import { GetIconComponent } from "@openimis/fe-core";
+const EditIcon = GetIconComponent("Edit")
 import {
     FormattedMessage,
     formatMessage,
@@ -14,8 +15,8 @@ import {
     coreConfirm,
     Contributions
 } from "@openimis/fe-core";
-import { Grid, IconButton, Tooltip } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { Grid, IconButton, Tooltip } from "@mui/material";
+import { useTheme, styled } from "@mui/material/styles";
 import { updateContractDetails } from "../actions";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
@@ -26,9 +27,9 @@ import {
     RIGHT_CALCULATION_UPDATE
 } from "../constants";
 
-const styles = theme => ({
-    item: theme.paper.item
-});
+const StyledGrid = styled(Grid)(({ theme }) => ({
+    '& .item': theme.paper?.item ?? {}
+}));
 
 class CreateContractDetailsDialog extends Component {
     constructor(props) {
@@ -126,7 +127,7 @@ class CreateContractDetailsDialog extends Component {
     setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
 
     render() {
-        const { intl, classes, contract, disabled } = this.props;
+        const { intl, contract, disabled } = this.props;
         const { open, contractDetails } = this.state;
         return (
             <Fragment>
@@ -144,8 +145,8 @@ class CreateContractDetailsDialog extends Component {
                         <FormattedMessage module="contract" id="contractDetails.editContractDetails" />
                     </DialogTitle>
                     <DialogContent>
-                        <Grid container direction="column" className={classes.item}>
-                            <Grid item className={classes.item}>
+                        <StyledGrid container direction="column" className="item">
+                            <StyledGrid className="item">
                                 <PublishedComponent
                                     pubRef="policyHolder.PolicyHolderInsureePicker"
                                     required
@@ -154,8 +155,8 @@ class CreateContractDetailsDialog extends Component {
                                     value={!!contractDetails.insuree && contractDetails.insuree}
                                     readOnly
                                 />
-                            </Grid>
-                            <Grid item className={classes.item}>
+                            </StyledGrid>
+                            <StyledGrid className="item">
                                 <PublishedComponent
                                     pubRef="policyHolder.PolicyHolderContributionPlanBundlePicker"
                                     withNull={false}
@@ -164,7 +165,7 @@ class CreateContractDetailsDialog extends Component {
                                     value={!!contractDetails.contributionPlanBundle && contractDetails.contributionPlanBundle}
                                     readOnly
                                 />
-                            </Grid>
+                            </StyledGrid>
                             <Contributions
                                 contributionKey={CONTRACTDETAILS_CALCULATION_CONTRIBUTION_KEY}
                                 intl={intl}
@@ -173,10 +174,10 @@ class CreateContractDetailsDialog extends Component {
                                 requiredRights={[RIGHT_CALCULATION_UPDATE]}
                                 value={!!contractDetails.jsonExt && contractDetails.jsonExt}
                                 onChange={this.updateAttribute}
-                                gridItemStyle={classes.item}
+                                gridItemStyle="item"
                                 setJsonExtValid={this.setJsonExtValid}
                             />
-                        </Grid>
+                        </StyledGrid>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} variant="outlined">
@@ -200,4 +201,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ updateContractDetails, coreConfirm }, dispatch);
 };
 
-export default injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(CreateContractDetailsDialog))));
+export { StyledGrid };
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(CreateContractDetailsDialog));

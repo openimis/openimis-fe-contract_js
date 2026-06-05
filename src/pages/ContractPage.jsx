@@ -9,7 +9,7 @@ import {
 import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { useTheme, styled } from "@mui/material/styles";
 import {
     createContract,
     updateContract,
@@ -32,9 +32,9 @@ import ContractForm from "../components/ContractForm";
 
 const AMENDMENT_INCREMENT = 1;
 
-const styles = theme => ({
-    page: theme.page
-});
+const StyledDiv = styled("div")(({ theme }) => ({
+    ...theme.page ?? {}
+}));
 
 class ContractPage extends Component {
     constructor(props) {
@@ -121,10 +121,10 @@ class ContractPage extends Component {
         ].some(right => this.props.rights.includes(right));
 
     render() {
-        const { classes, rights, contractId, submitContract, approveContract, counterContract } = this.props;
+        const { rights, contractId, submitContract, approveContract, counterContract } = this.props;
         return (
             this.isSufficientRights() && (
-                <div className={classes.page}>
+                <StyledDiv className="page">
                     <ContractForm
                         contractId={contractId}
                         back={this.back}
@@ -140,7 +140,7 @@ class ContractPage extends Component {
                         toggleAmendConfirmed={this.toggleAmendConfirmed}
                         predefinedPolicyHolderId={this.predefinedPolicyHolderId}
                     />
-                </div>
+                </StyledDiv>
             )
         )
     }
@@ -156,4 +156,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ createContract, updateContract, submitContract, approveContract, counterContract, amendContract, coreConfirm }, dispatch);
 };
 
-export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ContractPage))))));
+export { AMENDMENT_INCREMENT };
+export default withHistory(withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContractPage))));

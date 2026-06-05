@@ -14,8 +14,9 @@ import {
 import { fetchContractDetails, deleteContractDetails } from "../actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { IconButton } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { IconButton } from "@mui/material";
+import { GetIconComponent } from "@openimis/fe-core";
+const DeleteIcon = GetIconComponent("Delete")
 import {
     DEFAULT_PAGE_SIZE,
     ROWS_PER_PAGE_OPTIONS,
@@ -262,4 +263,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchContractDetails, deleteContractDetails, coreConfirm }, dispatch);
 };
 
+export { DEFAULT_ORDER_BY };
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContractDetailsSearcher)));

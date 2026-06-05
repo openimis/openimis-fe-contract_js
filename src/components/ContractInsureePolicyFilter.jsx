@@ -1,23 +1,23 @@
 import React, { Component } from "react"
-import { PublishedComponent } from "@openimis/fe-core";
-import { Grid } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { PublishedComponent, GRID_RESPONSIVE_STANDARD } from "@openimis/fe-core";
+import { Grid } from "@mui/material";
+import { useTheme, styled } from "@mui/material/styles";
 
-const styles = theme => ({
-    form: {
+const StyledGrid = styled(Grid)(({ theme }) => ({
+    '& .form': {
         padding: 0
     },
-    item: {
+    '& .item': {
         padding: theme.spacing(1)
     }
-});
+}));
 
 class ContractInsureePolicyFilter extends Component {
     render() {
-        const { classes, filters, onChangeFilters } = this.props;
+        const { filters, onChangeFilters } = this.props;
         return (
-            <Grid container className={classes.form}>
-                <Grid item xs={3} className={classes.item}>
+            <StyledGrid container className="form">
+                <StyledGrid size={GRID_RESPONSIVE_STANDARD} className="item">
                     <PublishedComponent
                         pubRef="insuree.InsureePicker"
                         value={!!filters["insuree_ChfId"] ? filters["insuree_ChfId"].value : null}
@@ -27,10 +27,10 @@ class ContractInsureePolicyFilter extends Component {
                             filter: `insuree_ChfId: "${!!v && !!v.chfId ? v.chfId : null}"`
                         }])}
                     />
-                </Grid>
-            </Grid>
+                </StyledGrid>
+            </StyledGrid>
         )
     }
 }
 
-export default withTheme(withStyles(styles)((ContractInsureePolicyFilter)));
+export default ContractInsureePolicyFilter;
