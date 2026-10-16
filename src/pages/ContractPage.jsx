@@ -48,12 +48,10 @@ class ContractPage extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
-            this.state.confirmedAction();
-        }
     }
 
-    setConfirmedAction = (confirm, confirmedAction) => this.setState({ confirmedAction }, confirm);
+    // The action travels with the question; nothing is parked in state (OP-3190).
+    setConfirmedAction = (confirm, onConfirm) => confirm(onConfirm);
 
     back = () => this.props.history.goBack();
 
@@ -75,9 +73,10 @@ class ContractPage extends Component {
 
     action = (contract, action, label) => {
         const { intl, coreConfirm } = this.props;
-        let confirm = () => coreConfirm(
+        let confirm = (onConfirm) => coreConfirm(
             formatMessage(intl, "contract", `${label}.confirm.title`),
-            formatMessageWithValues(intl, "contract", `${label}.confirm.message`, this.titleParams(contract))
+            formatMessageWithValues(intl, "contract", `${label}.confirm.message`, this.titleParams(contract)),
+          { onConfirm },
         );
         let confirmedAction = () => action(
             contract,
@@ -88,9 +87,10 @@ class ContractPage extends Component {
 
     amend = contract => {
         const { intl, coreConfirm, amendContract } = this.props;
-        let confirm = () => coreConfirm(
+        let confirm = (onConfirm) => coreConfirm(
             formatMessage(intl, "contract", "amendContract.confirm.title"),
-            formatMessageWithValues(intl, "contract", "amendContract.confirm.message", this.titleParams(contract))
+            formatMessageWithValues(intl, "contract", "amendContract.confirm.message", this.titleParams(contract)),
+          { onConfirm },
         );
         let confirmedAction = () => {
             amendContract(

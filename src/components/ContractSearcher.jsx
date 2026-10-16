@@ -58,8 +58,6 @@ class ContractSearcher extends Component {
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);
             this.setState(state => ({ deleted: state.deleted.concat(state.toDelete), reset: state.reset + 1 }));
-        } else if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
-            this.state.confirmedAction();
         } else if (prevState.reset !== this.state.reset) {
             this.refetch();
         }
@@ -190,7 +188,8 @@ class ContractSearcher extends Component {
         const { intl, coreConfirm, deleteContract } = this.props;
         const confirm = () => coreConfirm(
             formatMessageWithValues(intl, "contract", "deleteContract.confirm.title", { label: contract.code }),
-            formatMessage(intl, "contract", "deleteContract.confirm.message")
+            formatMessage(intl, "contract", "deleteContract.confirm.message"),
+          { onConfirm: confirmedAction },
         );
         const confirmedAction = () => {
             deleteContract(
@@ -199,7 +198,7 @@ class ContractSearcher extends Component {
             );
             this.setState({ toDelete: contract.id });
         }
-        this.setState({ confirmedAction }, confirm);
+        confirm();
     }
 
     isContractDeleted = contract => contract.isDeleted;
@@ -244,27 +243,29 @@ class ContractSearcher extends Component {
                     "contract",
                     `${label}.confirm.message.unapprovableEmpty`,
                     { contracts: approvableContracts.length }
-                )
+                ),
+          { onConfirm: confirmedAction },
         );
         const confirmedAction = () => action(
             approvableContracts,
             formatMessageWithValues(intl, "contract", `${label}.mutationLabel`, { count: approvableContracts.length }),
             approvableContracts.map(contract => contract.code)
         );
-        this.setState({ confirmedAction }, confirm);
+        confirm();
     }
 
     bulkActionOnAll = (action, label) => {
         const { intl, coreConfirm } = this.props;
         const confirm = () => coreConfirm(
             formatMessage(intl, "contract", `${label}.confirm.title`),
-            formatMessageWithValues(intl, "contract", `${label}.confirm.message`)
+            formatMessageWithValues(intl, "contract", `${label}.confirm.message`),
+          { onConfirm: confirmedAction },
         );
         const confirmedAction = () => action(
             this.state.queryParams,
             formatMessageWithValues(intl, "contract", `${label}.mutationLabel`)
         );
-        this.setState({ confirmedAction }, confirm);
+        confirm();
     }
 
     actions = () => this.props.rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE)

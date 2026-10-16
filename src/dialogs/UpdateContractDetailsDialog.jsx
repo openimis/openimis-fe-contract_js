@@ -65,7 +65,7 @@ class CreateContractDetailsDialog extends Component {
     handleSave = () => {
         const { intl, contract, coreConfirm, onSave, updateContractDetails, setConfirmedAction } = this.props;
         const { contractDetails } = this.state;
-        let confirm = () => coreConfirm(
+        let confirm = (onConfirm) => coreConfirm(
             formatMessage(intl, "contract", "contractDetails.editContractDetails.confirm.title"),
             formatMessageWithValues(
                 intl,
@@ -74,7 +74,8 @@ class CreateContractDetailsDialog extends Component {
                 {
                     insuree: decodeId(contractDetails.insuree.id),
                     contributionPlanBundle: contractDetails.contributionPlanBundle.code
-                })
+                }),
+          { onConfirm },
         );
         let confirmedAction = () => {
             updateContractDetails(
