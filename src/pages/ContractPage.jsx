@@ -149,7 +149,6 @@ class ContractPage extends Component {
 const mapStateToProps = (state, props) => ({
     rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
     contractId: props.match.params.contract_id,
-    confirmed: state.core.confirmed
 });
 
 const mapDispatchToProps = dispatch => {

@@ -350,7 +350,6 @@ const mapStateToProps = state => ({
     contracts: state.contract.contracts,
     contractsPageInfo: state.contract.contractsPageInfo,
     contractsTotalCount: state.contract.contractsTotalCount,
-    confirmed: state.core.confirmed,
     submittingMutation: state.contract.submittingMutation,
     mutation: state.contract.mutation,
     contractsBulk: state.contract.contractsBulk
