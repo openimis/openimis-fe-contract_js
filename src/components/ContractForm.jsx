@@ -3,8 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 
-import { Fab, Tooltip } from "@mui/material";
-import { useTheme, styled } from "@mui/material/styles";
+import { Fab } from "@mui/material";
 import { GetIconComponent } from "@openimis/fe-core";
 const CheckIcon = GetIconComponent("Check")
 const CloseIcon = GetIconComponent("Close")
@@ -34,16 +33,6 @@ import {
 } from "../constants";
 import ContractHeadPanel from "./ContractHeadPanel";
 import ContractTabPanel from "./ContractTabPanel";
-
-const StyledDiv = styled("div")(({ theme }) => ({
-    ...theme.fab ?? {},
-    '& .counterFab': {
-        position: 'fixed',
-        bottom: theme.spacing(18),
-        right: theme.spacing(1),
-        zIndex: 1200
-    }
-}));
 
 class ContractForm extends Component {
     constructor(props) {
@@ -218,16 +207,22 @@ class ContractForm extends Component {
                     isAmendment={this.isAmendment()}
                     isPolicyHolderPredefined={!!predefinedPolicyHolderId}
                     openDirty={save}
+                    // Counter goes in Form's own FAB stack: positioned on its own, it covered
+                    // the Approve FAB whenever Save was shown too.
+                    additionalTooltips={[
+                        {
+                            condition: rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable() && !this.state.isDirty,
+                            content: (
+                                <span>
+                                    <Fab color="primary" onClick={() => counter(this.state.contract)}>
+                                        <CloseIcon/>
+                                    </Fab>
+                                </span>
+                            ),
+                            tooltip: formatMessage(intl, "contract", "counterButton.tooltip"),
+                        },
+                    ]}
                 />
-                {rights.includes(RIGHT_POLICYHOLDERCONTRACT_APPROVE) && this.isApprovable() && !this.state.isDirty && (
-                    <Tooltip title={formatMessage(intl, "contract", "counterButton.tooltip")} placement="left">
-                        <StyledDiv className="counterFab">
-                            <Fab color="primary" size="normal" onClick={() => counter(this.state.contract)}>
-                                <CloseIcon/>
-                            </Fab>
-                        </StyledDiv>
-                    </Tooltip>
-                )}
             </Fragment>
         )
     }
@@ -248,5 +243,4 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ clearContract, fetchContract, journalize }, dispatch);
 };
 
-export { StyledDiv };
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContractForm)));
