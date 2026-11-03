@@ -170,7 +170,7 @@ class ContractDetailsSearcher extends Component {
 
     onDelete = contractDetails => {
         const { intl, contract, coreConfirm, deleteContractDetails, setConfirmedAction } = this.props;
-        let confirm = () => coreConfirm(
+        let confirm = (onConfirm) => coreConfirm(
             formatMessageWithValues(
                 intl,
                 "contract",
@@ -179,7 +179,8 @@ class ContractDetailsSearcher extends Component {
                     insuree: decodeId(contractDetails.insuree.id),
                     contributionPlanBundle: contractDetails.contributionPlanBundle.code
                 }),
-            formatMessage(intl, "contract", "deleteContract.confirm.message")
+            formatMessage(intl, "contract", "deleteContract.confirm.message"),
+          { onConfirm },
         );
         let confirmedAction = () => {
             deleteContractDetails(
