@@ -71,7 +71,7 @@ class CreateContractDetailsDialog extends Component {
     };
 
     handleSave = () => {
-        const { intl, contract, coreConfirm, onSave, updateContractDetails, setConfirmedAction } = this.props;
+        const { intl, contract, coreConfirm, updateContractDetails, setConfirmedAction } = this.props;
         const { contractDetails } = this.state;
         let confirm = (onConfirm) => coreConfirm(
             formatMessage(intl, "contract", "contractDetails.editContractDetails.confirm.title"),
@@ -99,8 +99,10 @@ class CreateContractDetailsDialog extends Component {
                     }
                 )
             );
+            // No refetch here: it would race the mutation and could read the row unchanged.
+            // The row carries the mutation's id (reducer), and the searcher reads its page
+            // again once the journal shows that mutation done.
             this.handleClose();
-            onSave();
         }
         setConfirmedAction(confirm, confirmedAction);
     };
