@@ -42,7 +42,15 @@ class CreateContractDetailsDialog extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.contractDetails !== this.state.contractDetails && prevState.contractDetails.insuree !== this.state.contractDetails.insuree) {
+        // The insuree of existing contract details cannot be changed here, and the details
+        // carry their own bundle: keep it. Looking it up in the policy holder's insurees
+        // blanked it, because the insuree picker of this dialog refetches that list as it
+        // mounts, so the list is empty when the dialog opens.
+        if (
+            prevState.contractDetails !== this.state.contractDetails &&
+            prevState.contractDetails.insuree !== this.state.contractDetails.insuree &&
+            !this.state.contractDetails.contributionPlanBundle
+        ) {
             this.setPolicyHolderContributionPlanBundle();
         }
     }
@@ -202,5 +210,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ updateContractDetails, coreConfirm }, dispatch);
 };
 
-export { StyledGrid };
+export { StyledGrid, CreateContractDetailsDialog as UpdateContractDetailsDialog };
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(CreateContractDetailsDialog));
