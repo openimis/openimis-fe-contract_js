@@ -8,6 +8,20 @@ import {
   dispatchMutationResp,
 } from "@openimis/fe-core";
 
+// Stamps the contract details under mutation (meta.uuids) with the mutation's id, on
+// copies: fe-core's Searcher reads its page again when the journal shows that mutation
+// done, so the list shows the saved row instead of racing the mutation with a refetch.
+function lockMutated(state, meta) {
+  const ids = meta?.uuids;
+  if (!ids?.length || !Array.isArray(state.contractDetails)) return state;
+  return {
+    ...state,
+    contractDetails: state.contractDetails.map((r) =>
+      r && ids.includes(r.id) ? { ...r, clientMutationId: meta.clientMutationId } : r,
+    ),
+  };
+}
+
 function reducer(
   state = {
     fetchingContracts: false,
@@ -253,7 +267,7 @@ function reducer(
       };
 
     case "CONTRACT_MUTATION_REQ":
-      return dispatchMutationReq(state, action);
+      return lockMutated(dispatchMutationReq(state, action), action.meta);
     case "CONTRACT_MUTATION_ERR":
       return dispatchMutationErr(state, action);
     case "CONTRACT_CREATE_CONTRACT_RESP":

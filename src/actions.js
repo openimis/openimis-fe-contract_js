@@ -547,6 +547,7 @@ export function updateContractDetails(contractDetails, clientMutationLabel) {
       clientMutationId: mutation.clientMutationId,
       clientMutationLabel,
       requestedDateTime,
+      uuids: [contractDetails.id],
     }
   );
 }
