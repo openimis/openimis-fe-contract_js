@@ -42,7 +42,15 @@ class CreateContractDetailsDialog extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.contractDetails !== this.state.contractDetails && prevState.contractDetails.insuree !== this.state.contractDetails.insuree) {
+        // The insuree of existing contract details cannot be changed here, and the details
+        // carry their own bundle: keep it. Looking it up in the policy holder's insurees
+        // blanked it, because the insuree picker of this dialog refetches that list as it
+        // mounts, so the list is empty when the dialog opens.
+        if (
+            prevState.contractDetails !== this.state.contractDetails &&
+            prevState.contractDetails.insuree !== this.state.contractDetails.insuree &&
+            !this.state.contractDetails.contributionPlanBundle
+        ) {
             this.setPolicyHolderContributionPlanBundle();
         }
     }
@@ -63,7 +71,7 @@ class CreateContractDetailsDialog extends Component {
     };
 
     handleSave = () => {
-        const { intl, contract, coreConfirm, onSave, updateContractDetails, setConfirmedAction } = this.props;
+        const { intl, contract, coreConfirm, updateContractDetails, setConfirmedAction } = this.props;
         const { contractDetails } = this.state;
         let confirm = (onConfirm) => coreConfirm(
             formatMessage(intl, "contract", "contractDetails.editContractDetails.confirm.title"),
@@ -91,8 +99,10 @@ class CreateContractDetailsDialog extends Component {
                     }
                 )
             );
+            // No refetch here: it would race the mutation and could read the row unchanged.
+            // The row carries the mutation's id (reducer), and the searcher reads its page
+            // again once the journal shows that mutation done.
             this.handleClose();
-            onSave();
         }
         setConfirmedAction(confirm, confirmedAction);
     };
@@ -202,5 +212,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ updateContractDetails, coreConfirm }, dispatch);
 };
 
-export { StyledGrid };
+export { StyledGrid, CreateContractDetailsDialog as UpdateContractDetailsDialog };
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(CreateContractDetailsDialog));
