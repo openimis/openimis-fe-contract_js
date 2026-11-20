@@ -4,7 +4,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { GetIconComponent } from "@openimis/fe-core";
+import { GetIconComponent, injectIntl } from "@openimis/fe-core";
 const AddIcon = GetIconComponent("Add")
 import {
     FormattedMessage,
@@ -18,7 +18,6 @@ import {
 import { Fab, Grid } from "@mui/material";
 import { useTheme, styled } from "@mui/material/styles";
 import { createContractDetails } from "../actions";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {

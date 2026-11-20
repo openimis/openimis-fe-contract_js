@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 
 // The fe-core barrel cannot be loaded from a test: only what the dialog reads when it loads.
-vi.mock("@openimis/fe-core", () => ({
+vi.mock("@openimis/fe-core", async () => ({
+  injectIntl: (await import("@openimis/fe-core/testing")).injectIntl,
   GetIconComponent: () => () => null,
   FormattedMessage: () => null,
   formatMessage: () => "",

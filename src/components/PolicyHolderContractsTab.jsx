@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Tab, Grid, Typography, Fab } from "@mui/material";
+import { Grid, Typography, Fab } from "@mui/material";
 import {
     PublishedComponent,
     FormattedMessage,
@@ -7,7 +7,8 @@ import {
     formatMessage,
     historyPush,
     decodeId,
-    withHistory
+    withHistory,
+    Tab
 } from "@openimis/fe-core";
 import { GetIconComponent } from "@openimis/fe-core";
 const AddIcon = GetIconComponent("Add")
@@ -76,59 +77,57 @@ class RawPolicyHolderContractsTabPanel extends Component {
 
     render() {
         const { rights, value, isTabsEnabled, policyHolder } = this.props;
-        return (
-            [
-                RIGHT_POLICYHOLDERCONTRACT_SEARCH,
-                RIGHT_PORTALPOLICYHOLDERCONTRACT_SEARCH
-            ].some((right) => rights.includes(right)) && (
-                <PublishedComponent
-                    pubRef="policyHolder.TabPanel"
-                    module="contract"
-                    index={CONTRACTS_TAB_VALUE}
-                    value={value}
-                >
-                    {isTabsEnabled && (
-                        <Fragment>
-                            {[
-                                RIGHT_POLICYHOLDERCONTRACT_CREATE,
-                                RIGHT_PORTALPOLICYHOLDERCONTRACT_CREATE
-                            ].some((right) => rights.includes(right)) && (
-                                <Grid
-                                    container
-                                    justify="flex-end"
-                                    alignItems="center"
-                                    spacing={1}
+        return ([
+            RIGHT_POLICYHOLDERCONTRACT_SEARCH,
+            RIGHT_PORTALPOLICYHOLDERCONTRACT_SEARCH
+        ].some((right) => rights.includes(right)) && (<PublishedComponent
+            pubRef="policyHolder.TabPanel"
+            module="contract"
+            index={CONTRACTS_TAB_VALUE}
+            value={value}
+        >
+            {isTabsEnabled && (
+                <Fragment>
+                    {[
+                        RIGHT_POLICYHOLDERCONTRACT_CREATE,
+                        RIGHT_PORTALPOLICYHOLDERCONTRACT_CREATE
+                    ].some((right) => rights.includes(right)) && (
+                        <Grid
+                            container
+                            justify="flex-end"
+                            spacing={1}
+                            sx={{
+                                alignItems: "center"
+                            }}
+                        >
+                            <Grid>
+                                <Typography>
+                                    <FormattedMessage
+                                        module="contract"
+                                        id="createButton.tooltip"
+                                    />
+                                </Typography>
+                            </Grid>
+                            <Grid>
+                                <Fab
+                                    size="small"
+                                    color="primary"
+                                    onClick={this.onCreateButtonClick}
                                 >
-                                    <Grid>
-                                        <Typography>
-                                            <FormattedMessage
-                                                module="contract"
-                                                id="createButton.tooltip"
-                                            />
-                                        </Typography>
-                                    </Grid>
-                                    <Grid>
-                                        <Fab
-                                            size="small"
-                                            color="primary"
-                                            onClick={this.onCreateButtonClick}
-                                        >
-                                            <AddIcon />
-                                        </Fab>
-                                    </Grid>
-                                </Grid>
-                            )}
-                            <ContractSearcher
-                                onDoubleClick={this.onDoubleClick}
-                                contractUpdatePageUrl={this.contractUpdatePageUrl}
-                                rights={rights}
-                                policyHolder={policyHolder}
-                            />
-                        </Fragment>
+                                    <AddIcon />
+                                </Fab>
+                            </Grid>
+                        </Grid>
                     )}
-                </PublishedComponent>
-            )
-        );
+                    <ContractSearcher
+                        onDoubleClick={this.onDoubleClick}
+                        contractUpdatePageUrl={this.contractUpdatePageUrl}
+                        rights={rights}
+                        policyHolder={policyHolder}
+                    />
+                </Fragment>
+            )}
+        </PublishedComponent>));
     }
 }
 

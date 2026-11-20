@@ -4,9 +4,9 @@ import {
     withHistory,
     formatMessage,
     formatMessageWithValues,
-    coreConfirm
+    coreConfirm,
+    injectIntl
 } from "@openimis/fe-core";
-import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useTheme, styled } from "@mui/material/styles";
@@ -33,7 +33,7 @@ import ContractForm from "../components/ContractForm";
 const AMENDMENT_INCREMENT = 1;
 
 const StyledDiv = styled("div")(({ theme }) => ({
-    ...theme.page ?? {}
+    ...(theme.page ?? {})
 }));
 
 class ContractPage extends Component {

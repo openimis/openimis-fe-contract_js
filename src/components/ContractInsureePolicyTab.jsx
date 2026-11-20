@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Tab } from "@mui/material";
-import { formatMessage, PublishedComponent } from "@openimis/fe-core";
+import { formatMessage, PublishedComponent, Tab } from "@openimis/fe-core";
 import {
     CONTRACTINSUREEPOLICY_TAB_VALUE,
     RIGHT_INSUREEPOLICY_SEARCH,
