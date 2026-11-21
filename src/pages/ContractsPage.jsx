@@ -8,8 +8,8 @@ import {
   historyPush,
   decodeId,
   clearCurrentPaginationPage,
+  injectIntl,
 } from "@openimis/fe-core";
-import { injectIntl } from "react-intl";
 import { useTheme, styled } from "@mui/material/styles";
 import { connect } from "react-redux";
 import {
@@ -26,7 +26,7 @@ import { GetIconComponent } from "@openimis/fe-core";
 const AddIcon = GetIconComponent("Add")
 
 const StyledDiv = styled("div")(({ theme }) => ({
-  ...theme.page ?? {},
+  ...(theme.page ?? {}),
   '& .fab': theme.fab ?? {},
 }));
 

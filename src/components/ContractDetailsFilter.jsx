@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import {
   withModulesManager,
@@ -8,6 +7,7 @@ import {
   PublishedComponent,
   decodeId,
   GRID_RESPONSIVE_STANDARD,
+  injectIntl,
 } from "@openimis/fe-core";
 import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
