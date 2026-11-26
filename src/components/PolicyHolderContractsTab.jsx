@@ -82,7 +82,7 @@ class RawPolicyHolderContractsTabPanel extends Component {
                 RIGHT_PORTALPOLICYHOLDERCONTRACT_SEARCH
             ].some((right) => rights.includes(right)) && (
                 <PublishedComponent
-                    pubRef="policyHolder.TabPanel"
+                    pubRef="core.TabPanel"
                     module="contract"
                     index={CONTRACTS_TAB_VALUE}
                     value={value}

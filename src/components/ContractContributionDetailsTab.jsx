@@ -52,7 +52,7 @@ class ContractContributionDetailsTabPanel extends Component {
             !isUpdatable &&
             !isApprovable && (
                 <PublishedComponent
-                    pubRef="policyHolder.TabPanel"
+                    pubRef="core.TabPanel"
                     module="contract"
                     index={CONTRACTCONTRIBUTIONDETAILS_TAB_VALUE}
                     value={value}
