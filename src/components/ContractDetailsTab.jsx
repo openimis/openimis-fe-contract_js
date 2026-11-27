@@ -14,7 +14,7 @@ import CreateContractDetailsDialog from "../dialogs/CreateContractDetailsDialog"
 
 class ContractDetailsTabLabel extends Component {
     render() {
-        const { intl, rights, onChange, disabled, tabStyle, isSelected } = this.props;
+        const { intl, rights, onChange, disabled, tabStyle } = this.props;
         return (
             [
                 RIGHT_POLICYHOLDERCONTRACT_UPDATE,

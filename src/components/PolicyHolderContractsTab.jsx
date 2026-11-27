@@ -7,9 +7,9 @@ import {
     formatMessage,
     historyPush,
     decodeId,
-    withHistory
+    withHistory,
+    GetIconComponent
 } from "@openimis/fe-core";
-import { GetIconComponent } from "@openimis/fe-core";
 const AddIcon = GetIconComponent("Add")
 import {
     RIGHT_POLICYHOLDERCONTRACT_CREATE,
