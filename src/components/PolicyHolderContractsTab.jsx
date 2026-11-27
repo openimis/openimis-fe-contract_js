@@ -8,9 +8,9 @@ import {
     historyPush,
     decodeId,
     withHistory,
-    Tab
+    Tab,
+    GetIconComponent
 } from "@openimis/fe-core";
-import { GetIconComponent } from "@openimis/fe-core";
 const AddIcon = GetIconComponent("Add")
 import {
     RIGHT_POLICYHOLDERCONTRACT_CREATE,
@@ -81,7 +81,7 @@ class RawPolicyHolderContractsTabPanel extends Component {
             RIGHT_POLICYHOLDERCONTRACT_SEARCH,
             RIGHT_PORTALPOLICYHOLDERCONTRACT_SEARCH
         ].some((right) => rights.includes(right)) && (<PublishedComponent
-            pubRef="policyHolder.TabPanel"
+            pubRef="core.TabPanel"
             module="contract"
             index={CONTRACTS_TAB_VALUE}
             value={value}
