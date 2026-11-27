@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
 
 import { Grid, Divider, Typography } from "@mui/material";
 import { useTheme, styled } from "@mui/material/styles";
@@ -14,6 +13,7 @@ import {
   PublishedComponent,
   NumberInput,
   ValidatedTextInput,
+  injectIntl,
 } from "@openimis/fe-core";
 import {
   contractCodeValidation,

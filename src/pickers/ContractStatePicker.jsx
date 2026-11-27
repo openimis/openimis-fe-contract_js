@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { withModulesManager, PublishedComponent, formatMessage } from "@openimis/fe-core";
-import { injectIntl } from "react-intl";
+import { withModulesManager, PublishedComponent, formatMessage, injectIntl } from "@openimis/fe-core";
+
 
 class ContractStatePicker extends Component {
     constructor(props) {

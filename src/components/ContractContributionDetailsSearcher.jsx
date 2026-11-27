@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react"
-import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessageWithValues, Searcher, PublishedComponent, decodeId } from "@openimis/fe-core";
+
+import { withModulesManager, formatMessageWithValues, Searcher, PublishedComponent, decodeId, injectIntl } from "@openimis/fe-core";
 import { fetchContractContributionDetails } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
