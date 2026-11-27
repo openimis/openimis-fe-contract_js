@@ -14,7 +14,8 @@ const ContractPicker = ({
     readOnly = false,
     withDeleted = false,
     fetchPickerContracts,
-    contracts
+    contracts,
+    fetching,
 }) => {
     useEffect(() => fetchPickerContracts(withDeleted ? [] : ["isDeleted: false"]), []);
 
@@ -41,6 +42,7 @@ const ContractPicker = ({
             value={!!value ? value : null}
             onChange={onChange}
             readOnly={readOnly}
+            loading={fetching}
         />
     )
 }
@@ -50,6 +52,7 @@ const mapStateToProps = (state) => ({
         id: decodeId(encodedId),
         ...other,
     })),
+    fetching: state.contract.fetchingContracts,
 });
 
 const mapDispatchToProps = dispatch => {
