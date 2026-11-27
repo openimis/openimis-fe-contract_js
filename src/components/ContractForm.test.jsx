@@ -21,6 +21,7 @@ import {
 vi.mock("@openimis/fe-core", async () => {
   const h = (await import("react")).createElement;
   return {
+    injectIntl: (await import("@openimis/fe-core/testing")).injectIntl,
     GetIconComponent: (name) => () => h("span", null, name),
     Form: ({
       save,

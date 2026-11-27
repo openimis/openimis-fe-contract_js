@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { injectIntl } from "react-intl";
 import {
     withModulesManager,
     formatMessageWithValues,
     Searcher,
     PublishedComponent,
     decodeId,
+    injectIntl,
 } from "@openimis/fe-core";
 import { fetchInsureePolicies } from "../actions";
 import { bindActionCreators } from "redux";
