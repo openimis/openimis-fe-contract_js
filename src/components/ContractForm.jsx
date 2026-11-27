@@ -3,13 +3,9 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import { Fab } from "@mui/material";
-import { GetIconComponent, injectIntl } from "@openimis/fe-core";
-const CheckIcon = GetIconComponent("Check")
-const CloseIcon = GetIconComponent("Close")
-const NoteAddIcon = GetIconComponent("NoteAdd")
-const OpenInBrowserIcon = GetIconComponent("OpenInBrowser")
-
 import {
+    GetIconComponent,
+    injectIntl,
     Form,
     withModulesManager,
     formatMessage,
@@ -32,6 +28,11 @@ import {
 } from "../constants";
 import ContractHeadPanel from "./ContractHeadPanel";
 import ContractTabPanel from "./ContractTabPanel";
+
+const CheckIcon = GetIconComponent("Check")
+const CloseIcon = GetIconComponent("Close")
+const NoteAddIcon = GetIconComponent("NoteAdd")
+const OpenInBrowserIcon = GetIconComponent("OpenInBrowser")
 
 class ContractForm extends Component {
     constructor(props) {

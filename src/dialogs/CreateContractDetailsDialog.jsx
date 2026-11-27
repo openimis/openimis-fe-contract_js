@@ -4,16 +4,16 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { GetIconComponent, injectIntl } from "@openimis/fe-core";
-const AddIcon = GetIconComponent("Add")
 import {
+    GetIconComponent,
+    injectIntl,
     FormattedMessage,
     formatMessage,
     formatMessageWithValues,
     PublishedComponent,
     decodeId,
     coreConfirm,
-    Contributions
+    Contributions,
 } from "@openimis/fe-core";
 import { Fab, Grid } from "@mui/material";
 import { useTheme, styled } from "@mui/material/styles";
@@ -25,6 +25,8 @@ import {
     CONTRACTDETAILS_CLASSNAME,
     RIGHT_CALCULATION_WRITE
 } from "../constants";
+
+const AddIcon = GetIconComponent("Add")
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
     '& .item': theme.paper?.item ?? {}

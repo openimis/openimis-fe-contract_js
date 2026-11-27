@@ -26,7 +26,7 @@ import { GetIconComponent } from "@openimis/fe-core";
 const AddIcon = GetIconComponent("Add")
 
 const StyledDiv = styled("div")(({ theme }) => ({
-  ...(theme.page ?? {}),
+  ...theme.page,
   '& .fab': theme.fab ?? {},
 }));
 

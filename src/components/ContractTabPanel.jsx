@@ -13,7 +13,7 @@ import {
 } from "../constants";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-    ...(theme.paper?.paper ?? {}),
+    ...theme.paper?.paper,
     '& .tableTitle': theme.table?.title ?? {},
     '& .tabs': {
         padding: 0
