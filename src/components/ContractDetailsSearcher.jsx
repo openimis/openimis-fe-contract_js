@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { injectIntl } from "react-intl";
 import {
     withModulesManager,
     formatMessage,
@@ -9,7 +8,8 @@ import {
     decodeId,
     withTooltip,
     coreConfirm,
-    Contributions
+    Contributions,
+    injectIntl
 } from "@openimis/fe-core";
 import { fetchContractDetails, deleteContractDetails } from "../actions";
 import { bindActionCreators } from "redux";

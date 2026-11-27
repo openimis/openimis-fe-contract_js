@@ -4,21 +4,20 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { GetIconComponent } from "@openimis/fe-core";
-const EditIcon = GetIconComponent("Edit")
 import {
+    GetIconComponent,
+    injectIntl,
     FormattedMessage,
     formatMessage,
     formatMessageWithValues,
     PublishedComponent,
     decodeId,
     coreConfirm,
-    Contributions
+    Contributions,
 } from "@openimis/fe-core";
 import { Grid, IconButton, Tooltip } from "@mui/material";
 import { useTheme, styled } from "@mui/material/styles";
 import { updateContractDetails } from "../actions";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
@@ -26,6 +25,8 @@ import {
     CONTRACTDETAILS_CLASSNAME,
     RIGHT_CALCULATION_UPDATE
 } from "../constants";
+
+const EditIcon = GetIconComponent("Edit")
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
     '& .item': theme.paper?.item ?? {}

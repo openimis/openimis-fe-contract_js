@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { Tab, Grid, Typography } from "@mui/material";
-import { formatMessage, PublishedComponent, FormattedMessage } from "@openimis/fe-core";
+import { Grid, Typography } from "@mui/material";
+import { formatMessage, PublishedComponent, FormattedMessage, Tab } from "@openimis/fe-core";
 import {
     RIGHT_POLICYHOLDERCONTRACT_UPDATE,
     RIGHT_POLICYHOLDERCONTRACT_APPROVE,
@@ -67,58 +67,60 @@ class ContractDetailsTabPanel extends Component {
 
     render() {
         const { rights, value, isTabsEnabled, contract, setConfirmedAction } = this.props;
-        return (
-            [
-                RIGHT_POLICYHOLDERCONTRACT_UPDATE,
-                RIGHT_POLICYHOLDERCONTRACT_APPROVE,
-                RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
-                RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
-                RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
-            ].some(right => rights.includes(right)) && (
-                <PublishedComponent
-                    pubRef="policyHolder.TabPanel"
-                    module="contract"
-                    index={CONTRACTDETAILS_TAB_VALUE}
-                    value={value}
-                >
-                    {isTabsEnabled ? (
-                        <Fragment>
-                            <Grid container justifyContent="flex-end" alignItems="center" spacing={1}>
-                                <Grid>
-                                    <Typography>
-                                        <FormattedMessage
-                                            module="contract"
-                                            id="contractDetails.createContractDetails"
-                                        />
-                                    </Typography>
-                                </Grid>
-                                <Grid>
-                                    <CreateContractDetailsDialog
-                                        contract={contract}
-                                        onSave={this.onSave}
-                                        setConfirmedAction={setConfirmedAction}
-                                        disabled={!this.isActionEnabled()}
-                                    />
-                                </Grid>
-                            </Grid>
-                            <ContractDetailsSearcher
+        return ([
+            RIGHT_POLICYHOLDERCONTRACT_UPDATE,
+            RIGHT_POLICYHOLDERCONTRACT_APPROVE,
+            RIGHT_PORTALPOLICYHOLDERCONTRACT_UPDATE,
+            RIGHT_PORTALPOLICYHOLDERCONTRACT_SUBMIT,
+            RIGHT_PORTALPOLICYHOLDERCONTRACT_AMEND
+        ].some(right => rights.includes(right)) && (<PublishedComponent
+            pubRef="policyHolder.TabPanel"
+            module="contract"
+            index={CONTRACTDETAILS_TAB_VALUE}
+            value={value}
+        >
+            {isTabsEnabled ? (
+                <Fragment>
+                    <Grid
+                        container
+                        spacing={1}
+                        sx={{
+                            justifyContent: "flex-end",
+                            alignItems: "center"
+                        }}>
+                        <Grid>
+                            <Typography>
+                                <FormattedMessage
+                                    module="contract"
+                                    id="contractDetails.createContractDetails"
+                                />
+                            </Typography>
+                        </Grid>
+                        <Grid>
+                            <CreateContractDetailsDialog
                                 contract={contract}
-                                rights={rights}
-                                reset={this.state.reset}
                                 onSave={this.onSave}
                                 setConfirmedAction={setConfirmedAction}
-                                isActionEnabled={this.isActionEnabled()}
+                                disabled={!this.isActionEnabled()}
                             />
-                        </Fragment>
-                    ) : (
-                        <FormattedMessage
-                            module="contract"
-                            id="contractDetails.tabDisabledError"
-                        />
-                    )}
-                </PublishedComponent>
-            )
-        )
+                        </Grid>
+                    </Grid>
+                    <ContractDetailsSearcher
+                        contract={contract}
+                        rights={rights}
+                        reset={this.state.reset}
+                        onSave={this.onSave}
+                        setConfirmedAction={setConfirmedAction}
+                        isActionEnabled={this.isActionEnabled()}
+                    />
+                </Fragment>
+            ) : (
+                <FormattedMessage
+                    module="contract"
+                    id="contractDetails.tabDisabledError"
+                />
+            )}
+        </PublishedComponent>));
     }
 }
 
